@@ -1,16 +1,32 @@
 \chapter Wprowadzenie
 
-\TODO biometryk nie da się zgubić choć część populacji jest niema
+\TODO biometryk nie da się zgubić choć część populacji jest niema. Istniejąca infrastruktura pomaga. Łatwość uzyskania sygnału mowy, nawet bez kooperacji. 
 
 \section{Weryfikacja mówcy}
 
 Weryfikacja mówcy (\textit{speaker verification}).
 
-Pojęcie weryfikacji mówcy jest związane z szerszym zagadnieniem rozpoznawania mówcy (\textit{speaker recognition}). Jest to ogólna nazwa stosowana dla procedur wykorzystujących informację biometryczną zawartą w sygnale mowy. Kluczowe jest odróżnienie procesu rozpoznawania mówcy od systemów rozpoznawania mowy (\textit{speech recognition}). W drugim wymienionym problemie nie jest istotna tożsamość osoby wypowiadającej się, a jedynie sens jej wypowiedzi. Zatem cała informacja biometryczna zarejestrowanego sygnału mowy jest niewykorzystywana. Z drugiej jednak strony, w systemach rozpoznawania mówcy wykorzystuje się niejednokrotnie techniki rozpoznawanie treści języka naturalnego m. in. w odmianach omawianych systemów opartych na nagromadzonej wiedzy (\textit{knowledge-based systems}), których zadaniem jest wzmocnienie procesu weryfikacji oraz zapobieganiu wystąpienie problemu żywotności (\textit{liveness issue}). 
+Proces weryfikacji mówcy jest związany z szerszym zagadnieniem - rozpoznawania mówcy (\textit{speaker recognition}), które charakteryzuje ogół metod wykorzystujących dane biometryczne zawarte w sygnale mowy w celu określenia tożsamości.
 
-\TODO opis modelu identyfikacji/weryfikacji mówcy ?
+Sygnał mowy może być rozpatrywany jako cecha biometryczna. Sygnał mowy charakteryzowany jest przez budowę aparatu głosowego człowieka, która jest mniej lub bardziej unikatowa dla każdego człowieka, umożliwiając rozróżnienie badanej jednostki na tle populacji.
+
+Ogólną strukturę problemu rozpoznawania mówcy można rozłożyć na na trzy elementy.\cite{fosr} Po pierwsze, konieczne jest aby tworzony system dysponował modelem charakterystyk aparatu głosowego człowieka. Model taki dla przykładu może przybrać formę modelu fizyko-matematycznego aparatu głosowego człowieka. Otrzymany model musi umożliwiać parametryzację - skojarzenie z konkretną osobą. Model taki tworzony jest poprzez analizę sygnału mowy. Dopiero na tej podstawie możliwe jest porównywanie modelu utworzonego przy użyciu testowanego sygnału z modelem odniesienia. Forma i cel tego porównania definiują podklasę problemu rozpoznawania mówcy.
+
+Weryfikacja mówcy charakteryzuje się wykonaniem dwóch kluczowych porównań - pierwszego pomiędzy modelem utworzonym z poddanego weryfikacji sygnału mowy a pamiętanym modelem osoby której dotyczy weryfikacja. W odróżnieniu of problemu identyfikacji, podczas weryfikacji mówcy potrzebna jest więc znajomość tożsamości osoby poddanej weryfikacji.
+Drugie z kolei porównanie dokonywane jest pomiędzy modelem poddanym weryfikacji, a uogólnionym modelem całej populacji (\textit{background model}) lub pewnej jej podgrupy (\textit{cohort model}. Na podstawie relacji tych dwóch odległość podejmowana jest decyzja o autoryzacji.
+
+W przypadku kiedy nie jest możliwa lub pożądana znajomość przez system tożsamości osoby weryfikowanej przed dokonaniem autoryzacji, możliwe jest zastosowanie bardziej złożonego problem identyfikacji mówcy na otwartym zbiorze.(\textit{open-set speaker identification}). Proces ten można uważać jako złożenie problemu weryfikacji mówcy oraz identyfikacji mówcy na zbiorze zamkniętym (\textit{close-set speaker identification}). Polega on na przeprowadzeniu weryfikacji mówcy na modelu uzyskanym z procesu identyfikacji mówcy na zbiorze zamkniętym, która dokonuje porównania z całą dostępną bazą modeli mówców i zwraca ten najbliższy modelowi testowanemu. Problem taki jest więc obliczeniowo co najmniej tak złożony jak weryfikacja mówcy (dla bazy w której znajduje się tylko jeden mówca).
+
+Kluczowe jest odróżnienie procesu rozpoznawania mówcy od systemów rozpoznawania mowy (\textit{speech recognition}). W drugim wymienionym problemie nie jest istotna tożsamość osoby wypowiadającej się, a jedynie sens jej wypowiedzi. Zatem cała informacja biometryczna zarejestrowanego sygnału mowy jest niewykorzystywana. Z drugiej jednak strony, w systemach rozpoznawania mówcy wykorzystuje się niejednokrotnie techniki rozpoznawanie treści języka naturalnego m. in. w odmianach omawianych systemów opartych na nagromadzonej wiedzy (\textit{knowledge-based systems}), których zadaniem jest wzmocnienie procesu weryfikacji oraz zapobieganie wystąpienia problemu żywotności (\textit{liveness issue}). 
 
 \TODO na co składają się charakterystyki biometryczne sygnału mowy ? vocal tract ?
+
+  \TODO Aparat mowy
+
+  \TODO Aparat słuchowy
+  transduktor - zamienia ciśnienie akustyczne na sygnał elektryczny.
+
+  \TODO Układ nerwowy
 
 \textit{text-dependent speaker recognition} \cite{fosr}
 
@@ -20,7 +36,7 @@ Problem żywotności polega na możliwości oszukania działającego systemu wer
 
 \textit{text-prompted speaker recognition} \cite{fosr}
 
-Implementacja systemu weryfikacji mówcy jest nazywana automatycznym systemem rozpoznawania mówcy (\textit{automatic speaker verification system).
+Implementacja systemu weryfikacji mówcy jest nazywana automatycznym systemem rozpoznawania mówcy (\textit{automatic speaker verification system}).
 
 \TODO zastosowania 
 
