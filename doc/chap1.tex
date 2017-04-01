@@ -1,6 +1,7 @@
 \chapter Wprowadzenie
 
-\TODO biometryk nie da się zgubić choć część populacji jest niema. Istniejąca infrastruktura pomaga. Łatwość uzyskania sygnału mowy, nawet bez kooperacji. 
+\%TODO
+biometryk nie da się zgubić choć część populacji jest niema. Istniejąca infrastruktura pomaga. Łatwość uzyskania sygnału mowy, nawet bez kooperacji. 
 
 \section{Weryfikacja mówcy}
 
@@ -17,17 +18,14 @@ Drugie z kolei porównanie dokonywane jest pomiędzy modelem poddanym weryfikacj
 
 W przypadku kiedy nie jest możliwa lub pożądana znajomość przez system tożsamości osoby weryfikowanej przed dokonaniem autoryzacji, możliwe jest zastosowanie bardziej złożonego problem identyfikacji mówcy na otwartym zbiorze.(\textit{open-set speaker identification}). Proces ten można uważać jako złożenie problemu weryfikacji mówcy oraz identyfikacji mówcy na zbiorze zamkniętym (\textit{close-set speaker identification}). Polega on na przeprowadzeniu weryfikacji mówcy na modelu uzyskanym z procesu identyfikacji mówcy na zbiorze zamkniętym, która dokonuje porównania z całą dostępną bazą modeli mówców i zwraca ten najbliższy modelowi testowanemu. Problem taki jest więc obliczeniowo co najmniej tak złożony jak weryfikacja mówcy (dla bazy w której znajduje się tylko jeden mówca).
 
-Kluczowe jest odróżnienie procesu rozpoznawania mówcy od systemów rozpoznawania mowy (\textit{speech recognition}). W drugim wymienionym problemie nie jest istotna tożsamość osoby wypowiadającej się, a jedynie sens jej wypowiedzi. Zatem cała informacja biometryczna zarejestrowanego sygnału mowy jest niewykorzystywana. Z drugiej jednak strony, w systemach rozpoznawania mówcy wykorzystuje się niejednokrotnie techniki rozpoznawanie treści języka naturalnego m. in. w odmianach omawianych systemów opartych na nagromadzonej wiedzy (\textit{knowledge-based systems}), których zadaniem jest wzmocnienie procesu weryfikacji oraz zapobieganie wystąpienia problemu żywotności (\textit{liveness issue}). 
+\section{relacja pomiędzy rozpoznawanie mowy, a rozpoznawaniem mówcy}
+Kluczowe jest odróżnienie procesu rozpoznawania mówcy od systemów rozpoznawania mowy (\textit{speech recognition}). Pomiędzy tymi dwoma rozpatrywanymi dziedzinami z zakresu analizy sygnału mowy występuje dychotomiczny podział. Wynika to z tego, że sygnał mowy jest sygnałem bogatym informacyjnie oraz że jedynie mała część tej informacji posiada znaczenie semantyczne, zaś reszta niesie wiedzę o budowie konkretnego, ludzkiego narządu mowy. W problemie rozpoznawania mowy nie jest istotna tożsamość osoby wypowiadającej się, a jedynie sens jej wypowiedzi. Zatem reszta sygnału nie zawierająca odczytywanej wiadomości jest redundantna z punktu widzenia tego zagadnienia - cała informacja biometryczna jest niewykorzystywana, co za tym idzie często filtrowana przez zaimplementowany system. Z drugiej strony, w systemach rozpoznawania mówcy, w samym sednie jego zainteresowania, abstrahuje się od treści mowy. Stanowi ona jedynie środek dla dostarczenia informacji o fizjologii aparatu mowy. Dlatego prawdopodobnie system rozpoznawania mówcy usunie treść mowy, a utworzy jedynie model aparatu głosowego. Usprawiedliwia to twierdzenie o rozłączności tych dziedzin ze względu na zainteresowanie informacją zawartą w sygnale mowy. 
 
-\TODO na co składają się charakterystyki biometryczne sygnału mowy ? vocal tract ?
+Okazuje się, że wspomniana wyżej zależność powoduje to, że techniki przetwarzania sygnału stosowane przy analizie obu dziedzin są w zasadzie bardzo podobne. 
 
-  \TODO Aparat mowy
+W przypadku rozpoznawania mówcy zależnego od wypowiadanego tekstu czy rozpoznawania mówcy z generowanym tekstem informacja semantyczna wykorzystywana jest jedynie do określenia zakresu badanych głosek czy zapobieganiu problemowi żywotności. Informacja ta zatem nie wpływa na postać stosowanych technik rozpoznawania mówcy, a jedynie na optymalny ich dobór - ujawnia kontekst użycia. Innym przykładem tego typu jest zastosowania technik rozpoznawania treści języka naturalnego m. in. w odmianach omawianych systemów opartych na nagromadzonej wiedzy (\textit{knowledge-based systems}), których zadaniem jest jedynie wzmocnienie procesu weryfikacji oraz zapobieganie wystąpienia problemu żywotności (\textit{liveness issue}). 
 
-  \TODO Aparat słuchowy
-  transduktor - zamienia ciśnienie akustyczne na sygnał elektryczny.
-
-  \TODO Układ nerwowy
-
+\section{Klasyfikacja weryfikacji mówcy ...?}
 \textit{text-dependent speaker recognition} \cite{fosr}
 
 Problem żywotności polega na możliwości oszukania działającego systemu weryfikacji mówcy poprzez dostarczenie na wejście takiego systemu spreparowany sygnał mowy - na przykład wysokiej jakości nagranie weryfikowanego mówcy, edytowane w odpowiedni sposób. Wraz z rozwojem technik audio zmylenie systemu niezabezpieczonego ze względu na ten typ ataku staje się coraz łatwiejsze.
@@ -38,10 +36,45 @@ Problem żywotności polega na możliwości oszukania działającego systemu wer
 
 Implementacja systemu weryfikacji mówcy jest nazywana automatycznym systemem rozpoznawania mówcy (\textit{automatic speaker verification system}).
 
-\TODO zastosowania 
+\%TODO zastosowania 
 
-\TODO system weryfikacji mówcy może być skojarzony z innymi systemami rozpoznawania biometryk
+\%TODO system weryfikacji mówcy może być skojarzony z innymi systemami rozpoznawania biometryk
 
-\TODO opis zastosowania weryfikacji mówcy w systemie wbudowanym
+\%TODO opis zastosowania weryfikacji mówcy w systemie wbudowanym
 
+\section{SYGNAŁ MOWY}
 
+\%TODO na co składają się charakterystyki biometryczne sygnału mowy ? vocal tract ?
+\%TODO znajomość mechanizmów produkcji oraz percepcji mowy pomaga w zrozumieniu problemu oraz pokazuje istniejące w naturze rozwiązania
+
+Produkcja sygnału mowy -
+
+\%TODO Aparat mowy
+
+Percepcja sygnału mowy przez człowieka -
+
+\%TODO Aparat słuchowy
+transduktor - zamienia ciśnienie akustyczne na sygnał elektryczny.
+
+\%TODO Układ nerwowy
+
+Lingwistyka a rozpoznawania mówcy.
+
+Występuje silny związek pomiędzy językiem a procesem rozpoznawania mówcy. Obszarami lingwistyki, które szczególnie dotyczą badanej kwestii są: fonetyka, fonologia oraz prozodia.
+
+% fonetyka stan 0/10, plagiat z fosr
+Fonetyka zajmuje się badaniem dźwięków produkowanych przez aparat mowy człowieka. Elementarnym dźwiękiem rozpatrywanym przez fonetykę jest głoska. Z punktu widzenia całej lingwistyki jest to najmniejszy segment mowy. Budowa i funkcjonalność narządu mowy determinują zakres produkowanych głosek. Fonetyka bada podstawowe dźwięki mowy bez rozróżnianie ze względu na konkretny język czy znaczenie głoski.
+Fonem jest najmniejszą jednostką mowy na podstawie której możliwa jest interpretacja jej znaczenia. To znaczy, że jest semantycznie istotna. Fonem rozpatruje się ze względu na znaczenie w konkretnym języku. Głoska może być realizacją fonemu. Dwie różne głoski mogą stanowić realizację tego samego fonemu - to znaczy nieść tę samą informację semantycznie. Dla przykładu 
+%TODO przyklad
+Zbiór takich głosek nazywany jest alofonem.
+
+Z punktu widzenia mechanizmów powstawania dźwięków w ludzkim narządzie mowy, można wyróżnić trzy z których zbudowany jest każdy emitowany dźwięk mowy. Składa się na nie:
+- dźwięk rezonujący powstały w wibrującym źródle (np. drgające fałdy głosowe) i rezonujący w przestrzeni rezonansowej na którą składają się drogi oddechowe znajdującą się powyżej krtani,
+- dźwięk powstały przez nielaminarny przepływ powietrza,
+- dźwięk impulsowy powstały przez energiczne wypuszczenie powietrza z układu oddechowego.
+
+%fonologia
+Fonologia bada
+
+%plagiat z wikipedii xd 
+Prozodia zajmuje się brzmieniowymi właściwościami mowy na które składają się trzy elementy - intonacja, akcent oraz iloczas.
