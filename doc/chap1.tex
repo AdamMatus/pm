@@ -44,6 +44,9 @@ Implementacja systemu weryfikacji mówcy jest nazywana automatycznym systemem ro
 
 \section{SYGNAŁ MOWY}
 
+%todo high-rate information signal na low-rate sygnal. Zawartość spektralna.
+%Quasi stacjonarność.
+
 Człowiek dysponuje doskonałymi narzędziami do przeprowadzenia procesów rozpoznawania mowy oraz rozpoznawania mówcy. Analiza oraz zrozumienie mechanizmów powstawania mowy u człowieka dostarcza podstaw do sformułowania metod syntezy języka naturalnego. Podobna analiza systemu percepcji mowy na który składa się aparat słuchowy oraz układ nerwowy związany z dekodowaniem sygnału mowy daje podstawy do identyfikacji cech którymi posługuje się ludzki organizm do efektywnego rozpoznawania mówcy.
 
 Układ produkcji mowy oraz jej percepcji są ze sobą nierozerwalnie związane. Sposób ekstrakcji informacji przez narząd słuchu odzwierciedla fizjologię produkcji mowy - zatem może wskazać najważniejsze cechu sygnału mowy dla naturalnego procesu rozpoznania mówcy. Dlatego wydaje się właściwe prześledzenie związków pomiędzy tymi dwoma elementami.
@@ -60,7 +63,7 @@ Tembr głosu mówcy ustalony jest przez budowę jego dróg głosowych.
 \subsection{Percepcja sygnału mowy przez człowieka}
 
 \subsubsection{Aparat słuchowy.}
-Narząd słuchu człowieka można rozpatrywać jako transduktor, co znaczy, że mapuje zmiany ciśnienie akustycznego w powietrzu na sygnał elektryczny w układzie nerwowym. Na samym początku toru przetwarzania sygnału audio znajduje się małżowina uszna, której zadaniem jest skupienie dźwięku. Sygnał akustyczny wpadający do kanału słuchowego jest filtrowany ze względu na jego fizyczne rozmiary, usuwane są niskie częstotliwości. Zmiany ciśnienia akustycznego zamieniane są na fale mechaniczne w ciele stałym na błonie bębenkowej, a następnie wzmacniane przez układ kosteczek słuchowych - młoteczka, kowadełka i strzemiączka. Strzemiączko łączy się z uchem wewnętrznym poprzez błonę okienka owalnego(łac. \textit{fenestra vestibuli}), którego zadaniem jest wzbudzenie drgań %TODO w domu zobacz kurwa anatomie ucha xD     
+Narząd słuchu człowieka można rozpatrywać jako transduktor, co znaczy, że mapuje zmiany ciśnienia akustycznego w powietrzu na sygnał elektryczny w układzie nerwowym. Na samym początku toru przetwarzania sygnału audio znajduje się małżowina uszna, której zadaniem jest skupienie dźwięku. Sygnał akustyczny wpadający do kanału słuchowego jest filtrowany ze względu na jego fizyczne rozmiary, usuwane są niskie częstotliwości. Zmiany ciśnienia akustycznego zamieniane są na fale mechaniczne w ciele stałym na błonie bębenkowej, a następnie wzmacniane przez układ kosteczek słuchowych - młoteczka, kowadełka i strzemiączka. Strzemiączko łączy się z uchem wewnętrznym poprzez błonę okienka owalnego(łac. \textit{fenestra vestibuli}), którego zadaniem jest wzbudzenie drgań %TODO w domu zobacz kurwa anatomie ucha xD     
 
 %TODO
 \subsubsection{Układ nerwowy}
@@ -88,5 +91,60 @@ Fonologia bada
 %plagiat z wikipedii xd 
 \subsubsection{Prozodia}
 Prozodia zajmuje się brzmieniowymi właściwościami mowy na które składają się trzy elementy - intonacja, akcent oraz iloczas.
+
+\section{Ekstrakcja cech z sygnału mowy.}
+Celem ekstrakcji cech z sygnału mowy (\textit{feature extraction}) jest uzyskanie zbioru cech charakteryzujących sygnał ludzkiej mowy za pomocą technik cyfrowego przetwarzania sygnału. Jednocześnie jest to zamiana sygnału z którym zawarta jest redundantna informacja na sygnał o niskiej zawartości informacji znaczących dla problemu rozpoznawania mówcy/mowy. 
+
+Tak jak zostało wspomniane wcześniej, problem rozpoznawania mówcy w standardowym podejściu rozpatrywany jest jako problem estymacji parametrów ustalonego modelu. W zależności od rozpatrywanej odmiany rozpoznawania mówcy dokonywane są odpowiednie założenia konkretyzujące postać problemu.
+
+%cite fosr 5.3 and block diagram
+%todo przeredagowac bo to nie ma sensu xd nie rozumiem tych reduckji
+W ogólności system produkcji mowy człowieka można przedstawić jako układ regulacji automatyki z kontrolerem reprezentującym układ nerwowy wraz z kontrolowaną przezeń motoryką aparatu mowy. Sygnał sterujący kontrolera powoduje pobudzenie układu charakterystyk sygnału mowy charakteryzowany przez budowę dróg głosowych. Dopiero wyjściem tego ostatniego jest akustyczny sygnał mowy. Podczas gdy problem rozpoznawania mowy próbuje wyeliminować wpływ na formułowany model postaci układu charakterystyk głosowych, tak rozpoznawanie niezależne od tekstu próbuje ustalić model charakterystyk głosowych bez względu na postać układu kontrolera. Ponieważ oba rozpatrywane modele są mocno nieliniowe najtrudniejszym zadaniem w rozpoznawaniu mówcy jest ich rozdzielenie. Z tego właśnie powodu problem ze znanym wypowiadanym tekstem jest o wiele prostszym zagadnieniem od problemu rozpoznawania mówcy niezależnego od wypowiadanego tekstu. W tym pierwszym przypadku dokonujemy redukcji do tylko znanych pobudzeń oraz konkretyzować model kontrolera Gc.
+
+Przedstawione w tym podrozdziale techniki ekstrahowania cech okazują się równie przydatne i powszechnie stosowane zarówna dla technik rozpoznawania mówcy jak i rozpoznawania mowy. Najpopularniejszą obecnie stosowaną metodą ekstrakcji cech z sygnału mowy jest współczynnikami cepstrum w dziedzinie częstotliwości Mela -  MFCC (\textit{mel-frequency cepstral coeficcients}). 
+
+Ważnym elementem toru przetwarzania systemu są również elementy związane z zaszumieniem sygnału mowy, przetwornikiem elektroakustycznym oraz procesem dyskretyzowania elektrycznego sygnału mowy przez przetwornik analogowo-cyfrowy. Jednak ze względu na prostotę te zagadnienia zostaną omówione oddzielnie od problemu ekstrakcji cech.
+
+\subsection{MFCC.}
+
+%todo zdefiniuj skalę Mela i opisz (związek z budową ślimaka).
+%todo zdefiniuj loudness
+
+Ekstrakcja cech za pomocą współczynników cepstrum w dziedzinie częstotliwości Mela składa się na dwa główne etapy: uzyskanie współczynników mocy w dziedzinie częstotliwości Mela na podstawie widma mocy sygnału mowy (\textit{freqency warping}) oraz obliczenie współczynników cepstrum na podstawie uzyskanych wcześniej współczynników Mela. Wynikiem przeprowadzonej operacji jest uzyskanie wektora cech jx dla każdej ramki j.
+%todo wektor jX math
+%
+%todo STFT definicja oraz ograniczenie do przesunięcia o K [calkowita dstft niepotrzebna bo troche stacjonarny - zredukowana STFT][K ten sam rzad wielkosci co N][motywacja uzycia okna - dlugosc zmienia rozdzielczosci time-frequency, albo ze w definicji STFT tak jest - nie wiem xD]
+
+\subsubsection{Podział sygnału na ramki.}
+Ze względu na własność quasi-stacjonarności sygnału mowy, aby wydobyć informację dotyczącą wypowiadanej głoski konieczne jest rozdzielenie sygnału na ramki (\textit{framing the signal}).
+Liczbę próbek dla pojedynczej ramki wybiera się ze względu na konieczność uzyskania lokalnej stacjonarności - w taki sposób aby móc zbadać charakterystykę częstotliwości pojedynczej głoski. Średnia długość głoski to 80 ms. Jednak trzeba mieć na względzie, że samogłoski trwają długo w stosunku do przerw pomiędzy (trwających zwykle ok. 5 ms). Zatem aby móc uchwycić krótsze głoski oraz przerwy zwykle ustala się długość ramki na 20 do 30 ms. Jednocześnie długość ramki w ilości próbek jest funkcją częstotliwości próbkowania. Do przedstawionych założeń dochodzi zwykle warunek dotyczący użycia algorytmu szybkiej transformaty Fouriera (\textit{Fast Fourier Transform, FFT}) wymagającej aby sygnał był długości potęgi dwójki. W przypadku pierwszej oraz ostatniej ramki stosowana jest techinka uzupełniania zerami w przypadku braku próbek do zapełnienia całej ramki.
+
+\subsubsection{Aplikacja okna na ramki.}
+W stosowanej, zredukowanej techince DTFT stosowane są okna inne niż okno prostokątne o długości ramki lh w celu polepszenia właściwości widmowych dla dalszej analizy. Zastosowanie okna czasowego odbywa się poprzez przemnożenie wartości próbek ramki przez wartości okna w następujący sposób:
+%todo lhn = lhnw(n) dla n zawiera sie w {0,1,...,N-1}
+
+Najpopularniejszymi oknami stosowanymi w tym przypadku są okna czasowe Hanna, Hamming oraz okna Gaussowskie.
+%todo zdefiniowac okna? ktore?
+
+\subsubsection{Estymacja widma.}
+Po zaaplikowaniu okien czasowych dla kolejnych ramek, kolejnym etapem do otrzymania współczynników MFCC jest znalezienie widma ramki za pomocą dyskretnej transformaty fouriera. Kolejne współczynniki uzyskanego widma zdefiniowane są następująco:
+%todo DFT def
+W omawianej metodzie korzysta się jedynie z informacji o amplitudzie uzyskanego widma. Wartość wielkości amlitud otrzymywane są w następujący sposób:
+%todo abs(Hk)
+
+\subsubsection{Przejście do dziedziny częstotliwości Mela.}
+Przejście do dziedziny częstotliwości Mela (\textit{frequency warping}) uzasadnione jest nieliniową percepcją układu słuchowego człowieka. Ponieważ procedura DFT produkuje liniowe widmo w dziedzinie widmo częstotliwościowe, dokonywana jest jego transformacja do dziedziny częstotliwości Mela. 
+Rozpatrywana operacja polega na zastosowaniu banku filtrów trójkątnych na uzyskanych amplitudach widma kHn:
+%todo Hk^ = SUM (Hk(f) * F(f) ) dla każdego filtru z banku.
+W wyniku tej operacji otrzymuje się wektor współczynników częstotliwości w skali Mela o długości równej ilości użytych filtrów. Najczęściej stosowanym filtrem jest okno trójkątne zdefiniowane w dziedzinie częstotliwości. Każdy kolejny filtr zaczyna się w środku pasma wcześniejszego. Ponieważ przetwarzany jest sygnał składający się z próbek o wartościach rzeczywistych, pokryte pasmo częstotliwości zawiera próbki od 0-wej do próbki o oznaczonej numerem N/2. Ilość filtrów oraz ich rozmieszczenie w dziedzinie częstotliwości ustalane są na jeden z kilku sposobów.
+Pierwszym sposobem jest skorzystanie z 24 obszarów krytycznych zdefiniowanych w skali Barka. Każdy filtr ma niezerowe wartości w zakresie częstotliwości od k-1 częstotliwości krytycznej, aż do k+1 częstotliwości krytycznej. Maksimum zaś przypada na k-tą częstotliwość krytyczną.
+Drugim i najpopularniejszym podejściem jest zastosowanie ustalonej ilości filtrów i rozmieszczenie ich równomiernie w dziedzinie częstotliwości mela.
+%todo minimum pomiedzy critical bands ???
+
+Stosowane są również filtry trapezowe oraz kosinusowe. Innym proponowanym podejściem jest znalezienie filtrów poprzez proces uczenia maszynowego, uczoną ze względu na %todo ... (reducing  cross-entropy which is closer to objective)  %todo zrodlo
+
+\subsubsection{Obliczenie cepstrum sygnału.}
+
+
 
 
