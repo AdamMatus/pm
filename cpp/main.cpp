@@ -50,14 +50,14 @@ struct triangle_windowed_sum
   triangle_windowed_sum(size_t f_center, size_t f_end)
     : cen{f_center}, end{f_end}, i{0}, acc{0}, win{0}
   {
-    del = 1/cen;
+    del = 1/static_cast<float>(cen);
   }
 
   void operator()(const double& val){
-    if(cen == i) del = -1/(end-cen-1);
+    if(cen == i) del = -1.0/static_cast<float>((end-cen));
 
-    win += del;
     acc += win*val;
+    win += del;
     i++;
   }
 
@@ -103,7 +103,7 @@ private:
   }
 
   inline size_t sample(int inc){
-    return static_cast<size_t>(std::round(mel2freq((k+inc)*delta_mel)));
+    return static_cast<size_t>(((mel2freq((k+inc)*delta_mel))/fs)*N);
   }
 };
 
@@ -112,7 +112,7 @@ constexpr auto FFT_SIZE = 256;
 constexpr auto N = FFT_SIZE;
 constexpr auto FRAME_STEP = 100; 
 constexpr auto M = FRAME_STEP;
-constexpr auto MELL_FILTER_BANKS = 30;
+constexpr auto MELL_FILTER_BANKS = 20;
 constexpr auto K = MELL_FILTER_BANKS;
 
 int main (void)
@@ -175,7 +175,7 @@ int main (void)
     mel_coefs_speech_frames.push_back(mel_frame);
   }
 
-  test_mpl(mel_coefs_speech_frames.at(0).cbegin(), mel_coefs_speech_frames.at(0).cend(), 1);
+  test_mpl(mel_coefs_speech_frames.at(test_frame).cbegin(), mel_coefs_speech_frames.at(test_frame).cend(), 1);
 
   return 0;
 }

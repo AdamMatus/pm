@@ -9,7 +9,7 @@ function c = mfcc(s, fs)
 %       c       : MFCC output, each column contains the MFCC's for one speech frame
 
 N = 256;
-M = floor(N/3);
+M = 100;
 
 blk = zeros(N,1);
 
