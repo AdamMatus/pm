@@ -107,12 +107,48 @@ private:
   }
 };
 
+struct cos_dct_gen
+{
+  cos_dct_gen(int _K): K{_K}, i{0}
+  {}
+
+  double operator()(){
+    double c =(2/static_cast<double>(K))* gsl_sf_cos(M_PI*static_cast<double>(2*i+1)/static_cast<double>(K));
+    ++i;
+    return c;
+  }
+  int K, i;
+  
+};
+
+template <int K>
+struct mfcc_gen
+{
+  mfcc_gen(const std::array<double, K>& mel_frame, const std::array<double, 2*K>& cos_dct_table)
+    : mel{mel_frame}, cos{cos_dct_table}, n{0} {}
+  
+  double operator()(){
+    double mfcc = 0;
+    for(auto k=1; k<K; ++k)//exclude mean val
+    {
+      mfcc+=mel[k]*cos[(k*n)%(2*K)]; 
+    }
+    ++n;
+    return mfcc; 
+  };
+
+  private:
+  const std::array<double, K>& mel;
+  const std::array<double, 2*K>& cos;
+  int n; 
+};
+
 constexpr auto BUFFER_LEN = 1024;
 constexpr auto FFT_SIZE = 256; 
 constexpr auto N = FFT_SIZE;
 constexpr auto FRAME_STEP = 100; 
 constexpr auto M = FRAME_STEP;
-constexpr auto MELL_FILTER_BANKS = 20;
+constexpr auto MELL_FILTER_BANKS = 30;
 constexpr auto K = MELL_FILTER_BANKS;
 
 int main (void)
@@ -162,8 +198,9 @@ int main (void)
                    frame.begin() +1,
                    std::plus<double>());
   }
+
   //test
-  test_mpl(speech_frames.at(test_frame).cbegin(), speech_frames.at(test_frame).cend(), 1);
+  //test_mpl(speech_frames.at(test_frame).cbegin(), speech_frames.at(test_frame).cend(), 1);
   //test
   
   //Mel-frequency Wrapping - triangle filters bank
@@ -175,8 +212,53 @@ int main (void)
     mel_coefs_speech_frames.push_back(mel_frame);
   }
 
-  test_mpl(mel_coefs_speech_frames.at(test_frame).cbegin(), mel_coefs_speech_frames.at(test_frame).cend(), 1);
+  //test
+  //test_mpl(mel_coefs_speech_frames.at(test_frame).cbegin(), mel_coefs_speech_frames.at(test_frame).cend(), 1);
+  //test
 
+  //Log lCm (loudness)
+  for(auto &mel_frame: mel_coefs_speech_frames)
+  {
+    std::for_each(mel_frame.begin(), mel_frame.end(), [](double &val){
+          val = std::log10(val);
+        });
+  } 
+
+  //test
+  test_mpl(mel_coefs_speech_frames.at(test_frame).cbegin(), mel_coefs_speech_frames.at(test_frame).cend(), 1);
+  //test
+  
+  //DCT - final MFCC
+  //cos table
+  std::array<double, 2*K> cos_table;
+  std::generate(cos_table.begin(), cos_table.end(), cos_dct_gen(2*K));
+
+  //test
+  test_mpl(cos_table.cbegin(), cos_table.cend(), 0);
+  //test
+  
+  //computing dct
+  std::vector<std::array<double, K>> mfcc;
+  for(const auto &mel_frame: mel_coefs_speech_frames)
+  {
+    std::array<double, K> mfcc_frame;
+    std::generate(mfcc_frame.begin(), mfcc_frame.end(), mfcc_gen<K>(mel_frame, cos_table));
+    mfcc.push_back(std::move(mfcc_frame));
+  }
+
+  //test dct
+  std::array<double, K> test_mfcc; 
+  std::array<double, K> fake_mel;
+  std::memset(&fake_mel, 0, sizeof fake_mel);
+  fake_mel[4] = 1;
+  std::generate(test_mfcc.begin(), test_mfcc.end(), mfcc_gen<K>(fake_mel, cos_table));
+  test_mpl(test_mfcc.cbegin(), test_mfcc.cend(), 0);
+  //test dct
+  
+  //test
+  test_mpl(mfcc.at(test_frame).cbegin(), mfcc.at(test_frame).cend(), 1);
+  //test
+  
   return 0;
 }
 

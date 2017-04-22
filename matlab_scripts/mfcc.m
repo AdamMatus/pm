@@ -51,7 +51,7 @@ end
 imagesc(ms);
 
 % Last step, compute mel-frequency cepstrum coefficients
-c = dct(log(ms));
+c = dct(log10(ms));
 c(1,:) = [];    % exclude 0'th order cepstral coefficient
 
 %
