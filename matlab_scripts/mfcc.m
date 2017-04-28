@@ -37,7 +37,7 @@ f = abs(fft(blk)).^2;
 imagesc(log10(f));
 
 % Obtaining the mel-spectrum
-p = 20; % number of mel filtersbanks
+p = 30; % number of mel filtersbanks
 n2 = 1 + floor(N/2);
 m = melfb(p, N, fs);
 

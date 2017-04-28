@@ -1,0 +1,63 @@
+\documentclass[
+  printmode
+]{mgr}
+
+%encoding
+%poni¿ej deklaracje u¿ycia pakietów, usun±æ to co jest niepotrzebne
+\usepackage{polski}       %przydatne podczas sk³adania dokumentów w
+%%j. polskim 
+%\usepackage[polish]{babel} %alternatywnie do pakietu
+%%polski, wybraæ jeden z nich
+\usepackage[latin2]{inputenc} %kodowanie znaków, zale¿ne od systemu
+\usepackage[T1]{fontenc}
+
+%graphics
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{psfrag}
+
+%math
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+%tables
+\usepackage{supertabular}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{hhline}
+
+% ??
+\usepackage{showlabels}
+
+%dane do z³o¿enia strony tytu³owej
+\title{Tytu³ pracy magisterskiej}
+\engtitle{Master thesis title}
+\author{Jan Nowak}
+\supervisor{dr hab. in¿. Imiê Nazwisko Prof. PWr, I-6}
+\field{Automatyka i Robotyka (AIR)}
+\specialisation{Robotyka (ARR)}
+
+\begin{document}
+\bibliographystyle{plabbrv} %tylko gdy u¿ywamy BibTeXa, ustawia polski
+                            %styl bibliografii
+
+\maketitle %polecenie generuj±ce stronê tytu³ow± 
+
+
+\tableofcontents %spis tre¶ci
+
+
+\addcontentsline{toc}{chapter}{Bibliografia} %utworzenie w
+                                             %spisietre¶ci pozycji
+                                             %Bibliografia
+
+\bibliography{bibliografia} % wstawia bibliografiê korzystaj±c z pliku
+                            % bibliografia.bib - dotyczy BibTeXa,
+                            % je¿eli nie korzystamy z BibTeXa nale¿y
+                            % u¿yæ otoczenia thebibliography
+
+%opcjonalnie mo¿e siê tu pojawiæ spis rysunków i tabel
+% \listoffigures
+% \listoftables
+\end{document}
+

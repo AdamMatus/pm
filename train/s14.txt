@@ -1,0 +1,3 @@
+nickname: Daniel Stawiarski
+gender: male
+auxinfo: laboratorium KMEiF

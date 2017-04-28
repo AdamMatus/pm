@@ -1,0 +1,149 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BUFFER_LEN	main.cpp	/^constexpr auto BUFFER_LEN = 1024;$/;"	v
+CC	Makefile	/^CC=g++ -std=c++11$/;"	m
+CPPFLAGS	Makefile	/^CPPFLAGS=-Wall -g3 -O0$/;"	m
+Derived	matplotlibcpp.h	/^			struct Derived : T, Fallback { };$/;"	s	struct:matplotlibcpp::detail::is_callable_impl
+DirectoryOfThisScript	.ycm_extra_conf.py	/^def DirectoryOfThisScript():$/;"	f
+FFT_SIZE	main.cpp	/^constexpr auto FFT_SIZE = 256; $/;"	v
+FRAME_STEP	main.cpp	/^constexpr auto FRAME_STEP = 100; $/;"	v
+Fallback	matplotlibcpp.h	/^			struct Fallback { void operator()(); };$/;"	s	struct:matplotlibcpp::detail::is_callable_impl
+FlagsForFile	.ycm_extra_conf.py	/^def FlagsForFile( filename, **kwargs ):$/;"	f
+GetCompilationInfoForFile	.ycm_extra_conf.py	/^def GetCompilationInfoForFile( filename ):$/;"	f
+IsHeaderFile	.ycm_extra_conf.py	/^def IsHeaderFile( filename ):$/;"	f
+K	main.cpp	/^  int K, i;$/;"	m	struct:cos_dct_gen	file:
+K	main.cpp	/^constexpr auto K = MELL_FILTER_BANKS;$/;"	v
+LDLIBS	Makefile	/^LDLIBS=-lgsl -lgslcblas -lm -lpython2.7 -lsndfile$/;"	m
+M	main.cpp	/^constexpr auto M = FRAME_STEP;$/;"	v
+MELL_FILTER_BANKS	main.cpp	/^constexpr auto MELL_FILTER_BANKS = 30;$/;"	v
+MakeRelativePathsInFlagsAbsolute	.ycm_extra_conf.py	/^def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):$/;"	f
+N	main.cpp	/^constexpr auto N = FFT_SIZE;$/;"	v
+OBJS	Makefile	/^OBJS= main.o$/;"	m
+PyString_FromString	matplotlibcpp.h	23;"	d
+SOURCE_EXTENSIONS	.ycm_extra_conf.py	/^SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', '.m', '.mm' ]$/;"	v
+STRINGIFY	matplotlibcpp.h	16;"	d
+STRINGIFY_	matplotlibcpp.h	15;"	d
+_interpreter	matplotlibcpp.h	/^			_interpreter() {$/;"	f	struct:matplotlibcpp::detail::_interpreter
+_interpreter	matplotlibcpp.h	/^		struct _interpreter {$/;"	s	namespace:matplotlibcpp::detail
+acc	main.cpp	/^  double acc, win, del;$/;"	m	struct:triangle_windowed_sum	file:
+annotate	matplotlibcpp.h	/^	bool annotate(std::string annotation, double x, double y)$/;"	f	namespace:matplotlibcpp
+arrK	main.cpp	/^  typedef typename std::array<double, K> arrK;$/;"	t	struct:mel_frame_generator	file:
+arrN	main.cpp	/^  typedef typename std::array<double, N> arrN;$/;"	t	struct:mel_frame_generator	file:
+axis	matplotlibcpp.h	/^	inline void axis(const std::string &axisstr)$/;"	f	namespace:matplotlibcpp
+cen	main.cpp	/^  const size_t cen, end;$/;"	m	struct:triangle_windowed_sum	file:
+clf	matplotlibcpp.h	/^	inline void clf() {$/;"	f	namespace:matplotlibcpp
+compilation_database_folder	.ycm_extra_conf.py	/^compilation_database_folder = ''$/;"	v
+cos	main.cpp	/^  const std::array<double, 2*K>& cos;$/;"	m	struct:mfcc_gen	file:
+cos_dct_gen	main.cpp	/^  cos_dct_gen(int _K): K{_K}, i{0}$/;"	f	struct:cos_dct_gen
+cos_dct_gen	main.cpp	/^struct cos_dct_gen$/;"	s	file:
+database	.ycm_extra_conf.py	/^  database = None$/;"	v
+database	.ycm_extra_conf.py	/^  database = ycm_core.CompilationDatabase( compilation_database_folder )$/;"	v
+del	main.cpp	/^  double acc, win, del;$/;"	m	struct:triangle_windowed_sum	file:
+delta_mel	main.cpp	/^  const double fs, mel_max, delta_mel;$/;"	m	struct:mel_frame_generator	file:
+detail	matplotlibcpp.h	/^	namespace detail {$/;"	n	namespace:matplotlibcpp
+dtype	matplotlibcpp.h	/^			typedef decltype(&Fallback::operator()) dtype;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
+end	main.cpp	/^  const size_t cen, end;$/;"	m	struct:triangle_windowed_sum	file:
+errorbar	matplotlibcpp.h	/^	bool errorbar(const std::vector<NumericX> &x, const std::vector<NumericY> &y, const std::vector<NumericX> &yerr, const std::string &s = "")$/;"	f	namespace:matplotlibcpp
+f_begin	main.cpp	/^  size_t f_begin, f_center, f_end;$/;"	m	struct:mel_frame_generator	file:
+f_center	main.cpp	/^  size_t f_begin, f_center, f_end;$/;"	m	struct:mel_frame_generator	file:
+f_end	main.cpp	/^  size_t f_begin, f_center, f_end;$/;"	m	struct:mel_frame_generator	file:
+figure	matplotlibcpp.h	/^	inline void figure()$/;"	f	namespace:matplotlibcpp
+flags	.ycm_extra_conf.py	/^flags = [$/;"	v
+fram	main.cpp	/^  const arrN &fram;$/;"	m	struct:mel_frame_generator	file:
+fs	main.cpp	/^  const double fs, mel_max, delta_mel;$/;"	m	struct:mel_frame_generator	file:
+get	matplotlibcpp.h	/^			static _interpreter& get() {$/;"	f	struct:matplotlibcpp::detail::_interpreter
+grid	matplotlibcpp.h	/^	inline void grid(bool flag)$/;"	f	namespace:matplotlibcpp
+hamming_generator	main.cpp	/^  hamming_generator(size_t _N): size{_N}, index{0} {}$/;"	f	struct:hamming_generator
+hamming_generator	main.cpp	/^struct hamming_generator$/;"	s	file:
+hann_generator	main.cpp	/^  hann_generator(size_t _N): size{_N}, index{0} {}$/;"	f	struct:hann_generator
+hann_generator	main.cpp	/^struct hann_generator$/;"	s	file:
+hist	matplotlibcpp.h	/^	bool hist(const std::vector<Numeric>& y, long bins=10,std::string color="b", double alpha=1.0)$/;"	f	namespace:matplotlibcpp
+i	main.cpp	/^  int K, i;$/;"	m	struct:cos_dct_gen	file:
+i	main.cpp	/^  size_t i;$/;"	m	struct:triangle_windowed_sum	file:
+index	main.cpp	/^  size_t index;$/;"	m	struct:hamming_generator	file:
+index	main.cpp	/^  size_t index;$/;"	m	struct:hann_generator	file:
+is_callable	matplotlibcpp.h	/^		struct is_callable$/;"	s	namespace:matplotlibcpp::detail
+is_callable_impl	matplotlibcpp.h	/^		struct is_callable_impl<false, T>$/;"	s	namespace:matplotlibcpp::detail
+is_callable_impl	matplotlibcpp.h	/^		struct is_callable_impl<true, T>$/;"	s	namespace:matplotlibcpp::detail
+k	main.cpp	/^  int k;$/;"	m	struct:mel_frame_generator	file:
+legend	matplotlibcpp.h	/^	inline void legend()$/;"	f	namespace:matplotlibcpp
+load_wav	main.cpp	/^std::vector<double> load_wav(const char* file, SF_INFO&  sfinfo)$/;"	f
+main	main.cpp	/^int main (void)$/;"	f
+matplotlibcpp	matplotlibcpp.h	/^namespace matplotlibcpp {$/;"	n
+mel	main.cpp	/^  const std::array<double, K>& mel;$/;"	m	struct:mfcc_gen	file:
+mel	main.cpp	/^inline double mel(double f)$/;"	f
+mel2freq	main.cpp	/^inline double mel2freq(double mel)$/;"	f
+mel_frame_generator	main.cpp	/^  mel_frame_generator(const arrN& frame, double samplerate)$/;"	f	struct:mel_frame_generator
+mel_frame_generator	main.cpp	/^struct mel_frame_generator$/;"	s	file:
+mel_max	main.cpp	/^  const double fs, mel_max, delta_mel;$/;"	m	struct:mel_frame_generator	file:
+mfcc_gen	main.cpp	/^  mfcc_gen(const std::array<double, K>& mel_frame, const std::array<double, 2*K>& cos_dct_table)$/;"	f	struct:mfcc_gen
+mfcc_gen	main.cpp	/^struct mfcc_gen$/;"	s	file:
+n	main.cpp	/^  int n; $/;"	m	struct:mfcc_gen	file:
+named_hist	matplotlibcpp.h	/^	bool named_hist(std::string label,const std::vector<Numeric>& y, long bins=10, std::string color="b", double alpha=1.0)$/;"	f	namespace:matplotlibcpp
+named_plot	matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<Numeric>& x, const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
+named_plot	matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
+named_plot	matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<double>& x, const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
+operator ()	main.cpp	/^  double operator()() {$/;"	f	struct:hamming_generator
+operator ()	main.cpp	/^  double operator()() {$/;"	f	struct:hann_generator
+operator ()	main.cpp	/^  double operator()(){$/;"	f	struct:cos_dct_gen
+operator ()	main.cpp	/^  double operator()(){$/;"	f	struct:mel_frame_generator
+operator ()	main.cpp	/^  double operator()(){$/;"	f	struct:mfcc_gen
+operator ()	main.cpp	/^  void operator()(const double& val){$/;"	f	struct:triangle_windowed_sum
+operator ()	matplotlibcpp.h	/^			bool operator()(const Iterable& ticks, const Callable& f, const std::string& format)$/;"	f	struct:matplotlibcpp::detail::plot_impl
+operator ()	matplotlibcpp.h	/^			bool operator()(const IterableX& x, const IterableY& y, const std::string& format)$/;"	f	struct:matplotlibcpp::detail::plot_impl
+plot	matplotlibcpp.h	/^	bool plot() { return true; }$/;"	f	namespace:matplotlibcpp
+plot	matplotlibcpp.h	/^	bool plot(const A& a, const B& b, const std::string& format, Args... args)$/;"	f	namespace:matplotlibcpp
+plot	matplotlibcpp.h	/^	bool plot(const std::vector<Numeric> &x, const std::vector<Numeric> &y, const std::map<std::string, std::string>& keywords)$/;"	f	namespace:matplotlibcpp
+plot	matplotlibcpp.h	/^	bool plot(const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
+plot	matplotlibcpp.h	/^	bool plot(const std::vector<NumericX>& x, const std::vector<NumericY>& y, const std::string& s = "")$/;"	f	namespace:matplotlibcpp
+plot	matplotlibcpp.h	/^	bool plot(const std::vector<double>& x, const std::vector<double>& y, const std::map<std::string, std::string>& keywords) {$/;"	f	namespace:matplotlibcpp
+plot	matplotlibcpp.h	/^	bool plot(const std::vector<double>& x, const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
+plot	matplotlibcpp.h	/^	bool plot(const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
+plot_impl	matplotlibcpp.h	/^		struct plot_impl { };$/;"	s	namespace:matplotlibcpp::detail
+plot_impl	matplotlibcpp.h	/^		struct plot_impl<std::false_type>$/;"	s	namespace:matplotlibcpp::detail
+plot_impl	matplotlibcpp.h	/^		struct plot_impl<std::true_type>$/;"	s	namespace:matplotlibcpp::detail
+s_python_empty_tuple	matplotlibcpp.h	/^			PyObject *s_python_empty_tuple;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_annotate	matplotlibcpp.h	/^			PyObject *s_python_function_annotate;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_axis	matplotlibcpp.h	/^			PyObject *s_python_function_axis;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_clf	matplotlibcpp.h	/^			PyObject *s_python_function_clf;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_errorbar	matplotlibcpp.h	/^			PyObject *s_python_function_errorbar;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_figure	matplotlibcpp.h	/^			PyObject *s_python_function_figure;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_grid	matplotlibcpp.h	/^			PyObject *s_python_function_grid;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_hist	matplotlibcpp.h	/^			PyObject *s_python_function_hist;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_legend	matplotlibcpp.h	/^			PyObject *s_python_function_legend;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_plot	matplotlibcpp.h	/^			PyObject *s_python_function_plot;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_save	matplotlibcpp.h	/^			PyObject *s_python_function_save;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_show	matplotlibcpp.h	/^			PyObject *s_python_function_show;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_subplot	matplotlibcpp.h	/^			PyObject *s_python_function_subplot;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_title	matplotlibcpp.h	/^			PyObject *s_python_function_title;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_xlabel	matplotlibcpp.h	/^			PyObject *s_python_function_xlabel;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_xlim	matplotlibcpp.h	/^			PyObject *s_python_function_xlim;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_ylabel	matplotlibcpp.h	/^			PyObject *s_python_function_ylabel;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_ylim	matplotlibcpp.h	/^			PyObject *s_python_function_ylim;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+sample	main.cpp	/^  inline size_t sample(int inc){$/;"	f	struct:mel_frame_generator	file:
+save	matplotlibcpp.h	/^	inline void save(const std::string& filename)$/;"	f	namespace:matplotlibcpp
+show	matplotlibcpp.h	/^	inline void show()$/;"	f	namespace:matplotlibcpp
+size	main.cpp	/^  const size_t size;$/;"	m	struct:hamming_generator	file:
+size	main.cpp	/^  const size_t size;$/;"	m	struct:hann_generator	file:
+subplot	matplotlibcpp.h	/^	inline void subplot(long nrows, long ncols, long plot_number)$/;"	f	namespace:matplotlibcpp
+test_mpl	main.cpp	/^void test_mpl(It start, It end, size_t start_index)$/;"	f
+title	matplotlibcpp.h	/^	inline void title(const std::string &titlestr)$/;"	f	namespace:matplotlibcpp
+triangle_windowed_sum	main.cpp	/^  triangle_windowed_sum(size_t f_center, size_t f_end)$/;"	f	struct:triangle_windowed_sum
+triangle_windowed_sum	main.cpp	/^struct triangle_windowed_sum$/;"	s	file:
+type	matplotlibcpp.h	/^			typedef decltype(test<Derived>(nullptr)) type;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
+type	matplotlibcpp.h	/^			typedef is_function<T> type;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
+type	matplotlibcpp.h	/^			typedef typename is_callable_impl<std::is_class<T>::value, T>::type type;$/;"	t	struct:matplotlibcpp::detail::is_callable
+update_filter_samples	main.cpp	/^  inline void update_filter_samples(){$/;"	f	struct:mel_frame_generator	file:
+value	matplotlibcpp.h	/^			static constexpr bool value = type::value;$/;"	m	struct:matplotlibcpp::detail::is_callable_impl
+win	main.cpp	/^  double acc, win, del;$/;"	m	struct:triangle_windowed_sum	file:
+xlabel	matplotlibcpp.h	/^	inline void xlabel(const std::string &str)$/;"	f	namespace:matplotlibcpp
+xlim	matplotlibcpp.h	/^	inline double* xlim()$/;"	f	namespace:matplotlibcpp
+xlim	matplotlibcpp.h	/^	void xlim(Numeric left, Numeric right)$/;"	f	namespace:matplotlibcpp
+ylabel	matplotlibcpp.h	/^	inline void ylabel(const std::string &str)$/;"	f	namespace:matplotlibcpp
+ylim	matplotlibcpp.h	/^	inline double* ylim()$/;"	f	namespace:matplotlibcpp
+ylim	matplotlibcpp.h	/^	void ylim(Numeric left, Numeric right)$/;"	f	namespace:matplotlibcpp
+~_interpreter	matplotlibcpp.h	/^			~_interpreter() {$/;"	f	struct:matplotlibcpp::detail::_interpreter

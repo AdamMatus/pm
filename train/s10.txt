@@ -1,0 +1,3 @@
+nickname: Damian Kozikowski
+gender: male
+auxinfo: mieszkanie Wita Stwosza

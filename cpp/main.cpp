@@ -113,7 +113,7 @@ struct cos_dct_gen
   {}
 
   double operator()(){
-    double c =(2/static_cast<double>(K))* gsl_sf_cos(M_PI*static_cast<double>(2*i+1)/static_cast<double>(K));
+    double c = gsl_sf_cos(2*M_PI*static_cast<double>(i)/K);
     ++i;
     return c;
   }
@@ -124,14 +124,18 @@ struct cos_dct_gen
 template <int K>
 struct mfcc_gen
 {
-  mfcc_gen(const std::array<double, K>& mel_frame, const std::array<double, 2*K>& cos_dct_table)
+  mfcc_gen(const std::array<double, K>& mel_frame, const std::array<double, 4*K>& cos_dct_table)
     : mel{mel_frame}, cos{cos_dct_table}, n{0} {}
   
   double operator()(){
-    double mfcc = 0;
-    for(auto k=1; k<K; ++k)//exclude mean val
+    double mfcc;
+    auto k = 0;
+    {// for k=0
+      mfcc = (1.0/K)*mel[k];
+    }
+    for(k=1; k<K; ++k)//exclude mean val
     {
-      mfcc+=mel[k]*cos[(k*n)%(2*K)]; 
+      mfcc+=(2.0/K)*mel[k]*cos[(k*(2*n+1))%(4*K)]; 
     }
     ++n;
     return mfcc; 
@@ -139,7 +143,7 @@ struct mfcc_gen
 
   private:
   const std::array<double, K>& mel;
-  const std::array<double, 2*K>& cos;
+  const std::array<double, 4*K>& cos;
   int n; 
 };
 
@@ -150,6 +154,7 @@ constexpr auto FRAME_STEP = 100;
 constexpr auto M = FRAME_STEP;
 constexpr auto MELL_FILTER_BANKS = 30;
 constexpr auto K = MELL_FILTER_BANKS;
+constexpr auto MFCC_NUM = 13;
 
 int main (void)
 {
@@ -230,35 +235,46 @@ int main (void)
   
   //DCT - final MFCC
   //cos table
-  std::array<double, 2*K> cos_table;
-  std::generate(cos_table.begin(), cos_table.end(), cos_dct_gen(2*K));
+  std::array<double, 4*K> cos_table;
+  std::generate(cos_table.begin(), cos_table.end(), cos_dct_gen(4*K));
 
   //test
-  test_mpl(cos_table.cbegin(), cos_table.cend(), 0);
+  test_mpl(cos_table.begin(), cos_table.begin() + K, 0); 
   //test
   
   //computing dct
-  std::vector<std::array<double, K>> mfcc;
+  std::vector<std::array<double, MFCC_NUM>> mfcc;
   for(const auto &mel_frame: mel_coefs_speech_frames)
   {
-    std::array<double, K> mfcc_frame;
+    std::array<double, MFCC_NUM> mfcc_frame;
     std::generate(mfcc_frame.begin(), mfcc_frame.end(), mfcc_gen<K>(mel_frame, cos_table));
     mfcc.push_back(std::move(mfcc_frame));
   }
 
-  //test dct
-  std::array<double, K> test_mfcc; 
-  std::array<double, K> fake_mel;
-  std::memset(&fake_mel, 0, sizeof fake_mel);
-  fake_mel[4] = 1;
-  std::generate(test_mfcc.begin(), test_mfcc.end(), mfcc_gen<K>(fake_mel, cos_table));
-  test_mpl(test_mfcc.cbegin(), test_mfcc.cend(), 0);
-  //test dct
-  
+  //test
+  /* 
+  std::array<double, K> test;
+  std::fill(test.begin(), test.end(), 0);
+  test.at(1) = 1;
+  std::array<double, MFCC_NUM> ot;
+  std::generate(ot.begin(), ot.end(), mfcc_gen<K>(test, cos_table));
+  test_mpl(ot.begin(), ot.end(), 1);
+
+  std::array<double, 4*2> c;
+  std::generate(c.begin(), c.end(), cos_dct_gen(4*2));
+  std::array<double, 2> t;
+  std::fill(t.begin(), t.end(), 1);
+  std::array<double, 2> o;
+  std::generate(o.begin(), o.end(), mfcc_gen<2>(t, c));
+  t;
+  */
+  //
+  //test
+
   //test
   test_mpl(mfcc.at(test_frame).cbegin(), mfcc.at(test_frame).cend(), 1);
   //test
-  
+
   return 0;
 }
 

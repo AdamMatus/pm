@@ -1,0 +1,3 @@
+nickname: s6
+gender: female
+auxinfo: 
