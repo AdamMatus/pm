@@ -1,4 +1,4 @@
-\chapter Wprowadzenie
+\chapter{Wprowadzenie}
 
 \%TODO
 biometryk nie da się zgubić choć część populacji jest niema. Istniejąca infrastruktura pomaga. Łatwość uzyskania sygnału mowy, nawet bez kooperacji.
@@ -101,7 +101,7 @@ Tak jak zostało wspomniane wcześniej, problem rozpoznawania mówcy w standardo
 %todo przeredagowac bo to nie ma sensu xd nie rozumiem tych reduckji
 W ogólności system produkcji mowy człowieka można przedstawić jako układ regulacji automatyki z kontrolerem reprezentującym układ nerwowy wraz z kontrolowaną przezeń motoryką aparatu mowy. Sygnał sterujący kontrolera powoduje pobudzenie układu charakterystyk sygnału mowy charakteryzowany przez budowę dróg głosowych. Dopiero wyjściem tego ostatniego jest akustyczny sygnał mowy. Podczas gdy problem rozpoznawania mowy próbuje wyeliminować wpływ na formułowany model postaci układu charakterystyk głosowych, tak rozpoznawanie niezależne od tekstu próbuje ustalić model charakterystyk głosowych bez względu na postać układu kontrolera. Ponieważ oba rozpatrywane modele są mocno nieliniowe najtrudniejszym zadaniem w rozpoznawaniu mówcy jest ich rozdzielenie. Z tego właśnie powodu problem ze znanym wypowiadanym tekstem jest o wiele prostszym zagadnieniem od problemu rozpoznawania mówcy niezależnego od wypowiadanego tekstu. W tym pierwszym przypadku dokonujemy redukcji do tylko znanych pobudzeń oraz konkretyzować model kontrolera Gc.
 
-Przedstawione w tym podrozdziale techniki ekstrahowania cech okazują się równie przydatne i powszechnie stosowane zarówna dla technik rozpoznawania mówcy jak i rozpoznawania mowy. Najpopularniejszą obecnie stosowaną metodą ekstrakcji cech z sygnału mowy jest współczynnikami cepstrum w dziedzinie częstotliwości Mela -  MFCC (\textit{mel-frequency cepstral coeficcients}). 
+Przedstawione w tym podrozdziale techniki ekstrakcji cech okazują się równie przydatne i powszechnie stosowane zarówna dla technik rozpoznawania mówcy jak i rozpoznawania mowy. Najpopularniejszą obecnie stosowaną metodą ekstrakcji cech z sygnału mowy jest współczynnikami cepstrum w dziedzinie częstotliwości Mela -  MFCC (\textit{mel-frequency cepstral coeficcients}). 
 
 Ważnym elementem toru przetwarzania systemu są również elementy związane z zaszumieniem sygnału mowy, przetwornikiem elektroakustycznym oraz procesem dyskretyzowania elektrycznego sygnału mowy przez przetwornik analogowo-cyfrowy. Jednak ze względu na prostotę te zagadnienia zostaną omówione oddzielnie od problemu ekstrakcji cech.
 
@@ -110,7 +110,7 @@ Ważnym elementem toru przetwarzania systemu są również elementy związane z 
 %todo zdefiniuj skalę Mela i opisz (związek z budową ślimaka).
 %todo zdefiniuj loudness
 
-Ekstrakcja cech za pomocą współczynników cepstrum w dziedzinie częstotliwości Mela składa się na dwa główne etapy: uzyskanie współczynników mocy w dziedzinie częstotliwości Mela na podstawie widma mocy sygnału mowy (\textit{freqency warping}) oraz obliczenie współczynników cepstrum na podstawie uzyskanych wcześniej współczynników Mela. Wynikiem przeprowadzonej operacji jest uzyskanie wektora cech jx dla każdej ramki j.
+Ekstrakcja cech za pomocą współczynników cepstrum w dziedzinie częstotliwości Mela składa się z dwóch głównych etapów: uzyskania współczynników mocy w dziedzinie częstotliwości Mela na podstawie widma mocy sygnału mowy (\textit{freqency warping}) oraz obliczenia współczynników cepstrum na podstawie uzyskanych wcześniej współczynników mocy w skali Mela. Wynikiem przeprowadzonej operacji jest uzyskanie wektora cech jx dla każdej ramki j.
 %todo wektor jX math
 %
 %todo STFT definicja oraz ograniczenie do przesunięcia o K [calkowita dstft niepotrzebna bo troche stacjonarny - zredukowana STFT][K ten sam rzad wielkosci co N][motywacja uzycia okna - dlugosc zmienia rozdzielczosci time-frequency, albo ze w definicji STFT tak jest - nie wiem xD]
@@ -120,7 +120,9 @@ Ze względu na własność quasi-stacjonarności sygnału mowy, aby wydobyć inf
 Liczbę próbek dla pojedynczej ramki wybiera się ze względu na konieczność uzyskania lokalnej stacjonarności - w taki sposób aby móc zbadać charakterystykę częstotliwości pojedynczej głoski. Średnia długość głoski to 80 ms. Jednak trzeba mieć na względzie, że samogłoski trwają długo w stosunku do przerw pomiędzy (trwających zwykle ok. 5 ms). Zatem aby móc uchwycić krótsze głoski oraz przerwy zwykle ustala się długość ramki na 20 do 30 ms. Jednocześnie długość ramki w ilości próbek jest funkcją częstotliwości próbkowania. Do przedstawionych założeń dochodzi zwykle warunek dotyczący użycia algorytmu szybkiej transformaty Fouriera (\textit{Fast Fourier Transform, FFT}) wymagającej aby sygnał był długości potęgi dwójki. W przypadku pierwszej oraz ostatniej ramki stosowana jest techinka uzupełniania zerami w przypadku braku próbek do zapełnienia całej ramki.
 
 \subsubsection{Aplikacja okna na ramki.}
-W stosowanej, zredukowanej techince DTFT stosowane są okna inne niż okno prostokątne o długości ramki lh w celu polepszenia właściwości widmowych dla dalszej analizy. Zastosowanie okna czasowego odbywa się poprzez przemnożenie wartości próbek ramki przez wartości okna w następujący sposób:
+W stosowanej, 
+%TODO
+zredukowanej techince STFT stosowane są okna inne niż okno prostokątne o długości ramki lh w celu polepszenia właściwości widmowych dla dalszej analizy. Zastosowanie okna czasowego odbywa się poprzez przemnożenie wartości próbek ramki przez wartości okna w następujący sposób:
 %todo lhn = lhnw(n) dla n zawiera sie w {0,1,...,N-1}
 
 Najpopularniejszymi oknami stosowanymi w tym przypadku są okna czasowe Hanna, Hamming oraz okna Gaussowskie.
@@ -143,8 +145,50 @@ Drugim i najpopularniejszym podejściem jest zastosowanie ustalonej ilości filt
 
 Stosowane są również filtry trapezowe oraz kosinusowe. Innym proponowanym podejściem jest znalezienie filtrów poprzez proces uczenia maszynowego, uczoną ze względu na %todo ... (reducing  cross-entropy which is closer to objective)  %todo zrodlo
 
-\subsubsection{Obliczenie cepstrum sygnału.}
+\subsubsection{Cepstrum.}
 
+Funkcja cepstrum mocy dla ciągłego przekształcenia Fouriera zdefiniowana jest następująco \cite{fosr}:
+\begin{equation}
+    \tilde{h_{pc}} = \left[\frac{1}{2\pi}\int_{-\pi}^{\pi}log\left(| H(\omega)  |^2\right)e^{i \omega t}\right]^2
+\end{equation}
+gdzie $ |H(\omega)|^2 $ oznacza funkcję widma gęstości mocy sygnału oryginalnego. Jest to odwrotne przekształcenie Fouriera zastosowane na logarytmie funkcji gęstości mocy sygnału.
 
+Pojęcie cepstrum pierwotnie zostało wprowadzone do badań nad echem sygnałów akustycznych \cite{hdsp}. Taki sygnał opisywany jest przez wyrażenie 
+\begin{equation}
+     x(t) = s(t) + \alpha s(t - \tau) 
+\end{equation} 
+gdzie $ \alpha $ jest współczynnikiem osłabienia sygnału echa przesuniętego w czasie o $ \tau $ względem sygnału oryginalnego. Reprezentacja częstotliwościowa zaś przyjmuje w takim wypadku postać 
+\begin{equation}
+    |S(f)|^2\left[ 1+ \alpha^2+2\alpha cos(2\pi f\tau)\right].
+\end{equation}
+Jak widać z tej postaci, widmo sygnału oryginalnego $S(f)$ modulowane jest przez zmienny w częstotliwości komponent $[1 + \alpha^2 + 2\alpha cos(2\pi f \tau)]$. Znajomość tego w jaki sposób modulowana jest obwiednia widma pozwala na określenie współczynników $\alpha$  oraz $\tau$ definiujących sygnał echa. Ponieważ problem taki jest doskonale opisany w dziedzinie czasu przy analizie sygnałów zmodulowanych, narzucającym się rozwiązniem jest skorzystanie z tych znanych już technik. Korzystając z własności logarytmu możliwe jest rozdzielenie dwóch komponentów - zamianę mnożenia na dodawanie, a poprzez zastosowanie odwrotnego przekształcenia Fouriera otrzymuje się sumę dwóch funckji w dziedzinie tzw. "quefrency": 
+\begin{equation}
+    \begin{split}
+    \mathcal{F}^{-1}\{log(X(f))\} =   \mathcal{F}^{-1}\{log(S(f))\} + \mathcal{F}^{-1}\{log(1+\alpha^2)\} + \\ + \mathcal{F}^{-1}\{log(1+\frac{2a}{1+a^2} cos(\omega \tau))\}.
+    \end{split}
+\end{equation}
+Ostatni składnik powyższej sumy objawia się w postaci widocznego w cepstrum skupionego impulsu którego położenie w skali cepstrum określa przesunięcie $\tau$ zaś jego amplituda jest związana z czynnikiem osłabienia $\alpha$. 
 
+Okazuje się, że problem wykrycia wysokości tonu (\textit{ang. pitch detection}) sygnału mowy jest podobny do problemu analizy echa sygnału akustycznego. Zaproponowana została więc wersja wykorzystująca cepstrum dla analizy STDFT\cite{noll}. Tak jak wspomniano wcześniej w tym rozdziale \%TODO ODNOŚNIK prosty model produkcji sygnału mowy zakłada, że ten jest wynikiem splotu odpowiedzi impulsowej dróg głosowych ($h_1$) oraz quasi-okresowym sygnałem impulsowym ($h_2$) (\textit{ang. quasi-periodic pulse train}) produkowanym w głośni:
+\begin{equation}
+    h(t) = h_1(t)*h_2(t)
+\end{equation}
+Z własności ciągłego przekształcenia Fouriera wynika, że powyższe równanie w dziedzinie częstotliwości przybiera postać iloczynu transformat $H_1(\omega) \cdot H_2(\omega)$. W dziedzinie cepstrum rozdziela się natomiast na sumę składników:
+\begin{equation}
+    \tilde{h}(t) = log(H_1(\omega)) + log(H_2(\omega))
+\end{equation}
+Poprzez zastosowanie sepstrum sygnału mowy otrzymujemy więc rozdzielenie komponentów pochodzących od funkcji $h_1(t)$ i $h_2(t)$. Proces zobrazowany jest na rysunku \%TODO RYSUNEK. Niskie współczynniki cepstrum opisują charakterysytkę aparatu głosowego, zaś widoczny w okolicach \% OPISAĆ RYSUNEK.
+
+Należy zwrócić uwagę, że wykorzystywany w tej metodzie jest logarytm z liczb rzeczywistych oraz współczynniki mocy widma. Spowodowane jest to, że podczas procesu rozpoznawania mówcy nie interesuje nas rekonstrukcja sygnału, anie nie korzysta się z informacji zachowanej w fazie sygnału. Z tego też powodu klasycznie w ostatnim etapie obliczania współczynników MFCC zamiast odwrotnej dyskretnej transformaty Fouriera (IDFT) stosuje się dyskretną transformację kosinusową (DCT). Kolejną korzyścią jest otrzymanie w wyniku przeprowadzenia tej transformacji współczynników będącymi liczbami rzeczywistymi. W tej pracy korzysta się z następującej definicji dyskretnej transformaty kosinusowej:
+\begin{equation}
+    H_k = \sum_{n=0}^{N-1} h_ncos\left(\frac{\pi (2n+1)k}{2N}\right)
+\end{equation}
+gdzie
+\begin{equation}
+    a_k = 
+    \begin{cases}
+        1/N \quad \text{dla}\quad k=0 \\
+        2/N \quad \forall \quad k>0.
+    \end{cases}
+\end{equation}
 
