@@ -1,5 +1,0 @@
-Chapter I Introduction
-
-speaker recognition = rozpoznawanie mówcy
-
-System rozpoznawanie mówcy w pierwszym momencie próbuje zamodelować chrakterystyki wokalne (vocal tract) mówcy. Model taki może być modelem matematycznym układu głosowego (?)(physiological system) bądź też po prostu modelem statystycznym z podobnym wyjściem jak układ wokalny, vocal tract, układ głosowy(?) 

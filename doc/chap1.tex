@@ -110,6 +110,8 @@ Ważnym elementem toru przetwarzania systemu są również elementy związane z 
 %todo zdefiniuj skalę Mela i opisz (związek z budową ślimaka).
 %todo zdefiniuj loudness
 
+%todo PREEMPHASIS
+
 Ekstrakcja cech za pomocą współczynników cepstrum w dziedzinie częstotliwości Mela składa się z dwóch głównych etapów: uzyskania współczynników mocy w dziedzinie częstotliwości Mela na podstawie widma mocy sygnału mowy (\textit{freqency warping}) oraz obliczenia współczynników cepstrum na podstawie uzyskanych wcześniej współczynników mocy w skali Mela. Wynikiem przeprowadzonej operacji jest uzyskanie wektora cech jx dla każdej ramki j.
 %todo wektor jX math
 %
@@ -136,7 +138,7 @@ W omawianej metodzie korzysta się jedynie z informacji o amplitudzie uzyskanego
 
 \subsubsection{Przejście do dziedziny częstotliwości Mela.}
 Przejście do dziedziny częstotliwości Mela (\textit{frequency warping}) uzasadnione jest nieliniową percepcją układu słuchowego człowieka. Ponieważ procedura DFT produkuje liniowe widmo w dziedzinie widmo częstotliwościowe, dokonywana jest jego transformacja do dziedziny częstotliwości Mela. 
-Rozpatrywana operacja polega na zastosowaniu banku filtrów trójkątnych na uzyskanych amplitudach widma kHn:
+Rozpatrywana operacja polega na zastosowaniu banku filtrów trójkątnych na uzyskanych amplitudach widma kHz:
 %todo Hk^ = SUM (Hk(f) * F(f) ) dla każdego filtru z banku.
 W wyniku tej operacji otrzymuje się wektor współczynników częstotliwości w skali Mela o długości równej ilości użytych filtrów. Najczęściej stosowanym filtrem jest okno trójkątne zdefiniowane w dziedzinie częstotliwości. Każdy kolejny filtr zaczyna się w środku pasma wcześniejszego. Ponieważ przetwarzany jest sygnał składający się z próbek o wartościach rzeczywistych, pokryte pasmo częstotliwości zawiera próbki od 0-wej do próbki o oznaczonej numerem N/2. Ilość filtrów oraz ich rozmieszczenie w dziedzinie częstotliwości ustalane są na jeden z kilku sposobów.
 Pierwszym sposobem jest skorzystanie z 24 obszarów krytycznych zdefiniowanych w skali Barka. Każdy filtr ma niezerowe wartości w zakresie częstotliwości od k-1 częstotliwości krytycznej, aż do k+1 częstotliwości krytycznej. Maksimum zaś przypada na k-tą częstotliwość krytyczną.
@@ -177,7 +179,7 @@ Z własności ciągłego przekształcenia Fouriera wynika, że powyższe równan
 \begin{equation}
     \tilde{h}(t) = log(H_1(\omega)) + log(H_2(\omega))
 \end{equation}
-Poprzez zastosowanie sepstrum sygnału mowy otrzymujemy więc rozdzielenie komponentów pochodzących od funkcji $h_1(t)$ i $h_2(t)$. Proces zobrazowany jest na rysunku \%TODO RYSUNEK. Niskie współczynniki cepstrum opisują charakterysytkę aparatu głosowego, zaś widoczny w okolicach \% OPISAĆ RYSUNEK.
+Poprzez zastosowanie cepstrum sygnału mowy otrzymujemy więc rozdzielenie komponentów pochodzących od funkcji $h_1(t)$ i $h_2(t)$. Proces zobrazowany jest na rysunku \%TODO RYSUNEK. Niskie współczynniki cepstrum opisują charakterysytkę aparatu głosowego, zaś widoczny w okolicach \% OPISAĆ RYSUNEK.
 
 Należy zwrócić uwagę, że wykorzystywany w tej metodzie jest logarytm z liczb rzeczywistych oraz współczynniki mocy widma. Spowodowane jest to, że podczas procesu rozpoznawania mówcy nie interesuje nas rekonstrukcja sygnału, anie nie korzysta się z informacji zachowanej w fazie sygnału. Z tego też powodu klasycznie w ostatnim etapie obliczania współczynników MFCC zamiast odwrotnej dyskretnej transformaty Fouriera (IDFT) stosuje się dyskretną transformację kosinusową (DCT). Kolejną korzyścią jest otrzymanie w wyniku przeprowadzenia tej transformacji współczynników będącymi liczbami rzeczywistymi. W tej pracy korzysta się z następującej definicji dyskretnej transformaty kosinusowej:
 \begin{equation}
@@ -191,4 +193,10 @@ gdzie
         2/N \quad \forall \quad k>0.
     \end{cases}
 \end{equation}
+
+Uzyskane współczynniki MFCC noszą nazwę wektora akustycznego (\textit{ang. acoustic vector}) i są w procesie weryfikacji mówcy dalej wykorzystywane w tzw. procesie dopasowywania cech (\textit{feature matching}).
+
+\subsection{Dopasowanie cech.}
+
+\% inne techniki DTW, HMM.
 
