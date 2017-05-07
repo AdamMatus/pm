@@ -64,3 +64,23 @@ ax.set_xlabel('X Label')
 ax.set_ylabel('EMA')
 
 savefig('ema')
+
+import scipy.io as sio
+# vowel 'e'
+fig, ax = newfig(0.5)
+
+mat = sio.loadmat('./e.mat')
+e = mat['e']
+
+ax.plot(e)
+
+savefig('e_vowel')
+# cep d
+
+fig, ax = newfig(0.5)
+
+mat = sio.loadmat('./d.mat')
+d = mat['d']
+
+ax.plot(d)
+
