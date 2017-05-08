@@ -26,7 +26,7 @@ pgf_with_latex = {                      # setup matplotlib to use latex for outp
     "figure.figsize": figsize(0.9),     # default fig size of 0.9 textwidth
     "pgf.preamble": [
         r"\usepackage[utf8x]{inputenc}",    # use utf8 fonts becasue your computer can handle it :)
-        r"\usepackage[T1]{fontenc}",        # plots will be generated using this preamble
+        r"\usepackage[T1]{polski}",        # plots will be generated using this preamble
         ]
     }
 mpl.rcParams.update(pgf_with_latex)
@@ -45,26 +45,6 @@ def savefig(filename):
     plt.savefig('{}.pdf'.format(filename))
 
 
-# Simple plot
-fig, ax  = newfig(0.6)
-
-def ema(y, a):
-    s = []
-    s.append(y[0])
-    for t in range(1, len(y)):
-        s.append(a * y[t] + (1-a) * s[t-1])
-    return np.array(s)
-
-y = [0]*200
-y.extend([20]*(1000-len(y)))
-s = ema(y, 0.01)
-
-ax.plot(s)
-ax.set_xlabel('X Label')
-ax.set_ylabel('EMA')
-
-savefig('ema')
-
 import scipy.io as sio
 # vowel 'e'
 fig, ax = newfig(0.5)
@@ -73,10 +53,13 @@ mat = sio.loadmat('./e.mat')
 e = mat['e']
 
 ax.plot(e)
+ax.plot([106,183],[0.5,0.5])
+ax.text(110,0.55,'77 probek')
+plt.ylim([-0.4,0.7])
 
 savefig('e_vowel')
-# cep d
 
+# cep d
 fig, ax = newfig(0.5)
 
 mat = sio.loadmat('./d.mat')
@@ -84,3 +67,12 @@ d = mat['d']
 
 ax.plot(d)
 
+plt.annotate('pierwsza \n"rahmoniczna"', xy=(77, 2), xytext=(115, 4),
+            arrowprops=dict(facecolor='black', shrink=0.05),
+            )
+
+plt.annotate('druga \n"rahmoniczna"', xy=(154, -2), xytext=(180, -5.5),
+            arrowprops=dict(facecolor='black', shrink=0.05),
+            )
+plt.ylim([-7,7])
+savefig('e_cepstrum')

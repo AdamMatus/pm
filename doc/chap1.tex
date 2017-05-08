@@ -180,21 +180,20 @@ Z własności ciągłego przekształcenia Fouriera wynika, że powyższe równan
     \tilde{h}(t) = log(H_1(\omega)) + log(H_2(\omega))
 \end{equation}
 
-Poprzez obliczenie cepstrum sygnału mowy otrzymujemy zatem rozdzielenie komponentów pochodzących od funkcji $h_1(t)$ i $h_2(t)$. Proces ten nazywany jest również dekonwolucją (\textit{homomorphic deconvolution})\cite{hdsp} i  zobrazowany jest na rysunku \ref{e_vowel} i \ref{e_cepstrum}. Niskie współczynniki cepstrum opisują charakterystykę aparatu głosowego, zaś widoczne w okolicach próbki 77 i 150 piki, stanowią harmoniczne w dziedzinie cepstrum (\textit{ang. rahmonics}) i świadczą o okresie sygnału wymuszenia głośni ($h_2$), którą można odczytać z pierwszego wykresu jako odległość w próbkach pomiędzy najwyższymi szczytami - 77 próbek.
+Poprzez obliczenie cepstrum sygnału mowy otrzymujemy zatem rozdzielenie komponentów pochodzących od funkcji $h_1(t)$ i $h_2(t)$. Proces ten nazywany jest również dekonwolucją (\textit{homomorphic deconvolution})\cite{hdsp} i  zobrazowany jest na rysunku \ref{fig:e_cepstrum}. Niskie współczynniki cepstrum opisują charakterystykę aparatu głosowego, zaś widoczne w okolicach próbki 77 i 150 piki, stanowią harmoniczne w dziedzinie cepstrum (\textit{ang. rahmonics}) i świadczą o okresie sygnału wymuszenia głośni ($h_2$), którą można odczytać z pierwszego wykresu jako odległość w próbkach pomiędzy najwyższymi szczytami - 77 próbek.
+
 \begin{figure}
   \centering
   \begin{minipage}{.5\textwidth}
     \centering
     \input{e_vowel.pgf}
-    \label{e_vowel}
-    \caption{Ramka sygnału z samogłoską 'a'.}
   \end{minipage}%
   \begin{minipage}{.5\textwidth}
     \centering
     \input{e_cepstrum.pgf}
-    \label{e_cepstrum}
-    \caption{Cepstrum samogłoski 'a'.}
   \end{minipage}
+  \caption{Ramka sygnału wypowiadanej samogłoski 'i' oraz jej cepstrum.}
+  \label{fig:e_cepstrum}
 \end{figure}
 
 Należy zwrócić uwagę, że wykorzystywany w tej metodzie jest logarytm z liczb rzeczywistych oraz współczynniki mocy widma. Spowodowane jest to, że podczas procesu rozpoznawania mówcy nie interesuje nas rekonstrukcja sygnału, anie nie korzysta się z informacji zachowanej w fazie sygnału. Z tego też powodu klasycznie w ostatnim etapie obliczania współczynników MFCC zamiast odwrotnej dyskretnej transformaty Fouriera (IDFT) stosuje się dyskretną transformację kosinusową (DCT). Kolejną korzyścią jest otrzymanie w wyniku przeprowadzenia tej transformacji współczynników będącymi liczbami rzeczywistymi. W tej pracy korzysta się z następującej definicji dyskretnej transformaty kosinusowej:
