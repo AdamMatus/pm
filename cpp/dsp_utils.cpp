@@ -2,10 +2,6 @@
 
 #include <algorithm>
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf_trig.h>
-#include <gsl/gsl_fft_real.h>
-#include <gsl/gsl_sf_trig.h>
 
 
 using namespace dsp_utils;

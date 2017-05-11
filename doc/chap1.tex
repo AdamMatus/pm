@@ -137,7 +137,7 @@ W omawianej metodzie korzysta się jedynie z informacji o amplitudzie uzyskanego
 %todo abs(Hk)
 
 \subsubsection{Przejście do dziedziny częstotliwości Mela.}
-Przejście do dziedziny częstotliwości Mela (\textit{frequency warping}) uzasadnione jest nieliniową percepcją układu słuchowego człowieka. Ponieważ procedura DFT produkuje liniowe widmo w dziedzinie widmo częstotliwościowe, dokonywana jest jego transformacja do dziedziny częstotliwości Mela. 
+Przejście do dziedziny częstotliwości Mela (\textit{frequency warping}) uzasadnione jest nieliniową percepcją układu słuchowego człowieka. Ponieważ procedura DFT produkuje liniowe widmo w dziedzinie widmo częstotliwościowe, dokonywana jest jego transformacja do dziedziny częstotliwości Mela. Jest to proces imitujący cechę sygnału akustycznego - wysokości tonu.
 Rozpatrywana operacja polega na zastosowaniu banku filtrów trójkątnych na uzyskanych amplitudach widma kHz:
 %todo Hk^ = SUM (Hk(f) * F(f) ) dla każdego filtru z banku.
 W wyniku tej operacji otrzymuje się wektor współczynników częstotliwości w skali Mela o długości równej ilości użytych filtrów. Najczęściej stosowanym filtrem jest okno trójkątne zdefiniowane w dziedzinie częstotliwości. Każdy kolejny filtr zaczyna się w środku pasma wcześniejszego. Ponieważ przetwarzany jest sygnał składający się z próbek o wartościach rzeczywistych, pokryte pasmo częstotliwości zawiera próbki od 0-wej do próbki o oznaczonej numerem N/2. Ilość filtrów oraz ich rozmieszczenie w dziedzinie częstotliwości ustalane są na jeden z kilku sposobów.
@@ -145,9 +145,29 @@ Pierwszym sposobem jest skorzystanie z 24 obszarów krytycznych zdefiniowanych w
 Drugim i najpopularniejszym podejściem jest zastosowanie ustalonej ilości filtrów i rozmieszczenie ich równomiernie w dziedzinie częstotliwości mela.
 %todo minimum pomiedzy critical bands ???
 
+\begin{figure}
+  \centering
+    \input{melfb.pgf}
+    \label{melfb}
+    \caption{Przykładowe 24 trójkątne filtry dla sygnału o częstotliwości próbkowania \textit{fs=12500 Hz.}}
+\end{figure}
+
 Stosowane są również filtry trapezowe oraz kosinusowe. Innym proponowanym podejściem jest znalezienie filtrów poprzez proces uczenia maszynowego, uczoną ze względu na %todo ... (reducing  cross-entropy which is closer to objective)  %todo zrodlo
 
+\subsubsection{Uzyskanie współczynników głośności.}
+Wartości otrzymane w procesie przejścia do dziedziny częstotliwości Mela z prążków reprezentujących widmową gęstość mocy sygnału mogą reprezentować natężenie dźwięku w danym momencie czasu. Ponieważ zadaniem ekstrakcji cech przy pomocy współczynników MFCC jest mimika ludzkiego układu percepcji konieczne jest przekształcenie wartości reprezentujących energię na głośność (\textit{ang. magnitude warping}). Zgodnie z przedstawioną definicją \ref{glosnosc} \textit{głośność} jest funkcją zarówno \textit{wysokości tonu} oraz natężenia dźwięku $ I $. Relację z \textit{wysokością tonu} imituje się za pomocą etapu \textit{equalizacji} sygnału. Zatem pozostaje jedynie zdefiniować współczynniki głośności $ C_k $ \cite{fosr} dla każdej ramki sygnału:
+\begin{equation}
+  \tilde{C_k} = 10 \cdot \left( \frac{|\tilde{H_k}|^2}{I_0} \right) 
+\end{equation}
+
+Ponieważ normalizacja współczynników w postaci odniesienia wartości współczynników widma mocy do natężenia odniesienia $I_0$ nie wpływa na efekt identyfikacji mówcy dlatego w praktyce stosuje się dla wygody postać (szczególnie ze względu na pokrywanie się tych wartości z elementami przetwarzanymi w procedurze otrzymywanie cepstrum sygnału \ref{cepstrum}):
+\begin{equation}
+  C_k = log \left(|\tilde{H_k}|^2 \right)
+\end{equation}
+Przy użyciu tych współczynników otrzymuje się cepstrum sygnału.
+
 \subsubsection{Cepstrum.}
+\label{cepstrum}
 
 Funkcja cepstrum mocy dla ciągłego przekształcenia Fouriera zdefiniowana jest następująco \cite{fosr}:
 \begin{equation}
@@ -211,7 +231,7 @@ gdzie
 
 Uzyskane współczynniki MFCC noszą nazwę wektora akustycznego (\textit{ang. acoustic vector}) i są w procesie weryfikacji mówcy dalej wykorzystywane w tzw. procesie dopasowywania cech (\textit{feature matching}).
 
-\subsection{Dopasowanie cech.}
+\section{Dopasowanie cech.}
 
 \% inne techniki DTW, HMM.
 

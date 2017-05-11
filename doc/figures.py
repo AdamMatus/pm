@@ -76,3 +76,15 @@ plt.annotate('druga \n"rahmoniczna"', xy=(154, -2), xytext=(180, -5.5),
             )
 plt.ylim([-7,7])
 savefig('e_cepstrum')
+
+# melfb
+
+fig, ax = newfig(0.8)
+
+mat = sio.loadmat('./melfb.mat');
+t = mat['t']
+y = mat['y']
+
+ax.plot(t,y)
+ax.set_xlabel('Czestotliwosc [Hz]');
+savefig('melfb')
