@@ -1,10 +1,10 @@
 vpath %.cpp src/
 vpath %.h inc/
 
-OBJS= main.o
-
-CC=g++ -std=c++11
+OBJS= mel_frame_generator.o main.o dsp_utils.o  
+CC=g++ -std=c++17
 CPPFLAGS=-Wall -g3 -O0
+INC=-Iinc
 LDLIBS=-lgsl -lgslcblas -lm -lpython2.7 -lsndfile
 
 default: test
@@ -12,8 +12,8 @@ default: test
 test: $(OBJS)
 	$(CC) $(OBJS) $(CPPFLAGS) $(LDLIBS)  -o $@
 
-$(OBJS): %.o : %.cpp
-	$(CC) $(CPPFLAGS)  -c $< -o $@
+$(OBJS): %.o : %.cpp %.h
+	$(CC) $(INC) $(CPPFLAGS)  -c $< -o $@
 
 .PHONY: clean
 
