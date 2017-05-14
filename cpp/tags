@@ -1,149 +1,263 @@
+	Session.vim	/^nmap  :call MoveTab(-2)$/;"	m
+		Session.vim	/^inoremap <expr> 	 pumvisible() ? "\\" : "\\	"$/;"	m
+	Session.vim	/^nmap   za$/;"	m
+	Session.vim	/^nmap  $/;"	m
+	Session.vim	/^nmap  :call MoveTab(0)$/;"	m
+<<	Session.vim	/^vmap << <gv$/;"	m
 !_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
 !_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-BUFFER_LEN	main.cpp	/^constexpr auto BUFFER_LEN = 1024;$/;"	v
-CC	Makefile	/^CC=g++ -std=c++11$/;"	m
+//	Session.vim	/^vmap \/\/ y\/"$/;"	m
+0	Session.vim	/^normal! 0$/;"	m
+06|	Session.vim	/^normal! 06|$/;"	m
+<C-Space>	Session.vim	/^inoremap <C-Space> $/;"	m
+<Down>	Session.vim	/^inoremap <expr> <Down> pumvisible() ? "\\" : "\\<Down>"$/;"	m
+<Down>	Session.vim	/^nmap <Down> j$/;"	m
+<F2>	Session.vim	/^imap <F2> :call ToggleColumns()$/;"	m
+<F2>	Session.vim	/^nmap <F2> :call ToggleColumns()$/;"	m
+<F3>	Session.vim	/^nmap <F3> :Nload$/;"	m
+<F4>	Session.vim	/^nmap <F4> :NERDTree$/;"	m
+<F7>	Session.vim	/^nmap <F7> :!updatedev.php %:p$/;"	m
+<F8>	Session.vim	/^nmap <F8> :call WriteTrace()$/;"	m
+<F9>	Session.vim	/^nmap <F9> \\ph$/;"	m
+<Left>	Session.vim	/^nmap <Left> h$/;"	m
+<NL>	Session.vim	/^nmap <NL> $/;"	m
+<Nul>	Session.vim	/^imap <Nul> <C-Space>$/;"	m
+<Plug>NetrwBrowseX	Session.vim	/^nnoremap <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())$/;"	m
+<Plug>NetrwBrowseXVis	Session.vim	/^vnoremap <silent> <Plug>NetrwBrowseXVis :call netrw#BrowseXVis()$/;"	m
+<Right>	Session.vim	/^nmap <Right> l$/;"	m
+<S-Tab>	Session.vim	/^inoremap <expr> <S-Tab> pumvisible() ? "\\" : "\\<S-Tab>"$/;"	m
+<Up>	Session.vim	/^inoremap <expr> <Up> pumvisible() ? "\\" : "\\<Up>"$/;"	m
+<Up>	Session.vim	/^nmap <Up> k$/;"	m
+>>	Session.vim	/^vmap >> >gv$/;"	m
+BUFFER_LEN	inc/dsp_utils.h	/^const constexpr int BUFFER_LEN = 1024;$/;"	m	namespace:dsp_utils
+BUFFER_LEN	main.cpp	/^const constexpr int BUFFER_LEN = 1024;$/;"	v
+BUFFER_LEN	mel_frame_generator.cpp	/^const constexpr int BUFFER_LEN = 1024;$/;"	v
+CC	Makefile	/^CC=g++ -std=c++17$/;"	m
 CPPFLAGS	Makefile	/^CPPFLAGS=-Wall -g3 -O0$/;"	m
-Derived	matplotlibcpp.h	/^			struct Derived : T, Fallback { };$/;"	s	struct:matplotlibcpp::detail::is_callable_impl
+Derived	inc/matplotlibcpp.h	/^			struct Derived : T, Fallback { };$/;"	s	struct:matplotlibcpp::detail::is_callable_impl
 DirectoryOfThisScript	.ycm_extra_conf.py	/^def DirectoryOfThisScript():$/;"	f
-FFT_SIZE	main.cpp	/^constexpr auto FFT_SIZE = 256; $/;"	v
-FRAME_STEP	main.cpp	/^constexpr auto FRAME_STEP = 100; $/;"	v
-Fallback	matplotlibcpp.h	/^			struct Fallback { void operator()(); };$/;"	s	struct:matplotlibcpp::detail::is_callable_impl
+FFT_SIZE	inc/dsp_utils.h	/^const constexpr int FFT_SIZE = 256; $/;"	m	namespace:dsp_utils
+FFT_SIZE	main.cpp	/^const constexpr int FFT_SIZE = 256; $/;"	v
+FFT_SIZE	mel_frame_generator.cpp	/^const constexpr int FFT_SIZE = 256; $/;"	v
+FRAME_STEP	inc/dsp_utils.h	/^const constexpr int FRAME_STEP = 100; $/;"	m	namespace:dsp_utils
+FRAME_STEP	main.cpp	/^const constexpr int FRAME_STEP = 100; $/;"	v
+FRAME_STEP	mel_frame_generator.cpp	/^const constexpr int FRAME_STEP = 100; $/;"	v
+Fallback	inc/matplotlibcpp.h	/^			struct Fallback { void operator()(); };$/;"	s	struct:matplotlibcpp::detail::is_callable_impl
 FlagsForFile	.ycm_extra_conf.py	/^def FlagsForFile( filename, **kwargs ):$/;"	f
 GetCompilationInfoForFile	.ycm_extra_conf.py	/^def GetCompilationInfoForFile( filename ):$/;"	f
+H	Session.vim	/^nmap H gT$/;"	m
+INC	Makefile	/^INC=-Iinc$/;"	m
 IsHeaderFile	.ycm_extra_conf.py	/^def IsHeaderFile( filename ):$/;"	f
+K	inc/dsp_utils.h	/^    int K, i;$/;"	m	struct:dsp_utils::cos_dct_gen
+K	inc/dsp_utils.h	/^const constexpr int K = MELL_FILTER_BANKS;$/;"	m	namespace:dsp_utils
 K	main.cpp	/^  int K, i;$/;"	m	struct:cos_dct_gen	file:
-K	main.cpp	/^constexpr auto K = MELL_FILTER_BANKS;$/;"	v
+K	main.cpp	/^const constexpr int K = MELL_FILTER_BANKS;$/;"	v
+K	mel_frame_generator.cpp	/^const constexpr int K = MELL_FILTER_BANKS;$/;"	v
+L	Session.vim	/^nmap L gt$/;"	m
 LDLIBS	Makefile	/^LDLIBS=-lgsl -lgslcblas -lm -lpython2.7 -lsndfile$/;"	m
-M	main.cpp	/^constexpr auto M = FRAME_STEP;$/;"	v
-MELL_FILTER_BANKS	main.cpp	/^constexpr auto MELL_FILTER_BANKS = 30;$/;"	v
+M	inc/dsp_utils.h	/^const constexpr int M = FRAME_STEP;$/;"	m	namespace:dsp_utils
+M	main.cpp	/^const constexpr int M = FRAME_STEP;$/;"	v
+M	mel_frame_generator.cpp	/^const constexpr int M = FRAME_STEP;$/;"	v
+MELL_FILTER_BANKS	inc/dsp_utils.h	/^const constexpr int MELL_FILTER_BANKS = 30;$/;"	m	namespace:dsp_utils
+MELL_FILTER_BANKS	main.cpp	/^const constexpr int MELL_FILTER_BANKS = 30;$/;"	v
+MELL_FILTER_BANKS	mel_frame_generator.cpp	/^const constexpr int MELL_FILTER_BANKS = 30;$/;"	v
+MFCC_NUM	inc/dsp_utils.h	/^const constexpr int MFCC_NUM = 13;$/;"	m	namespace:dsp_utils
+MFCC_NUM	main.cpp	/^const constexpr int MFCC_NUM = 13;$/;"	v
+MFCC_NUM	mel_frame_generator.cpp	/^const constexpr int MFCC_NUM = 13;$/;"	v
 MakeRelativePathsInFlagsAbsolute	.ycm_extra_conf.py	/^def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):$/;"	f
-N	main.cpp	/^constexpr auto N = FFT_SIZE;$/;"	v
-OBJS	Makefile	/^OBJS= main.o$/;"	m
-PyString_FromString	matplotlibcpp.h	23;"	d
+N	inc/dsp_utils.h	/^const constexpr int N = FFT_SIZE;$/;"	m	namespace:dsp_utils
+N	main.cpp	/^const constexpr int N = FFT_SIZE;$/;"	v
+N	mel_frame_generator.cpp	/^const constexpr int N = FFT_SIZE;$/;"	v
+OBJS	Makefile	/^OBJS= mel_frame_generator.o main.o dsp_utils.o vq.o $/;"	m
+PyString_FromString	inc/matplotlibcpp.h	26;"	d
 SOURCE_EXTENSIONS	.ycm_extra_conf.py	/^SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', '.m', '.mm' ]$/;"	v
-STRINGIFY	matplotlibcpp.h	16;"	d
-STRINGIFY_	matplotlibcpp.h	15;"	d
-_interpreter	matplotlibcpp.h	/^			_interpreter() {$/;"	f	struct:matplotlibcpp::detail::_interpreter
-_interpreter	matplotlibcpp.h	/^		struct _interpreter {$/;"	s	namespace:matplotlibcpp::detail
-acc	main.cpp	/^  double acc, win, del;$/;"	m	struct:triangle_windowed_sum	file:
-annotate	matplotlibcpp.h	/^	bool annotate(std::string annotation, double x, double y)$/;"	f	namespace:matplotlibcpp
-arrK	main.cpp	/^  typedef typename std::array<double, K> arrK;$/;"	t	struct:mel_frame_generator	file:
-arrN	main.cpp	/^  typedef typename std::array<double, N> arrN;$/;"	t	struct:mel_frame_generator	file:
-axis	matplotlibcpp.h	/^	inline void axis(const std::string &axisstr)$/;"	f	namespace:matplotlibcpp
-cen	main.cpp	/^  const size_t cen, end;$/;"	m	struct:triangle_windowed_sum	file:
-clf	matplotlibcpp.h	/^	inline void clf() {$/;"	f	namespace:matplotlibcpp
+STRINGIFY	inc/matplotlibcpp.h	19;"	d
+STRINGIFY_	inc/matplotlibcpp.h	18;"	d
+SessionLoad	Session.vim	/^let SessionLoad = 1$/;"	v
+Window_type	inc/dsp_utils.h	/^  enum class Window_type$/;"	c	namespace:dsp_utils
+\/	Session.vim	/^nmap \\\/ :nohl$/;"	m
+\cb	Session.vim	/^nmap \\cb o\/**$/;"	m
+\cc	Session.vim	/^nmap \\cc o\/**$/;"	m
+\cc	Session.vim	/^vmap \\cc :s!^!\/\/!$/;"	m
+\cp	Session.vim	/^nmap \\cp o\/**$/;"	m
+\cu	Session.vim	/^vmap \\cu :s!^\/\/!!$/;"	m
+\cv	Session.vim	/^nmap \\cv o\/**$/;"	m
+\d	Session.vim	/^nnoremap \\d :YcmShowDetailedDiagnostic$/;"	m
+\fx	Session.vim	/^nmap \\fx :setlocal filetype=xml$/;"	m
+\gu	Session.vim	/^nmap \\gu :GundoToggle$/;"	m
+\l	Session.vim	/^nmap \\l :70vsplit ~\/Dropbox\/projects.list$/;"	m
+\oc	Session.vim	/^nmap \\oc :tabe %:h$/;"	m
+\ph	Session.vim	/^nmap \\ph :!pman <cword>$/;"	m
+\pr	Session.vim	/^nmap \\pr :!php % | less -F$/;"	m
+\ps	Session.vim	/^nmap \\ps :!php -l %$/;"	m
+\pt	Session.vim	/^nmap \\pt o$/;"	m
+\sk	Session.vim	/^nmap \\sk :!svn propset svn:keywords "Rev Date Id Author HeadURL" %$/;"	m
+\sp	Session.vim	/^nmap \\sp :call SvnPushFile()$/;"	m
+\ss	Session.vim	/^nmap \\ss :syntax sync fromstart$/;"	m
+\tf	Session.vim	/^nmap \\tf :call CtagsFind(expand('<cword>'))$/;"	m
+\tl	Session.vim	/^nmap \\tl :TlistToggle$/;"	m
+\ts	Session.vim	/^nmap \\ts :exe('stj '.expand('<cword>'))$/;"	m
+\xc	Session.vim	/^vmap <silent> \\xc :XselCopy$/;"	m
+\xp	Session.vim	/^nmap <silent> \\xp :XselPaste$/;"	m
+_DSP_UTILS_H_	inc/dsp_utils.h	2;"	d
+_MAIN_H_	inc/main.h	2;"	d
+_MEL_FRAME_GENERATOR_	inc/mel_frame_generator.h	2;"	d
+_PIES_	inc/matplotlibcpp.h	2;"	d
+_PM_TEST_	inc/pm_test.h	2;"	d
+_VQ_H_	inc/vq.h	2;"	d
+_interpreter	inc/matplotlibcpp.h	/^			_interpreter() {$/;"	f	struct:matplotlibcpp::detail::_interpreter
+_interpreter	inc/matplotlibcpp.h	/^		struct _interpreter {$/;"	s	namespace:matplotlibcpp::detail
+acc	inc/mel_frame_generator.h	/^    double acc, win, del;$/;"	m	struct:mel_utils::triangle_windowed_sum
+annotate	inc/matplotlibcpp.h	/^	bool annotate(std::string annotation, double x, double y)$/;"	f	namespace:matplotlibcpp
+arrK	inc/mel_frame_generator.h	/^    typedef std::array<double,K> arrK;$/;"	t	struct:mel_utils::mel_frame_generator
+arrN	inc/mel_frame_generator.h	/^    typedef std::array<double,N> arrN;$/;"	t	struct:mel_utils::mel_frame_generator
+axis	inc/matplotlibcpp.h	/^	inline void axis(const std::string &axisstr)$/;"	f	namespace:matplotlibcpp
+cen	inc/mel_frame_generator.h	/^    const int cen, end;$/;"	m	struct:mel_utils::triangle_windowed_sum
+clf	inc/matplotlibcpp.h	/^	inline void clf() {$/;"	f	namespace:matplotlibcpp
 compilation_database_folder	.ycm_extra_conf.py	/^compilation_database_folder = ''$/;"	v
-cos	main.cpp	/^  const std::array<double, 2*K>& cos;$/;"	m	struct:mfcc_gen	file:
+cos	inc/dsp_utils.h	/^    const std::array<double, 4*K>& cos;$/;"	m	struct:dsp_utils::mfcc_gen
+cos_dct_gen	inc/dsp_utils.h	/^    cos_dct_gen(int _K): K{_K}, i{0}$/;"	f	struct:dsp_utils::cos_dct_gen
+cos_dct_gen	inc/dsp_utils.h	/^  struct cos_dct_gen$/;"	s	namespace:dsp_utils
 cos_dct_gen	main.cpp	/^  cos_dct_gen(int _K): K{_K}, i{0}$/;"	f	struct:cos_dct_gen
 cos_dct_gen	main.cpp	/^struct cos_dct_gen$/;"	s	file:
 database	.ycm_extra_conf.py	/^  database = None$/;"	v
 database	.ycm_extra_conf.py	/^  database = ycm_core.CompilationDatabase( compilation_database_folder )$/;"	v
-del	main.cpp	/^  double acc, win, del;$/;"	m	struct:triangle_windowed_sum	file:
-delta_mel	main.cpp	/^  const double fs, mel_max, delta_mel;$/;"	m	struct:mel_frame_generator	file:
-detail	matplotlibcpp.h	/^	namespace detail {$/;"	n	namespace:matplotlibcpp
-dtype	matplotlibcpp.h	/^			typedef decltype(&Fallback::operator()) dtype;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
-end	main.cpp	/^  const size_t cen, end;$/;"	m	struct:triangle_windowed_sum	file:
-errorbar	matplotlibcpp.h	/^	bool errorbar(const std::vector<NumericX> &x, const std::vector<NumericY> &y, const std::vector<NumericX> &yerr, const std::string &s = "")$/;"	f	namespace:matplotlibcpp
-f_begin	main.cpp	/^  size_t f_begin, f_center, f_end;$/;"	m	struct:mel_frame_generator	file:
-f_center	main.cpp	/^  size_t f_begin, f_center, f_end;$/;"	m	struct:mel_frame_generator	file:
-f_end	main.cpp	/^  size_t f_begin, f_center, f_end;$/;"	m	struct:mel_frame_generator	file:
-figure	matplotlibcpp.h	/^	inline void figure()$/;"	f	namespace:matplotlibcpp
+dct_frame	dsp_utils.cpp	/^std::array<double, MFCC_NUM> dsp_utils::dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 4*30ul>& cos_table)$/;"	f	class:dsp_utils
+del	inc/mel_frame_generator.h	/^    double acc, win, del;$/;"	m	struct:mel_utils::triangle_windowed_sum
+delta_mel	inc/mel_frame_generator.h	/^    const double fs, mel_max, delta_mel;$/;"	m	struct:mel_utils::mel_frame_generator
+detail	inc/matplotlibcpp.h	/^	namespace detail {$/;"	n	namespace:matplotlibcpp
+dis_eu	vq.cpp	/^double vq::dis_eu(const std::array<double, K>& v1, const std::array<double, K>& v2)$/;"	f	class:vq
+dsp_utils	inc/dsp_utils.h	/^namespace dsp_utils{$/;"	n
+dtype	inc/matplotlibcpp.h	/^			typedef decltype(&Fallback::operator()) dtype;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
+dummy_test	vq.cpp	/^void vq::dummy_test()$/;"	f	class:vq
+end	inc/mel_frame_generator.h	/^    const int cen, end;$/;"	m	struct:mel_utils::triangle_windowed_sum
+errorbar	inc/matplotlibcpp.h	/^	bool errorbar(const std::vector<NumericX> &x, const std::vector<NumericY> &y, const std::vector<NumericX> &yerr, const std::string &s = "")$/;"	f	namespace:matplotlibcpp
+f_begin	inc/mel_frame_generator.h	/^    int f_begin, f_center, f_end;$/;"	m	struct:mel_utils::mel_frame_generator
+f_center	inc/mel_frame_generator.h	/^    int f_begin, f_center, f_end;$/;"	m	struct:mel_utils::mel_frame_generator
+f_end	inc/mel_frame_generator.h	/^    int f_begin, f_center, f_end;$/;"	m	struct:mel_utils::mel_frame_generator
+figure	inc/matplotlibcpp.h	/^	inline void figure()$/;"	f	namespace:matplotlibcpp
 flags	.ycm_extra_conf.py	/^flags = [$/;"	v
-fram	main.cpp	/^  const arrN &fram;$/;"	m	struct:mel_frame_generator	file:
-fs	main.cpp	/^  const double fs, mel_max, delta_mel;$/;"	m	struct:mel_frame_generator	file:
-get	matplotlibcpp.h	/^			static _interpreter& get() {$/;"	f	struct:matplotlibcpp::detail::_interpreter
-grid	matplotlibcpp.h	/^	inline void grid(bool flag)$/;"	f	namespace:matplotlibcpp
-hamming_generator	main.cpp	/^  hamming_generator(size_t _N): size{_N}, index{0} {}$/;"	f	struct:hamming_generator
-hamming_generator	main.cpp	/^struct hamming_generator$/;"	s	file:
-hann_generator	main.cpp	/^  hann_generator(size_t _N): size{_N}, index{0} {}$/;"	f	struct:hann_generator
-hann_generator	main.cpp	/^struct hann_generator$/;"	s	file:
-hist	matplotlibcpp.h	/^	bool hist(const std::vector<Numeric>& y, long bins=10,std::string color="b", double alpha=1.0)$/;"	f	namespace:matplotlibcpp
+fram	inc/mel_frame_generator.h	/^    const arrN &fram;$/;"	m	struct:mel_utils::mel_frame_generator
+fs	inc/mel_frame_generator.h	/^    const double fs, mel_max, delta_mel;$/;"	m	struct:mel_utils::mel_frame_generator
+get	inc/matplotlibcpp.h	/^			static _interpreter& get() {$/;"	f	struct:matplotlibcpp::detail::_interpreter
+gf	Session.vim	/^map gf :tabe <cfile>$/;"	m
+grid	inc/matplotlibcpp.h	/^	inline void grid(bool flag)$/;"	f	namespace:matplotlibcpp
+gx	Session.vim	/^nmap gx <Plug>NetrwBrowseX$/;"	m
+gx	Session.vim	/^vmap gx <Plug>NetrwBrowseXVis$/;"	m
+hamming_generator	dsp_utils.cpp	/^hamming_generator::hamming_generator(int N)$/;"	f	class:hamming_generator
+hamming_generator	inc/dsp_utils.h	/^    hamming_generator,$/;"	m	class:dsp_utils::Window_type
+hamming_generator	inc/dsp_utils.h	/^  struct hamming_generator: public window_generator$/;"	s	namespace:dsp_utils
+hann_generator	dsp_utils.cpp	/^hann_generator::hann_generator(int N)$/;"	f	class:hann_generator
+hann_generator	inc/dsp_utils.h	/^    hann_generator,$/;"	m	class:dsp_utils::Window_type
+hann_generator	inc/dsp_utils.h	/^  struct hann_generator: public window_generator$/;"	s	namespace:dsp_utils
+hist	inc/matplotlibcpp.h	/^	bool hist(const std::vector<Numeric>& y, long bins=10,std::string color="b", double alpha=1.0)$/;"	f	namespace:matplotlibcpp
+i	inc/dsp_utils.h	/^    int K, i;$/;"	m	struct:dsp_utils::cos_dct_gen
+i	inc/mel_frame_generator.h	/^    int i;$/;"	m	struct:mel_utils::triangle_windowed_sum
 i	main.cpp	/^  int K, i;$/;"	m	struct:cos_dct_gen	file:
-i	main.cpp	/^  size_t i;$/;"	m	struct:triangle_windowed_sum	file:
-index	main.cpp	/^  size_t index;$/;"	m	struct:hamming_generator	file:
-index	main.cpp	/^  size_t index;$/;"	m	struct:hann_generator	file:
-is_callable	matplotlibcpp.h	/^		struct is_callable$/;"	s	namespace:matplotlibcpp::detail
-is_callable_impl	matplotlibcpp.h	/^		struct is_callable_impl<false, T>$/;"	s	namespace:matplotlibcpp::detail
-is_callable_impl	matplotlibcpp.h	/^		struct is_callable_impl<true, T>$/;"	s	namespace:matplotlibcpp::detail
-k	main.cpp	/^  int k;$/;"	m	struct:mel_frame_generator	file:
-legend	matplotlibcpp.h	/^	inline void legend()$/;"	f	namespace:matplotlibcpp
+index	inc/dsp_utils.h	/^    int index;$/;"	m	struct:dsp_utils::window_generator
+is_callable	inc/matplotlibcpp.h	/^		struct is_callable$/;"	s	namespace:matplotlibcpp::detail
+is_callable_impl	inc/matplotlibcpp.h	/^		struct is_callable_impl<false, T>$/;"	s	namespace:matplotlibcpp::detail
+is_callable_impl	inc/matplotlibcpp.h	/^		struct is_callable_impl<true, T>$/;"	s	namespace:matplotlibcpp::detail
+k	inc/mel_frame_generator.h	/^    int k;$/;"	m	struct:mel_utils::mel_frame_generator
+lbg	vq.cpp	/^std::array<std::array<double, K>, C> vq::lbg(const std::vector<std::array<double, K>>& acoustic_vectors)  $/;"	f	class:vq
+legend	inc/matplotlibcpp.h	/^	inline void legend()$/;"	f	namespace:matplotlibcpp
 load_wav	main.cpp	/^std::vector<double> load_wav(const char* file, SF_INFO&  sfinfo)$/;"	f
 main	main.cpp	/^int main (void)$/;"	f
-matplotlibcpp	matplotlibcpp.h	/^namespace matplotlibcpp {$/;"	n
-mel	main.cpp	/^  const std::array<double, K>& mel;$/;"	m	struct:mfcc_gen	file:
-mel	main.cpp	/^inline double mel(double f)$/;"	f
-mel2freq	main.cpp	/^inline double mel2freq(double mel)$/;"	f
-mel_frame_generator	main.cpp	/^  mel_frame_generator(const arrN& frame, double samplerate)$/;"	f	struct:mel_frame_generator
-mel_frame_generator	main.cpp	/^struct mel_frame_generator$/;"	s	file:
-mel_max	main.cpp	/^  const double fs, mel_max, delta_mel;$/;"	m	struct:mel_frame_generator	file:
-mfcc_gen	main.cpp	/^  mfcc_gen(const std::array<double, K>& mel_frame, const std::array<double, 2*K>& cos_dct_table)$/;"	f	struct:mfcc_gen
-mfcc_gen	main.cpp	/^struct mfcc_gen$/;"	s	file:
-n	main.cpp	/^  int n; $/;"	m	struct:mfcc_gen	file:
-named_hist	matplotlibcpp.h	/^	bool named_hist(std::string label,const std::vector<Numeric>& y, long bins=10, std::string color="b", double alpha=1.0)$/;"	f	namespace:matplotlibcpp
-named_plot	matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<Numeric>& x, const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
-named_plot	matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
-named_plot	matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<double>& x, const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
-operator ()	main.cpp	/^  double operator()() {$/;"	f	struct:hamming_generator
-operator ()	main.cpp	/^  double operator()() {$/;"	f	struct:hann_generator
+matplotlibcpp	inc/matplotlibcpp.h	/^namespace matplotlibcpp {$/;"	n
+mel	inc/dsp_utils.h	/^    const std::array<double, K>& mel;$/;"	m	struct:dsp_utils::mfcc_gen
+mel	mel_frame_generator.cpp	/^inline double mel_utils::mel(double f)$/;"	f	class:mel_utils
+mel2freq	mel_frame_generator.cpp	/^inline double mel_utils::mel2freq(double mel)$/;"	f	class:mel_utils
+mel_frame	mel_frame_generator.cpp	/^std::array<double, K> mel_utils::mel_frame(const std::array<double, 256ul>& fr, int samplerate)$/;"	f	class:mel_utils
+mel_frame_generator	inc/mel_frame_generator.h	/^    mel_frame_generator(const arrN& frame, double samplerate)$/;"	f	struct:mel_utils::mel_frame_generator
+mel_frame_generator	inc/mel_frame_generator.h	/^  struct mel_frame_generator$/;"	s	namespace:mel_utils
+mel_max	inc/mel_frame_generator.h	/^    const double fs, mel_max, delta_mel;$/;"	m	struct:mel_utils::mel_frame_generator
+mel_utils	inc/mel_frame_generator.h	/^namespace mel_utils$/;"	n
+mfcc_gen	inc/dsp_utils.h	/^    mfcc_gen(const std::array<double, K>& mel_frame, const std::array<double, 4*K>& cos_dct_table)$/;"	f	struct:dsp_utils::mfcc_gen
+mfcc_gen	inc/dsp_utils.h	/^  struct mfcc_gen$/;"	s	namespace:dsp_utils
+n	inc/dsp_utils.h	/^    int n; $/;"	m	struct:dsp_utils::mfcc_gen
+named_hist	inc/matplotlibcpp.h	/^	bool named_hist(std::string label,const std::vector<Numeric>& y, long bins=10, std::string color="b", double alpha=1.0)$/;"	f	namespace:matplotlibcpp
+named_plot	inc/matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<Numeric>& x, const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
+named_plot	inc/matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
+named_plot	inc/matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<double>& x, const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
+operator ()	dsp_utils.cpp	/^double hamming_generator::operator()(double x) {$/;"	f	class:hamming_generator
+operator ()	dsp_utils.cpp	/^double hann_generator::operator()(double x) {$/;"	f	class:hann_generator
+operator ()	inc/dsp_utils.h	/^    double operator()() {return 1.0;}; \/\/rectngle window$/;"	f	struct:dsp_utils::window_generator
+operator ()	inc/dsp_utils.h	/^    double operator()(){$/;"	f	struct:dsp_utils::cos_dct_gen
+operator ()	inc/dsp_utils.h	/^    double operator()(){$/;"	f	struct:dsp_utils::mfcc_gen
+operator ()	inc/matplotlibcpp.h	/^			bool operator()(const Iterable& ticks, const Callable& f, const std::string& format)$/;"	f	struct:matplotlibcpp::detail::plot_impl
+operator ()	inc/matplotlibcpp.h	/^			bool operator()(const IterableX& x, const IterableY& y, const std::string& format)$/;"	f	struct:matplotlibcpp::detail::plot_impl
+operator ()	inc/mel_frame_generator.h	/^    double operator()(){$/;"	f	struct:mel_utils::mel_frame_generator
+operator ()	inc/mel_frame_generator.h	/^    void operator()(const double& val){$/;"	f	struct:mel_utils::triangle_windowed_sum
 operator ()	main.cpp	/^  double operator()(){$/;"	f	struct:cos_dct_gen
-operator ()	main.cpp	/^  double operator()(){$/;"	f	struct:mel_frame_generator
-operator ()	main.cpp	/^  double operator()(){$/;"	f	struct:mfcc_gen
-operator ()	main.cpp	/^  void operator()(const double& val){$/;"	f	struct:triangle_windowed_sum
-operator ()	matplotlibcpp.h	/^			bool operator()(const Iterable& ticks, const Callable& f, const std::string& format)$/;"	f	struct:matplotlibcpp::detail::plot_impl
-operator ()	matplotlibcpp.h	/^			bool operator()(const IterableX& x, const IterableY& y, const std::string& format)$/;"	f	struct:matplotlibcpp::detail::plot_impl
-plot	matplotlibcpp.h	/^	bool plot() { return true; }$/;"	f	namespace:matplotlibcpp
-plot	matplotlibcpp.h	/^	bool plot(const A& a, const B& b, const std::string& format, Args... args)$/;"	f	namespace:matplotlibcpp
-plot	matplotlibcpp.h	/^	bool plot(const std::vector<Numeric> &x, const std::vector<Numeric> &y, const std::map<std::string, std::string>& keywords)$/;"	f	namespace:matplotlibcpp
-plot	matplotlibcpp.h	/^	bool plot(const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
-plot	matplotlibcpp.h	/^	bool plot(const std::vector<NumericX>& x, const std::vector<NumericY>& y, const std::string& s = "")$/;"	f	namespace:matplotlibcpp
-plot	matplotlibcpp.h	/^	bool plot(const std::vector<double>& x, const std::vector<double>& y, const std::map<std::string, std::string>& keywords) {$/;"	f	namespace:matplotlibcpp
-plot	matplotlibcpp.h	/^	bool plot(const std::vector<double>& x, const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
-plot	matplotlibcpp.h	/^	bool plot(const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
-plot_impl	matplotlibcpp.h	/^		struct plot_impl { };$/;"	s	namespace:matplotlibcpp::detail
-plot_impl	matplotlibcpp.h	/^		struct plot_impl<std::false_type>$/;"	s	namespace:matplotlibcpp::detail
-plot_impl	matplotlibcpp.h	/^		struct plot_impl<std::true_type>$/;"	s	namespace:matplotlibcpp::detail
-s_python_empty_tuple	matplotlibcpp.h	/^			PyObject *s_python_empty_tuple;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_annotate	matplotlibcpp.h	/^			PyObject *s_python_function_annotate;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_axis	matplotlibcpp.h	/^			PyObject *s_python_function_axis;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_clf	matplotlibcpp.h	/^			PyObject *s_python_function_clf;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_errorbar	matplotlibcpp.h	/^			PyObject *s_python_function_errorbar;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_figure	matplotlibcpp.h	/^			PyObject *s_python_function_figure;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_grid	matplotlibcpp.h	/^			PyObject *s_python_function_grid;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_hist	matplotlibcpp.h	/^			PyObject *s_python_function_hist;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_legend	matplotlibcpp.h	/^			PyObject *s_python_function_legend;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_plot	matplotlibcpp.h	/^			PyObject *s_python_function_plot;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_save	matplotlibcpp.h	/^			PyObject *s_python_function_save;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_show	matplotlibcpp.h	/^			PyObject *s_python_function_show;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_subplot	matplotlibcpp.h	/^			PyObject *s_python_function_subplot;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_title	matplotlibcpp.h	/^			PyObject *s_python_function_title;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_xlabel	matplotlibcpp.h	/^			PyObject *s_python_function_xlabel;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_xlim	matplotlibcpp.h	/^			PyObject *s_python_function_xlim;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_ylabel	matplotlibcpp.h	/^			PyObject *s_python_function_ylabel;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-s_python_function_ylim	matplotlibcpp.h	/^			PyObject *s_python_function_ylim;$/;"	m	struct:matplotlibcpp::detail::_interpreter
-sample	main.cpp	/^  inline size_t sample(int inc){$/;"	f	struct:mel_frame_generator	file:
-save	matplotlibcpp.h	/^	inline void save(const std::string& filename)$/;"	f	namespace:matplotlibcpp
-show	matplotlibcpp.h	/^	inline void show()$/;"	f	namespace:matplotlibcpp
-size	main.cpp	/^  const size_t size;$/;"	m	struct:hamming_generator	file:
-size	main.cpp	/^  const size_t size;$/;"	m	struct:hann_generator	file:
-subplot	matplotlibcpp.h	/^	inline void subplot(long nrows, long ncols, long plot_number)$/;"	f	namespace:matplotlibcpp
-test_mpl	main.cpp	/^void test_mpl(It start, It end, size_t start_index)$/;"	f
-title	matplotlibcpp.h	/^	inline void title(const std::string &titlestr)$/;"	f	namespace:matplotlibcpp
-triangle_windowed_sum	main.cpp	/^  triangle_windowed_sum(size_t f_center, size_t f_end)$/;"	f	struct:triangle_windowed_sum
-triangle_windowed_sum	main.cpp	/^struct triangle_windowed_sum$/;"	s	file:
-type	matplotlibcpp.h	/^			typedef decltype(test<Derived>(nullptr)) type;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
-type	matplotlibcpp.h	/^			typedef is_function<T> type;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
-type	matplotlibcpp.h	/^			typedef typename is_callable_impl<std::is_class<T>::value, T>::type type;$/;"	t	struct:matplotlibcpp::detail::is_callable
-update_filter_samples	main.cpp	/^  inline void update_filter_samples(){$/;"	f	struct:mel_frame_generator	file:
-value	matplotlibcpp.h	/^			static constexpr bool value = type::value;$/;"	m	struct:matplotlibcpp::detail::is_callable_impl
-win	main.cpp	/^  double acc, win, del;$/;"	m	struct:triangle_windowed_sum	file:
-xlabel	matplotlibcpp.h	/^	inline void xlabel(const std::string &str)$/;"	f	namespace:matplotlibcpp
-xlim	matplotlibcpp.h	/^	inline double* xlim()$/;"	f	namespace:matplotlibcpp
-xlim	matplotlibcpp.h	/^	void xlim(Numeric left, Numeric right)$/;"	f	namespace:matplotlibcpp
-ylabel	matplotlibcpp.h	/^	inline void ylabel(const std::string &str)$/;"	f	namespace:matplotlibcpp
-ylim	matplotlibcpp.h	/^	inline double* ylim()$/;"	f	namespace:matplotlibcpp
-ylim	matplotlibcpp.h	/^	void ylim(Numeric left, Numeric right)$/;"	f	namespace:matplotlibcpp
-~_interpreter	matplotlibcpp.h	/^			~_interpreter() {$/;"	f	struct:matplotlibcpp::detail::_interpreter
+plot	inc/matplotlibcpp.h	/^	bool plot() { return true; }$/;"	f	namespace:matplotlibcpp
+plot	inc/matplotlibcpp.h	/^	bool plot(const A& a, const B& b, const std::string& format, Args... args)$/;"	f	namespace:matplotlibcpp
+plot	inc/matplotlibcpp.h	/^	bool plot(const std::vector<Numeric> &x, const std::vector<Numeric> &y, const std::map<std::string, std::string>& keywords)$/;"	f	namespace:matplotlibcpp
+plot	inc/matplotlibcpp.h	/^	bool plot(const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
+plot	inc/matplotlibcpp.h	/^	bool plot(const std::vector<NumericX>& x, const std::vector<NumericY>& y, const std::string& s = "")$/;"	f	namespace:matplotlibcpp
+plot	inc/matplotlibcpp.h	/^	bool plot(const std::vector<double>& x, const std::vector<double>& y, const std::map<std::string, std::string>& keywords) {$/;"	f	namespace:matplotlibcpp
+plot	inc/matplotlibcpp.h	/^	bool plot(const std::vector<double>& x, const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
+plot	inc/matplotlibcpp.h	/^	bool plot(const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
+plot_impl	inc/matplotlibcpp.h	/^		struct plot_impl { };$/;"	s	namespace:matplotlibcpp::detail
+plot_impl	inc/matplotlibcpp.h	/^		struct plot_impl<std::false_type>$/;"	s	namespace:matplotlibcpp::detail
+plot_impl	inc/matplotlibcpp.h	/^		struct plot_impl<std::true_type>$/;"	s	namespace:matplotlibcpp::detail
+power_fft_frame	dsp_utils.cpp	/^void dsp_utils::power_fft_frame(std::array<double, 256ul>& fr)$/;"	f	class:dsp_utils
+s:cpo_save	Session.vim	/^let s:cpo_save=&cpo$/;"	v
+s:l	Session.vim	/^let s:l = 1 - ((0 * winheight(0) + 12) \/ 25)$/;"	v
+s:l	Session.vim	/^let s:l = 1 - ((0 * winheight(0) + 13) \/ 26)$/;"	v
+s:l	Session.vim	/^let s:l = 1 - ((0 * winheight(0) + 2) \/ 4)$/;"	v
+s:l	Session.vim	/^let s:l = 1 - ((0 * winheight(0) + 26) \/ 53)$/;"	v
+s:l	Session.vim	/^let s:l = 14 - ((12 * winheight(0) + 23) \/ 47)$/;"	v
+s:l	Session.vim	/^let s:l = 3 - ((2 * winheight(0) + 13) \/ 26)$/;"	v
+s:so_save	Session.vim	/^let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0$/;"	v
+s:sx	Session.vim	/^let s:sx = expand("<sfile>:p:r")."x.vim"$/;"	v
+s:wipebuf	Session.vim	/^  let s:wipebuf = bufnr('%')$/;"	v
+s_python_empty_tuple	inc/matplotlibcpp.h	/^			PyObject *s_python_empty_tuple;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_annotate	inc/matplotlibcpp.h	/^			PyObject *s_python_function_annotate;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_axis	inc/matplotlibcpp.h	/^			PyObject *s_python_function_axis;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_clf	inc/matplotlibcpp.h	/^			PyObject *s_python_function_clf;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_errorbar	inc/matplotlibcpp.h	/^			PyObject *s_python_function_errorbar;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_figure	inc/matplotlibcpp.h	/^			PyObject *s_python_function_figure;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_grid	inc/matplotlibcpp.h	/^			PyObject *s_python_function_grid;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_hist	inc/matplotlibcpp.h	/^			PyObject *s_python_function_hist;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_legend	inc/matplotlibcpp.h	/^			PyObject *s_python_function_legend;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_plot	inc/matplotlibcpp.h	/^			PyObject *s_python_function_plot;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_save	inc/matplotlibcpp.h	/^			PyObject *s_python_function_save;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_show	inc/matplotlibcpp.h	/^			PyObject *s_python_function_show;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_subplot	inc/matplotlibcpp.h	/^			PyObject *s_python_function_subplot;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_title	inc/matplotlibcpp.h	/^			PyObject *s_python_function_title;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_xlabel	inc/matplotlibcpp.h	/^			PyObject *s_python_function_xlabel;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_xlim	inc/matplotlibcpp.h	/^			PyObject *s_python_function_xlim;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_ylabel	inc/matplotlibcpp.h	/^			PyObject *s_python_function_ylabel;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_python_function_ylim	inc/matplotlibcpp.h	/^			PyObject *s_python_function_ylim;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+sample	inc/mel_frame_generator.h	/^    inline int sample(int inc){$/;"	f	struct:mel_utils::mel_frame_generator
+save	inc/matplotlibcpp.h	/^	inline void save(const std::string& filename)$/;"	f	namespace:matplotlibcpp
+show	inc/matplotlibcpp.h	/^	inline void show()$/;"	f	namespace:matplotlibcpp
+size	inc/dsp_utils.h	/^    const int size;$/;"	m	struct:dsp_utils::window_generator
+subplot	inc/matplotlibcpp.h	/^	inline void subplot(long nrows, long ncols, long plot_number)$/;"	f	namespace:matplotlibcpp
+test_mpl	inc/pm_test.h	/^void test_mpl(It start, It end, int start_index =0)$/;"	f
+title	inc/matplotlibcpp.h	/^	inline void title(const std::string &titlestr)$/;"	f	namespace:matplotlibcpp
+triangle_windowed_sum	inc/mel_frame_generator.h	/^    triangle_windowed_sum(int f_center, int f_end)$/;"	f	struct:mel_utils::triangle_windowed_sum
+triangle_windowed_sum	inc/mel_frame_generator.h	/^  struct triangle_windowed_sum$/;"	s	namespace:mel_utils
+two_dim	inc/pm_test.h	/^void two_dim(It tstart, It tend, It start, It end)$/;"	f
+type	inc/matplotlibcpp.h	/^			typedef decltype(test<Derived>(nullptr)) type;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
+type	inc/matplotlibcpp.h	/^			typedef is_function<T> type;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
+type	inc/matplotlibcpp.h	/^			typedef typename is_callable_impl<std::is_class<T>::value, T>::type type;$/;"	t	struct:matplotlibcpp::detail::is_callable
+update_filter_samples	inc/mel_frame_generator.h	/^    inline void update_filter_samples(){$/;"	f	struct:mel_utils::mel_frame_generator
+value	inc/matplotlibcpp.h	/^			static constexpr bool value = type::value;$/;"	m	struct:matplotlibcpp::detail::is_callable_impl
+vq	inc/vq.h	/^namespace vq$/;"	n
+win	inc/mel_frame_generator.h	/^    double acc, win, del;$/;"	m	struct:mel_utils::triangle_windowed_sum
+window_frame	dsp_utils.cpp	/^void dsp_utils::window_frame(std::array<double, N>& fr, const Window_type& win_type)$/;"	f	class:dsp_utils
+window_generator	dsp_utils.cpp	/^window_generator::window_generator(int N)$/;"	f	class:window_generator
+window_generator	inc/dsp_utils.h	/^  struct window_generator$/;"	s	namespace:dsp_utils
+xlabel	inc/matplotlibcpp.h	/^	inline void xlabel(const std::string &str)$/;"	f	namespace:matplotlibcpp
+xlim	inc/matplotlibcpp.h	/^	inline double* xlim()$/;"	f	namespace:matplotlibcpp
+xlim	inc/matplotlibcpp.h	/^	void xlim(Numeric left, Numeric right)$/;"	f	namespace:matplotlibcpp
+ylabel	inc/matplotlibcpp.h	/^	inline void ylabel(const std::string &str)$/;"	f	namespace:matplotlibcpp
+ylim	inc/matplotlibcpp.h	/^	inline double* ylim()$/;"	f	namespace:matplotlibcpp
+ylim	inc/matplotlibcpp.h	/^	void ylim(Numeric left, Numeric right)$/;"	f	namespace:matplotlibcpp
+zt	Session.vim	/^normal! zt$/;"	m
+~_interpreter	inc/matplotlibcpp.h	/^			~_interpreter() {$/;"	f	struct:matplotlibcpp::detail::_interpreter

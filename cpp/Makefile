@@ -7,9 +7,9 @@ CPPFLAGS=-Wall -g3 -O0
 INC=-Iinc
 LDLIBS=-lgsl -lgslcblas -lm -lpython2.7 -lsndfile
 
-default: test
+default: pies 
 
-test: $(OBJS)
+pies: $(OBJS)
 	$(CC) $(OBJS) $(CPPFLAGS) $(LDLIBS)  -o $@
 
 $(OBJS): %.o : %.cpp %.h
@@ -18,5 +18,5 @@ $(OBJS): %.o : %.cpp %.h
 .PHONY: clean
 
 clean:
-	rm -rf *.o test
+	rm -rf *.o pies 
 

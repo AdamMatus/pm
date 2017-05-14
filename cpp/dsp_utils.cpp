@@ -45,9 +45,9 @@ void dsp_utils::power_fft_frame(std::array<double, 256ul>& fr)
                    std::plus<double>());
 }
 
-std::array<double, MFCC_NUM> dsp_utils::dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 4*30ul>& cos_table)
+std::array<double, K> dsp_utils::dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 4*30ul>& cos_table)
 {
-    std::array<double, MFCC_NUM> mfcc_frame;
+    std::array<double, K> mfcc_frame;
     std::generate(mfcc_frame.begin(), mfcc_frame.end(), mfcc_gen<K>(mel_frame, cos_table));
     return mfcc_frame;
 }

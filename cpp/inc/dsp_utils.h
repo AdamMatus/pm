@@ -91,7 +91,7 @@ const constexpr int MFCC_NUM = 13;
 
   void window_frame(std::array<double, 256ul>& fr, const Window_type& win_type);
   void power_fft_frame(std::array<double, 256ul>& fr);
-  std::array<double, 13ul> dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 30ul*4>& cos_table);
+  std::array<double, K> dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 30ul*4>& cos_table);
 };
 #endif
 
