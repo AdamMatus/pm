@@ -1,3 +1,6 @@
+#ifndef _PIES_
+#define _PIES_
+
 #pragma once
 
 #include <vector>
@@ -723,3 +726,4 @@ namespace matplotlibcpp {
 #endif
 
 }
+#endif

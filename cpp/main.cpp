@@ -12,19 +12,15 @@
 
 #include <cassert>
 
-#include "matplotlibcpp.h"
 
 #include "main.h"
 #include "dsp_utils.h"
 #include "mel_frame_generator.h"
+#include "vq.h"
 
-namespace mpl = matplotlibcpp;
 
 inline double mel(double f);
 inline double mel2freq(double f);
-
-template <typename It>
-void test_mpl(It start, It end, int start_index = 0);
 
 std::vector<double> load_wav(const char* file, SF_INFO &info);
 
@@ -61,7 +57,7 @@ int main (void)
   const auto delta_samplerate = samplerate/FFT_SIZE;
 
   //test
-  test_mpl(wav_probes.cbegin(), wav_probes.cend());
+  //test_mpl(wav_probes.cbegin(), wav_probes.cend());
   //test
 
   //construct matrix of N-size frames
@@ -90,7 +86,7 @@ int main (void)
   } 
 
   //test
-  test_mpl(mel_coefs_speech_frames.at(test_frame).cbegin(), mel_coefs_speech_frames.at(test_frame).cend(), 1);
+  //test_mpl(mel_coefs_speech_frames.at(test_frame).cbegin(), mel_coefs_speech_frames.at(test_frame).cend(), 1);
   //test
   
   //DCT - final MFCC
@@ -98,10 +94,6 @@ int main (void)
   std::array<double, 4*K> cos_table;
   std::generate(cos_table.begin(), cos_table.end(), cos_dct_gen(4*K));
 
-  //test
-  test_mpl(cos_table.begin(), cos_table.begin() + K, 0); 
-  //test
-  
   //computing dct
   std::vector<std::array<double, MFCC_NUM>> mfcc;
   for(const auto &mel_frame: mel_coefs_speech_frames)
@@ -110,25 +102,14 @@ int main (void)
   }
 
   //test
-  test_mpl(mfcc.at(test_frame).cbegin(), mfcc.at(test_frame).cend(), 1);
+  //test_mpl(mfcc.at(test_frame).cbegin(), mfcc.at(test_frame).cend(), 1);
   //test
+  //
+  vq::dummy_test();
 
   return 0;
 }
 
-template <typename It>
-void test_mpl(It start, It end, int start_index)
-{
-  typedef typename std::iterator_traits<It>::value_type T;
-
-  auto t = std::vector<T>(end-start);
-  std::iota(t.begin(), t.end(), start_index);
-
-  auto y = std::vector<T>(start, end);
-
-  mpl::plot(t, y);
-  mpl::show();
-}
 
 std::vector<double> load_wav(const char* file, SF_INFO&  sfinfo)
 {

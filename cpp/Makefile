@@ -1,7 +1,7 @@
 vpath %.cpp src/
 vpath %.h inc/
 
-OBJS= mel_frame_generator.o main.o dsp_utils.o  
+OBJS= mel_frame_generator.o main.o dsp_utils.o vq.o 
 CC=g++ -std=c++17
 CPPFLAGS=-Wall -g3 -O0
 INC=-Iinc
