@@ -18,8 +18,9 @@
 #include "dsp_utils.h"
 #include "mel_frame_generator.h"
 #include "vq.h"
-#include <speaker.h>
+#include "speaker.h"
 
+#include "pm_test.h"
 
 inline double mel(double f);
 inline double mel2freq(double f);
@@ -95,6 +96,7 @@ int main (int argc, char *argv[])
       mel_coefs_speech_frames.push_back(mel_utils::mel_frame(frame, samplerate));
     }
 
+
     //Log lCm (loudness)
     for(auto &mel_frame: mel_coefs_speech_frames)
     {
@@ -167,6 +169,8 @@ int main (int argc, char *argv[])
       mfcc.push_back(dsp_utils::dct_frame(mel_frame, cos_table));
     }
 
+//test_mpl(mfcc.at(50).begin(), mfcc.at(50).end());
+
     auto s1_test_code{ vq::lbg<16, K>(mfcc)};
 
     std::vector<double> euclidean_distances;
@@ -181,6 +185,8 @@ int main (int argc, char *argv[])
     }
     auto result = std::min_element(euclidean_distances.begin(), euclidean_distances.end());
     std::cout << "recognized speaker is: s" << std::distance(euclidean_distances.begin(), result) +1 << std::endl;
+
+    dsp_utils::numeric_verifiaction();
 
   return 0;
 }

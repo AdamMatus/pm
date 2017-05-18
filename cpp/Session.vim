@@ -2,11 +2,11 @@ let SessionLoad = 1
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
-inoremap <expr> <Down> pumvisible() ? "\" : "\<Down>"
-inoremap <expr> <S-Tab> pumvisible() ? "\" : "\<S-Tab>"
-inoremap <expr> <Up> pumvisible() ? "\" : "\<Up>"
-imap <Nul> <C-Space>
 inoremap <C-Space> 
+imap <Nul> <C-Space>
+inoremap <expr> <Up> pumvisible() ? "\" : "\<Up>"
+inoremap <expr> <S-Tab> pumvisible() ? "\" : "\<S-Tab>"
+inoremap <expr> <Down> pumvisible() ? "\" : "\<Down>"
 imap <F2> :call ToggleColumns()
 nmap  :call MoveTab(-2)
 nmap <NL> 
@@ -101,6 +101,7 @@ set viminfo='100,<50,s10,h,:100,/100
 set visualbell
 set whichwrap=b,s,<,>,[,]
 set wildmode=longest,list
+set window=48
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
@@ -109,13 +110,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 main.cpp
-badd +1 dsp_utils.cpp
-badd +1 inc/dsp_utils.h
+badd +185 main.cpp
+badd +51 dsp_utils.cpp
+badd +100 inc/dsp_utils.h
 badd +1 Makefile
 badd +1 inc/main.h
-badd +0 inc/mel_frame_generator.h
-badd +0 mel_frame_generator.cpp
+badd +1 inc/mel_frame_generator.h
+badd +1 mel_frame_generator.cpp
+badd +0 inc/vq.h
 argglobal
 silent! argdel *
 argadd main.cpp
@@ -129,8 +131,8 @@ set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
-exe '1resize ' . ((&lines * 4 + 27) / 55)
-exe '2resize ' . ((&lines * 47 + 27) / 55)
+exe '1resize ' . ((&lines * 4 + 24) / 49)
+exe '2resize ' . ((&lines * 41 + 24) / 49)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -323,7 +325,7 @@ setlocal nrformats=bin,octal,hex
 set number
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=ccomplete#Complete
+setlocal omnifunc=youcompleteme#OmniComplete
 setlocal path=
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -359,15 +361,137 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 14 - ((12 * winheight(0) + 23) / 47)
+let s:l = 50 - ((20 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-14
-normal! 0
+50
+normal! 021|
 wincmd w
-exe '1resize ' . ((&lines * 4 + 27) / 55)
-exe '2resize ' . ((&lines * 47 + 27) / 55)
+exe '1resize ' . ((&lines * 4 + 24) / 49)
+exe '2resize ' . ((&lines * 41 + 24) / 49)
+tabedit inc/vq.h
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal keymap=
+setlocal noarabic
+setlocal noautoindent
+setlocal backupcopy=
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal cindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal completefunc=youcompleteme#Complete
+setlocal nocopyindent
+setlocal cryptmethod=
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal expandtab
+if &filetype != 'cpp'
+setlocal filetype=cpp
+endif
+setlocal fixendofline
+set foldcolumn=2
+setlocal foldcolumn=2
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+set foldmethod=marker
+setlocal foldmethod=marker
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=croql
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=0
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispwords=
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,octal,hex
+set number
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=youcompleteme#OmniComplete
+setlocal path=
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal norelativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != 'cpp'
+setlocal syntax=cpp
+endif
+setlocal tabstop=2
+setlocal tagcase=
+setlocal tags=
+setlocal textwidth=80
+setlocal thesaurus=
+setlocal noundofile
+setlocal undolevels=-123456
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal wrap
+setlocal wrapmargin=0
+let s:l = 121 - ((29 * winheight(0) + 23) / 47)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+121
+normal! 05|
 tabedit inc/dsp_utils.h
 set splitbelow splitright
 wincmd _ | wincmd |
@@ -378,8 +502,8 @@ set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
-exe '1resize ' . ((&lines * 26 + 27) / 55)
-exe '2resize ' . ((&lines * 25 + 27) / 55)
+exe '1resize ' . ((&lines * 27 + 24) / 49)
+exe '2resize ' . ((&lines * 18 + 24) / 49)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -490,12 +614,12 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 3 - ((2 * winheight(0) + 13) / 26)
+let s:l = 22 - ((6 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-3
-normal! 0
+22
+normal! 021|
 wincmd w
 argglobal
 edit dsp_utils.cpp
@@ -572,7 +696,7 @@ setlocal nrformats=bin,octal,hex
 set number
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=ccomplete#Complete
+setlocal omnifunc=youcompleteme#OmniComplete
 setlocal path=
 setlocal nopreserveindent
 setlocal nopreviewwindow
@@ -608,15 +732,15 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 12) / 25)
+let s:l = 17 - ((7 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+17
 normal! 0
 wincmd w
-exe '1resize ' . ((&lines * 26 + 27) / 55)
-exe '2resize ' . ((&lines * 25 + 27) / 55)
+exe '1resize ' . ((&lines * 27 + 24) / 49)
+exe '2resize ' . ((&lines * 18 + 24) / 49)
 tabedit mel_frame_generator.cpp
 set splitbelow splitright
 wincmd _ | wincmd |
@@ -627,8 +751,8 @@ set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
-exe '1resize ' . ((&lines * 26 + 27) / 55)
-exe '2resize ' . ((&lines * 25 + 27) / 55)
+exe '1resize ' . ((&lines * 27 + 24) / 49)
+exe '2resize ' . ((&lines * 18 + 24) / 49)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -739,12 +863,12 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 13) / 26)
+let s:l = 2 - ((1 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+2
+normal! 020|
 wincmd w
 argglobal
 edit inc/mel_frame_generator.h
@@ -857,15 +981,15 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 12) / 25)
+let s:l = 2 - ((1 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+2
 normal! 0
 wincmd w
-exe '1resize ' . ((&lines * 26 + 27) / 55)
-exe '2resize ' . ((&lines * 25 + 27) / 55)
+exe '1resize ' . ((&lines * 27 + 24) / 49)
+exe '2resize ' . ((&lines * 18 + 24) / 49)
 tabedit Makefile
 set splitbelow splitright
 set nosplitbelow
@@ -982,7 +1106,7 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 26) / 53)
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt

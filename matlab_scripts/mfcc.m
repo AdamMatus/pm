@@ -33,9 +33,6 @@ imagesc(blk);
 % f is now power spectrum
 f = abs(fft(blk)).^2;
 
-%
-imagesc(log10(f));
-
 % Obtaining the mel-spectrum
 p = 30; % number of mel filtersbanks
 n2 = 1 + floor(N/2);
@@ -51,7 +48,7 @@ end
 imagesc(ms);
 
 % Last step, compute mel-frequency cepstrum coefficients
-c = dct(log10(ms));
+c = idct(log10(ms));
 c(1,:) = [];    % exclude 0'th order cepstral coefficient
 
 %

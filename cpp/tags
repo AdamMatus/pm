@@ -38,6 +38,8 @@ BUFFER_LEN	main.cpp	/^const constexpr int BUFFER_LEN = 1024;$/;"	v
 BUFFER_LEN	mel_frame_generator.cpp	/^const constexpr int BUFFER_LEN = 1024;$/;"	v
 CC	Makefile	/^CC=g++ -std=c++17$/;"	m
 CPPFLAGS	Makefile	/^CPPFLAGS=-Wall -g3 -O0$/;"	m
+Code	inc/speaker.h	/^      Code(const std::string& text, codebook_array<C,K>&& code)$/;"	f	struct:speaker::Code
+Code	inc/speaker.h	/^    struct Code{$/;"	s	class:speaker
 Derived	inc/matplotlibcpp.h	/^			struct Derived : T, Fallback { };$/;"	s	struct:matplotlibcpp::detail::is_callable_impl
 DirectoryOfThisScript	.ycm_extra_conf.py	/^def DirectoryOfThisScript():$/;"	f
 FFT_SIZE	inc/dsp_utils.h	/^const constexpr int FFT_SIZE = 256; $/;"	m	namespace:dsp_utils
@@ -77,6 +79,7 @@ PyString_FromString	inc/matplotlibcpp.h	26;"	d
 SOURCE_EXTENSIONS	.ycm_extra_conf.py	/^SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', '.m', '.mm' ]$/;"	v
 STRINGIFY	inc/matplotlibcpp.h	19;"	d
 STRINGIFY_	inc/matplotlibcpp.h	18;"	d
+S_FILES_NUM	main.cpp	/^const constexpr int S_FILES_NUM = 10;$/;"	v
 SessionLoad	Session.vim	/^let SessionLoad = 1$/;"	v
 Window_type	inc/dsp_utils.h	/^  enum class Window_type$/;"	c	namespace:dsp_utils
 \/	Session.vim	/^nmap \\\/ :nohl$/;"	m
@@ -108,16 +111,20 @@ _MAIN_H_	inc/main.h	2;"	d
 _MEL_FRAME_GENERATOR_	inc/mel_frame_generator.h	2;"	d
 _PIES_	inc/matplotlibcpp.h	2;"	d
 _PM_TEST_	inc/pm_test.h	2;"	d
+_SPEAKER_H_	inc/speaker.h	2;"	d
 _VQ_H_	inc/vq.h	2;"	d
 _interpreter	inc/matplotlibcpp.h	/^			_interpreter() {$/;"	f	struct:matplotlibcpp::detail::_interpreter
 _interpreter	inc/matplotlibcpp.h	/^		struct _interpreter {$/;"	s	namespace:matplotlibcpp::detail
 acc	inc/mel_frame_generator.h	/^    double acc, win, del;$/;"	m	struct:mel_utils::triangle_windowed_sum
+add_code	inc/speaker.h	/^    void add_code(speaker::Code&& code)$/;"	f	class:speaker
 annotate	inc/matplotlibcpp.h	/^	bool annotate(std::string annotation, double x, double y)$/;"	f	namespace:matplotlibcpp
 arrK	inc/mel_frame_generator.h	/^    typedef std::array<double,K> arrK;$/;"	t	struct:mel_utils::mel_frame_generator
 arrN	inc/mel_frame_generator.h	/^    typedef std::array<double,N> arrN;$/;"	t	struct:mel_utils::mel_frame_generator
 axis	inc/matplotlibcpp.h	/^	inline void axis(const std::string &axisstr)$/;"	f	namespace:matplotlibcpp
 cen	inc/mel_frame_generator.h	/^    const int cen, end;$/;"	m	struct:mel_utils::triangle_windowed_sum
+centroids	inc/speaker.h	/^      codebook_array<C,K> centroids;$/;"	m	struct:speaker::Code
 clf	inc/matplotlibcpp.h	/^	inline void clf() {$/;"	f	namespace:matplotlibcpp
+codebook	inc/speaker.h	/^    std::vector<Code> codebook;$/;"	m	class:speaker
 compilation_database_folder	.ycm_extra_conf.py	/^compilation_database_folder = ''$/;"	v
 cos	inc/dsp_utils.h	/^    const std::array<double, 4*K>& cos;$/;"	m	struct:dsp_utils::mfcc_gen
 cos_dct_gen	inc/dsp_utils.h	/^    cos_dct_gen(int _K): K{_K}, i{0}$/;"	f	struct:dsp_utils::cos_dct_gen
@@ -126,11 +133,11 @@ cos_dct_gen	main.cpp	/^  cos_dct_gen(int _K): K{_K}, i{0}$/;"	f	struct:cos_dct_g
 cos_dct_gen	main.cpp	/^struct cos_dct_gen$/;"	s	file:
 database	.ycm_extra_conf.py	/^  database = None$/;"	v
 database	.ycm_extra_conf.py	/^  database = ycm_core.CompilationDatabase( compilation_database_folder )$/;"	v
-dct_frame	dsp_utils.cpp	/^std::array<double, MFCC_NUM> dsp_utils::dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 4*30ul>& cos_table)$/;"	f	class:dsp_utils
+dct_frame	dsp_utils.cpp	/^std::array<double, K> dsp_utils::dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 4*30ul>& cos_table)$/;"	f	class:dsp_utils
 del	inc/mel_frame_generator.h	/^    double acc, win, del;$/;"	m	struct:mel_utils::triangle_windowed_sum
 delta_mel	inc/mel_frame_generator.h	/^    const double fs, mel_max, delta_mel;$/;"	m	struct:mel_utils::mel_frame_generator
 detail	inc/matplotlibcpp.h	/^	namespace detail {$/;"	n	namespace:matplotlibcpp
-dis_eu	vq.cpp	/^double vq::dis_eu(const std::array<double, K>& v1, const std::array<double, K>& v2)$/;"	f	class:vq
+dis_eu	inc/vq.h	/^  double dis_eu(const std::array<double, K>& v1, const std::array<double, K>& v2)$/;"	f	namespace:vq
 dsp_utils	inc/dsp_utils.h	/^namespace dsp_utils{$/;"	n
 dtype	inc/matplotlibcpp.h	/^			typedef decltype(&Fallback::operator()) dtype;$/;"	t	struct:matplotlibcpp::detail::is_callable_impl
 dummy_test	vq.cpp	/^void vq::dummy_test()$/;"	f	class:vq
@@ -163,10 +170,10 @@ is_callable	inc/matplotlibcpp.h	/^		struct is_callable$/;"	s	namespace:matplotli
 is_callable_impl	inc/matplotlibcpp.h	/^		struct is_callable_impl<false, T>$/;"	s	namespace:matplotlibcpp::detail
 is_callable_impl	inc/matplotlibcpp.h	/^		struct is_callable_impl<true, T>$/;"	s	namespace:matplotlibcpp::detail
 k	inc/mel_frame_generator.h	/^    int k;$/;"	m	struct:mel_utils::mel_frame_generator
-lbg	vq.cpp	/^std::array<std::array<double, K>, C> vq::lbg(const std::vector<std::array<double, K>>& acoustic_vectors)  $/;"	f	class:vq
+lbg	inc/vq.h	/^  std::array<std::array<double, K>, C> lbg(const std::vector<std::array<double, K>>& acoustic_vectors)  $/;"	f	namespace:vq
 legend	inc/matplotlibcpp.h	/^	inline void legend()$/;"	f	namespace:matplotlibcpp
 load_wav	main.cpp	/^std::vector<double> load_wav(const char* file, SF_INFO&  sfinfo)$/;"	f
-main	main.cpp	/^int main (void)$/;"	f
+main	main.cpp	/^int main (int argc, char *argv[])$/;"	f
 matplotlibcpp	inc/matplotlibcpp.h	/^namespace matplotlibcpp {$/;"	n
 mel	inc/dsp_utils.h	/^    const std::array<double, K>& mel;$/;"	m	struct:dsp_utils::mfcc_gen
 mel	mel_frame_generator.cpp	/^inline double mel_utils::mel(double f)$/;"	f	class:mel_utils
@@ -179,12 +186,15 @@ mel_utils	inc/mel_frame_generator.h	/^namespace mel_utils$/;"	n
 mfcc_gen	inc/dsp_utils.h	/^    mfcc_gen(const std::array<double, K>& mel_frame, const std::array<double, 4*K>& cos_dct_table)$/;"	f	struct:dsp_utils::mfcc_gen
 mfcc_gen	inc/dsp_utils.h	/^  struct mfcc_gen$/;"	s	namespace:dsp_utils
 n	inc/dsp_utils.h	/^    int n; $/;"	m	struct:dsp_utils::mfcc_gen
+name	inc/speaker.h	/^      std::string name;$/;"	m	struct:speaker::speaker_info
+name	inc/speaker.h	/^    std::string name() {return speaker_info.name;};$/;"	f	class:speaker
 named_hist	inc/matplotlibcpp.h	/^	bool named_hist(std::string label,const std::vector<Numeric>& y, long bins=10, std::string color="b", double alpha=1.0)$/;"	f	namespace:matplotlibcpp
 named_plot	inc/matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<Numeric>& x, const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
 named_plot	inc/matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<Numeric>& y, const std::string& format = "")$/;"	f	namespace:matplotlibcpp
 named_plot	inc/matplotlibcpp.h	/^	bool named_plot(const std::string& name, const std::vector<double>& x, const std::vector<double>& y, const std::string& format = "") {$/;"	f	namespace:matplotlibcpp
-operator ()	dsp_utils.cpp	/^double hamming_generator::operator()(double x) {$/;"	f	class:hamming_generator
-operator ()	dsp_utils.cpp	/^double hann_generator::operator()(double x) {$/;"	f	class:hann_generator
+numeric_verifiaction	dsp_utils.cpp	/^void dsp_utils::numeric_verifiaction()$/;"	f	class:dsp_utils
+operator ()	dsp_utils.cpp	/^void hamming_generator::operator()(double x) {$/;"	f	class:hamming_generator
+operator ()	dsp_utils.cpp	/^void hann_generator::operator()(double x) {$/;"	f	class:hann_generator
 operator ()	inc/dsp_utils.h	/^    double operator()() {return 1.0;}; \/\/rectngle window$/;"	f	struct:dsp_utils::window_generator
 operator ()	inc/dsp_utils.h	/^    double operator()(){$/;"	f	struct:dsp_utils::cos_dct_gen
 operator ()	inc/dsp_utils.h	/^    double operator()(){$/;"	f	struct:dsp_utils::mfcc_gen
@@ -233,12 +243,19 @@ s_python_function_xlabel	inc/matplotlibcpp.h	/^			PyObject *s_python_function_xl
 s_python_function_xlim	inc/matplotlibcpp.h	/^			PyObject *s_python_function_xlim;$/;"	m	struct:matplotlibcpp::detail::_interpreter
 s_python_function_ylabel	inc/matplotlibcpp.h	/^			PyObject *s_python_function_ylabel;$/;"	m	struct:matplotlibcpp::detail::_interpreter
 s_python_function_ylim	inc/matplotlibcpp.h	/^			PyObject *s_python_function_ylim;$/;"	m	struct:matplotlibcpp::detail::_interpreter
+s_wav_files_gen	main.cpp	/^std::string s_wav_files_gen(int i)$/;"	f
 sample	inc/mel_frame_generator.h	/^    inline int sample(int inc){$/;"	f	struct:mel_utils::mel_frame_generator
 save	inc/matplotlibcpp.h	/^	inline void save(const std::string& filename)$/;"	f	namespace:matplotlibcpp
 show	inc/matplotlibcpp.h	/^	inline void show()$/;"	f	namespace:matplotlibcpp
 size	inc/dsp_utils.h	/^    const int size;$/;"	m	struct:dsp_utils::window_generator
+speaker	inc/speaker.h	/^    speaker(const std::string& name)$/;"	f	class:speaker
+speaker	inc/speaker.h	/^class speaker {$/;"	c
+speaker_info	inc/speaker.h	/^      speaker_info(const std::string& name)$/;"	f	struct:speaker::speaker_info
+speaker_info	inc/speaker.h	/^    struct speaker_info{$/;"	s	class:speaker
+speaker_info	inc/speaker.h	/^    } speaker_info;$/;"	m	class:speaker	typeref:struct:speaker::speaker_info
 subplot	inc/matplotlibcpp.h	/^	inline void subplot(long nrows, long ncols, long plot_number)$/;"	f	namespace:matplotlibcpp
 test_mpl	inc/pm_test.h	/^void test_mpl(It start, It end, int start_index =0)$/;"	f
+text	inc/speaker.h	/^      std::string text;$/;"	m	struct:speaker::Code
 title	inc/matplotlibcpp.h	/^	inline void title(const std::string &titlestr)$/;"	f	namespace:matplotlibcpp
 triangle_windowed_sum	inc/mel_frame_generator.h	/^    triangle_windowed_sum(int f_center, int f_end)$/;"	f	struct:mel_utils::triangle_windowed_sum
 triangle_windowed_sum	inc/mel_frame_generator.h	/^  struct triangle_windowed_sum$/;"	s	namespace:mel_utils

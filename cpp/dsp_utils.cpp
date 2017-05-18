@@ -15,12 +15,12 @@ hann_generator::hann_generator(int N)
 hamming_generator::hamming_generator(int N)
   : window_generator(N) {}
 
-double hann_generator::operator()(double x) {
-      return x*(0.5*(1.0 - gsl_sf_cos(2.0*M_PI*(index++)/(size -1))));
+void hann_generator::operator()(double& x) {
+      x = x*(0.5*(1.0 - gsl_sf_cos(2.0*M_PI*(index++)/(size -1))));
 }
 
-double hamming_generator::operator()(double x) {
-      return x*(0.54 - 0.46*gsl_sf_cos(2.0*M_PI*(index++)/(size -1)));
+void hamming_generator::operator()(double& x) {
+      x = x*(0.54 - 0.46*gsl_sf_cos(2.0*M_PI*(index++)/(size -1)));
 }
 
 void dsp_utils::window_frame(std::array<double, N>& fr, const Window_type& win_type)
@@ -52,3 +52,21 @@ std::array<double, K> dsp_utils::dct_frame(const std::array<double, 30ul>& mel_f
     return mfcc_frame;
 }
 
+#include "test_inc/speak_frame.h"
+#include "inc/mel_frame_generator.h"
+//#include "inc/pm_test.h"
+void dsp_utils::numeric_verifiaction()
+{
+  dsp_utils::window_frame(speak_test_frame, dsp_utils::Window_type::hamming_generator);
+//test_mpl(speak_test_frame.begin(), speak_test_frame.end());
+  dsp_utils::power_fft_frame(speak_test_frame);
+//test_mpl(speak_test_frame.begin(), speak_test_frame.end());
+  auto mfcc = mel_utils::mel_frame(speak_test_frame, 12500);
+//test_mpl(mfcc.begin(), mfcc.end());
+  std::for_each(mfcc.begin(), mfcc.end(), [](double &val){val = std::log10(val); });
+  const auto K = 30;
+  std::array<double, 4*K> cos_table;
+  std::generate(cos_table.begin(), cos_table.end(), cos_dct_gen(4*K));
+  mfcc = dsp_utils::dct_frame(mfcc, cos_table);
+//test_mpl(mfcc.begin(), mfcc.end());
+}

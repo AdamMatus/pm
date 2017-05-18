@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <array>
+#include <cmath>
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_trig.h>
@@ -40,13 +41,13 @@ const constexpr int MFCC_NUM = 13;
   struct hann_generator: public window_generator
   {
     hann_generator(int N);
-    double operator()(double x);
+    void operator()(double& x);
   };
 
   struct hamming_generator: public window_generator
   {
     hamming_generator(int N);
-    double operator()(double x);
+    void operator()(double& x);
   };
 
   struct cos_dct_gen
@@ -73,11 +74,11 @@ const constexpr int MFCC_NUM = 13;
       double mfcc;
       auto k = 0;
       {// for k=0
-        mfcc = (1.0/K)*mel[k];
+        mfcc = (std::sqrt(K/2.0))*(1.0/K)*mel[k];
       }
       for(k=1; k<K; ++k)//exclude mean val
       {
-        mfcc+=(2.0/K)*mel[k]*cos[(k*(2*n+1))%(4*K)]; 
+        mfcc+=(std::sqrt(K/2.0))*(2.0/K)*mel[k]*cos[(k*(2*n+1))%(4*K)]; 
       }
       ++n;
       return mfcc; 
@@ -92,6 +93,8 @@ const constexpr int MFCC_NUM = 13;
   void window_frame(std::array<double, 256ul>& fr, const Window_type& win_type);
   void power_fft_frame(std::array<double, 256ul>& fr);
   std::array<double, K> dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 30ul*4>& cos_table);
+
+  void numeric_verifiaction(); 
 };
 #endif
 

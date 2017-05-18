@@ -104,7 +104,8 @@ namespace vq
         {
           for(auto && c: *cen_iter)
           {
-            c /= owner_ind_count.at(cen_index);
+            auto count = owner_ind_count.at(cen_index);
+            c /= count!=0?count:1;
           }
         }
 
