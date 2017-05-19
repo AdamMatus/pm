@@ -22,6 +22,7 @@
 
 #include "pm_test.h"
 
+
 inline double mel(double f);
 inline double mel2freq(double f);
 
@@ -171,17 +172,11 @@ int main (int argc, char *argv[])
 
 //test_mpl(mfcc.at(50).begin(), mfcc.at(50).end());
 
-    auto s1_test_code{ vq::lbg<16, K>(mfcc)};
-
     std::vector<double> euclidean_distances;
     for(const auto& speaker: speakers)
     {
-      double total_distance = 0;
-      for(auto i = 0; i < 16; ++i)
-      {
-        total_distance += vq::dis_eu<K>(speaker.codebook.at(0).centroids.at(i), s1_test_code.at(i));
-      }
-      euclidean_distances.push_back(total_distance); 
+      double distortion = vq::compute_distortion<16, 30>(speaker.codebook.at(0).centroids, mfcc);
+      euclidean_distances.push_back(distortion); 
     }
     auto result = std::min_element(euclidean_distances.begin(), euclidean_distances.end());
     std::cout << "recognized speaker is: s" << std::distance(euclidean_distances.begin(), result) +1 << std::endl;

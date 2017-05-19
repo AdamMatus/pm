@@ -19,7 +19,7 @@ class speaker {
     struct Code{
       Code(const std::string& text, codebook_array<C,K>&& code)
         : centroids{code}, text{text} {}
-      codebook_array<C,K> centroids;
+      std::array<std::array<double, K>, C> centroids;
       std::string text;
     };
 

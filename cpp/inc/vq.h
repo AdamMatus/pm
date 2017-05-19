@@ -29,6 +29,25 @@ namespace vq
   }
 
   template<int C, int K>
+  double compute_distortion(const std::array<std::array<double, K>, 16>& code,
+                            const std::vector<std::array<double, K>>& acoustic_vectors)
+  {
+    double distortion = 0;
+    for(const auto& acc_vec: acoustic_vectors)
+    {
+      auto acc_vec_dist = std::numeric_limits<double>::max();
+      for(const auto& centroid: code)
+      {
+        auto distance = vq::dis_eu<K>(centroid, acc_vec);
+        if(distance < acc_vec_dist)
+          acc_vec_dist = distance;
+      }
+      distortion += acc_vec_dist;
+    }
+    return distortion;    
+  }
+
+  template<int C, int K>
   std::array<std::array<double, K>, C> lbg(const std::vector<std::array<double, K>>& acoustic_vectors)  
   {
     codebook_array<C, K> code;
