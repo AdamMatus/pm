@@ -1,0 +1,3 @@
+nickname: s4
+gender: female
+auxinfo: 

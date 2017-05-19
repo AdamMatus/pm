@@ -1,0 +1,3 @@
+nickname: Adam Matusiak
+gender: male
+auxinfo: Mieszkanie Wita Stwosza, proba2

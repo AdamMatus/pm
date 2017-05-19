@@ -1,0 +1,3 @@
+nickname: Aciec Matusiak
+gender: male
+auxinfo: mieszkanie W³oc³awek
