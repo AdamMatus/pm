@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <array>
 #include <cmath>
+#include <vector>
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_trig.h>
@@ -20,6 +21,20 @@ const constexpr int M = FRAME_STEP;
 const constexpr int MELL_FILTER_BANKS = 30;
 const constexpr int K = MELL_FILTER_BANKS;
 const constexpr int MFCC_NUM = 13;
+
+  template <int N>
+  std::vector<std::array<double, N>> frame_signal(const std::vector<double> wav_probes, int M)
+  {
+    std::vector<std::array<double, N>> speech_frames;
+    for(int signal_offset = 0; signal_offset + N < static_cast<int>(wav_probes.size()); signal_offset += M)
+    {
+      auto frame = std::array<double, N>();
+      auto start_pos = wav_probes.cbegin() + signal_offset;
+      std::copy(start_pos, start_pos + N, frame.begin());
+      speech_frames.push_back(std::move(frame));
+    }
+    return speech_frames;
+  }
 
   template <int N>
   using Frame = typename std::array<double, N>;
@@ -95,6 +110,8 @@ const constexpr int MFCC_NUM = 13;
   std::array<double, K> dct_frame(const std::array<double, 30ul>& mel_frame, const std::array<double, 30ul*4>& cos_table);
 
   void numeric_verifiaction(); 
+
+
 };
 #endif
 

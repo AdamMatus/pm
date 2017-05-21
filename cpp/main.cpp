@@ -13,7 +13,6 @@
 
 #include <cassert>
 
-
 #include "main.h"
 #include "dsp_utils.h"
 #include "mel_frame_generator.h"
@@ -22,24 +21,7 @@
 
 #include "pm_test.h"
 
-
-inline double mel(double f);
-inline double mel2freq(double f);
-
 std::vector<double> load_wav(const char* file, SF_INFO &info);
-
-struct cos_dct_gen
-{
-  cos_dct_gen(int _K): K{_K}, i{0}
-  {}
-
-  double operator()(){
-    double c = gsl_sf_cos(2*M_PI*static_cast<double>(i)/K);
-    ++i;
-    return c;
-  }
-  int K, i;
-};
 
 const constexpr int BUFFER_LEN = 1024;
 const constexpr int FFT_SIZE = 256; 
@@ -63,10 +45,9 @@ std::string s_wav_files_gen(int i)
   return file;
 }
 
-const constexpr int S_FILES_NUM = 10;
+const constexpr int S_FILES_NUM = 16;
 int main (int argc, char *argv[])
 {
-
   std::vector<speaker<16, K>> speakers; 
   for(int actual_speaker=0; actual_speaker<S_FILES_NUM; ++actual_speaker)
   {
@@ -76,46 +57,9 @@ int main (int argc, char *argv[])
     std::cout << "training " <<s_wav_files_gen(actual_speaker+1).c_str() << "...\n";
     sf_format_check(&wavinfo); 
     const auto samplerate = wavinfo.samplerate;
-    //const auto delta_samplerate = samplerate/FFT_SIZE;
 
-    //construct matrix of N-size frames
-    //constexpr auto test_frame = 50;
-    std::vector<std::array<double, N>> speech_frames;
-    for(int signal_offset = 0; signal_offset + N < static_cast<int>(wav_probes.size()); signal_offset += M)
-    {
-      auto frame = std::array<double, N>();
-      auto start_pos = wav_probes.cbegin() + signal_offset;
-      std::copy(start_pos, start_pos + N, frame.begin());
-      speech_frames.push_back(std::move(frame));
-    }
-
-    std::vector<std::array<double, K>> mel_coefs_speech_frames;
-    for(auto &frame: speech_frames)
-    {
-      dsp_utils::window_frame(frame, dsp_utils::Window_type::hamming_generator);
-      dsp_utils::power_fft_frame(frame);
-      mel_coefs_speech_frames.push_back(mel_utils::mel_frame(frame, samplerate));
-    }
-
-
-    //Log lCm (loudness)
-    for(auto &mel_frame: mel_coefs_speech_frames)
-    {
-      std::for_each(mel_frame.begin(), mel_frame.end(), [](double &val){val = std::log10(val); });
-    } 
-    
-    //DCT - final MFCC
-    //cos table
-    std::array<double, 4*K> cos_table;
-    std::generate(cos_table.begin(), cos_table.end(), cos_dct_gen(4*K));
-
-    //computing dct
-    std::vector<std::array<double, K>> mfcc;
-    for(const auto &mel_frame: mel_coefs_speech_frames)
-    {
-      mfcc.push_back(dsp_utils::dct_frame(mel_frame, cos_table));
-    }
-
+    auto speech_frames {dsp_utils::frame_signal<N>(wav_probes, M)};
+    auto mfcc {mel_utils::mfcc_extraction<256, 30>(std::move(speech_frames), samplerate)};
     auto s1_zero_code{ vq::lbg<16, K>(mfcc)};
 
     std::string name("sx");
@@ -124,64 +68,27 @@ int main (int argc, char *argv[])
     speakers.back().add_code(speaker<16, K>::Code{"zero", std::move(s1_zero_code)});
   }
 
-    //load single test wav
-    SF_INFO wavinfo;
-    auto fi = argv[argc-1];
-    auto wav_probes = load_wav(fi, wavinfo);
-    std::cout << fi  << "...\t";
-    sf_format_check(&wavinfo); 
-    const auto samplerate = wavinfo.samplerate;
-    //const auto delta_samplerate = samplerate/FFT_SIZE;
+  //load single test wav
+  SF_INFO wavinfo;
+  auto fi = argv[argc-1];
+  auto wav_probes = load_wav(fi, wavinfo);
+  std::cout << fi  << "...\t";
+  sf_format_check(&wavinfo); 
+  const auto samplerate = wavinfo.samplerate;
 
-    //construct matrix of N-size frames
-    //constexpr auto test_frame = 50;
-    std::vector<std::array<double, N>> speech_frames;
-    for(int signal_offset = 0; signal_offset + N < static_cast<int>(wav_probes.size()); signal_offset += M)
-    {
-      auto frame = std::array<double, N>();
-      auto start_pos = wav_probes.cbegin() + signal_offset;
-      std::copy(start_pos, start_pos + N, frame.begin());
-      speech_frames.push_back(std::move(frame));
-    }
+  auto speech_frames {dsp_utils::frame_signal<N>(wav_probes, M)};
+  auto mfcc {mel_utils::mfcc_extraction<256, 30>(std::move(speech_frames), samplerate)};
 
-    std::vector<std::array<double, K>> mel_coefs_speech_frames;
-    for(auto &frame: speech_frames)
-    {
-      dsp_utils::window_frame(frame, dsp_utils::Window_type::hamming_generator);
-      dsp_utils::power_fft_frame(frame);
-      mel_coefs_speech_frames.push_back(mel_utils::mel_frame(frame, samplerate));
-    }
+  std::vector<double> euclidean_distances;
+  for(const auto& speaker: speakers)
+  {
+    double distortion = vq::compute_distortion<16, 30>(speaker.codebook.at(0).centroids, mfcc);
+    euclidean_distances.push_back(distortion); 
+  }
+  auto result = std::min_element(euclidean_distances.begin(), euclidean_distances.end());
+  std::cout << "recognized speaker is: s" << std::distance(euclidean_distances.begin(), result) +1 << std::endl;
 
-    //Log lCm (loudness)
-    for(auto &mel_frame: mel_coefs_speech_frames)
-    {
-      std::for_each(mel_frame.begin(), mel_frame.end(), [](double &val){val = std::log10(val); });
-    } 
-    
-    //DCT - final MFCC
-    //cos table
-    std::array<double, 4*K> cos_table;
-    std::generate(cos_table.begin(), cos_table.end(), cos_dct_gen(4*K));
-
-    //computing dct
-    std::vector<std::array<double, K>> mfcc;
-    for(const auto &mel_frame: mel_coefs_speech_frames)
-    {
-      mfcc.push_back(dsp_utils::dct_frame(mel_frame, cos_table));
-    }
-
-//test_mpl(mfcc.at(50).begin(), mfcc.at(50).end());
-
-    std::vector<double> euclidean_distances;
-    for(const auto& speaker: speakers)
-    {
-      double distortion = vq::compute_distortion<16, 30>(speaker.codebook.at(0).centroids, mfcc);
-      euclidean_distances.push_back(distortion); 
-    }
-    auto result = std::min_element(euclidean_distances.begin(), euclidean_distances.end());
-    std::cout << "recognized speaker is: s" << std::distance(euclidean_distances.begin(), result) +1 << std::endl;
-
-    dsp_utils::numeric_verifiaction();
+  dsp_utils::numeric_verifiaction();
 
   return 0;
 }

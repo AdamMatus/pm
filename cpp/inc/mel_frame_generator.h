@@ -4,6 +4,8 @@
 #include <array>
 #include <algorithm>
 
+#include "dsp_utils.h"
+
 namespace mel_utils
 {
 
@@ -74,6 +76,32 @@ namespace mel_utils
 
   std::array<double, 30> mel_frame(const std::array<double, 256ul>& fr, int samplerate);
 
+  template <int N, int K>
+  std::vector<std::array<double, K>> mfcc_extraction(std::vector<std::array<double, N>>&& speech_frames, int samplerate)
+  {
+    std::vector<std::array<double, K>> mel_coefs_speech_frames;
+    for(auto &frame: speech_frames)
+    {
+      dsp_utils::window_frame(frame, dsp_utils::Window_type::hamming_generator);
+      dsp_utils::power_fft_frame(frame);
+      mel_coefs_speech_frames.push_back(mel_frame(frame, samplerate));
+    }
+
+    for(auto &mel_frame: mel_coefs_speech_frames)
+    {
+      std::for_each(mel_frame.begin(), mel_frame.end(), [](double &val){val = std::log10(val); });
+    } 
+    
+    std::array<double, 4*K> cos_table;
+    std::generate(cos_table.begin(), cos_table.end(), dsp_utils::cos_dct_gen(4*K));
+
+    std::vector<std::array<double, K>> mfcc;
+    for(const auto &mel_frame: mel_coefs_speech_frames)
+    {
+      mfcc.push_back(dsp_utils::dct_frame(mel_frame, cos_table));
+    }
+    return mfcc;
+  }
 };
 
 #endif
