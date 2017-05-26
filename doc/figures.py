@@ -88,3 +88,54 @@ y = mat['y']
 ax.plot(t,y)
 ax.set_xlabel('Czestotliwosc [Hz]');
 savefig('melfb')
+
+# DTW
+#
+import numpy as np
+x = np.arange(0, 6.28, 0.1)
+y = np.cos(x)
+
+fig, ax = newfig(1)
+
+ax0 = plt.subplot2grid((3,3), (0, 0), rowspan=2)
+ax0.plot(y, x)
+ax0.set_ylim([0, 6.28])
+ax0.axes.get_xaxis().set_ticks([])
+ax0.set_title('Sygnal wzorcowy')
+
+ax1 = plt.subplot2grid((3,3), (0, 1), rowspan=2, colspan=2)
+ax1.plot([0,0.33*3.14],[0,3.14],'g', label='fun 1')
+ax1.plot([0.33*3.14,3.14],[3.14,6.28],'g')
+ax1.plot([0,(3.0/2)*3.14],[0,6.28],'r', label='fun 2')
+ax1.plot([0,6.28],[0,6.28],'k', label='fun 3')
+ax1.plot([3.14, 6.28],[0,6.28],'b', label='fun 4')
+ax1.set_ylim([0, 6.28])
+ax1.set_xlim([0, 6.28])
+ax1.set_title('Trajektorie najmniejszej zagregowanej odleglosci')
+ax1.set_xlabel('t[s] - sygnal prownywany')
+ax1.set_ylabel('t[s] - sygnal wzorcowy')
+
+handles, labels = ax1.get_legend_handles_labels()
+ax1.legend(handles, labels, loc=2)
+
+ax2 = plt.subplot2grid((3,3), (2, 1), colspan=2)
+x = np.arange(0, 1.5*3.14, 0.1)
+y = -np.cos(1.3*x)
+ax2.plot(x,y,'r');
+x = np.arange(3.14, 6.28, 0.1)
+y = -np.cos(2*x)
+ax2.plot(x,y,'b');
+x = np.arange(0, 6.28, 0.1)
+y = -np.cos(x)
+ax2.plot(x,y,'k');
+x = np.arange(0, (1.0/6)*6.28, 0.1)
+y = -np.cos(3*x)
+ax2.plot(x,y,'g');
+x = np.arange((1.0/6)*6.28, 4*3.14/3, 0.1)
+y = -np.cos((x)+(2.0/3)*3.14)
+ax2.plot(x,y,'g');
+ax2.set_xlim([0, 6.28])
+ax2.set_title('Sygnaly porownywane')
+
+plt.tight_layout()
+savefig('dtw')
