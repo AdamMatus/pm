@@ -257,15 +257,16 @@ Uzyskane współczynniki MFCC noszą nazwę wektora akustycznego (\textit{ang. a
 
 Procesy rozpoznawania mówcy, a w szczególności weryfikacji mówcy są podklasą szerszego zagadnienia znanego z techniki jako dopasowania wzorca (\textit{ang. pattern matching}). W ogólności celem przeprowadzonego zadania dopasowania wzorca jest określenie czy w dostarczonej na wejściu systemu sekwencji danych można znaleźć pewien znany wzorzec oraz określenie ilościowej relacji stopnia podobieństwa. W rozpatrywanym w tej pracy zadaniu weryfikacji mówcy oczekuje się, że element systemu odpowiedzialny za proces dopasowania wzorca zwróci wynik reprezentujący miarę podobieństwa wejściowego wektora cech do weryfikowanego modelu mówcy. Takie modele mówcy powstają z wektorów akustycznych dostarczonych jako zestaw danych uczących. W praktycznym systemie weryfikacji mówcy tak skonstruowane modele przechowywane są w postaci zaszyfrowanych danych. Następnie używane są do podjęcia decyzji o tym czy podający się za weryfikowaną osobę otrzyma dostęp do chronionych zasobów.
 
-Obecnie dla etapu dopasowania wzorca - w klasycznym podejściu - stosowane są metody\cite{campbell}\cite{overview}: ukryte modele Markowa (\textit{ang. HMM - hidden Markov model}, dynamiczne dopasowanie czasowe (\textit{ang. DTW - Dynamic Time Warping}), kwantyzacja wektorów (\textit{VQ - vector quantization}, mikstury Gaussowskie (\textit{GMM - Gaussian mixture model}), (\textit{SVM - support vector machine}) oraz sztuczne sieci neuronowe (\textit{ANN - artificial neural network}).
+Obecnie dla etapu dopasowania wzorca - w klasycznym podejściu - stosowane są metody\cite{campbell} \cite{overview}: ukryte modele Markowa (\textit{ang. HMM - hidden Markov model}, dynamiczne dopasowanie czasowe (\textit{ang. DTW - Dynamic Time Warping}), kwantyzacja wektorów (\textit{VQ - vector quantization}, mikstury Gaussowskie (\textit{GMM - Gaussian mixture model}), (\textit{SVM - support vector machine}) oraz sztuczne sieci neuronowe (\textit{ANN - artificial neural network}).
 
 Wyróżnia się dwie grupy technik dopasowania wzorca: techniki deterministyczne (\textit{ang. template models}) oraz techniki probabilistyczne (\textit{probabilistic models})\cite{campbell}.
 
-W grupie technik deterministycznych w fazie modelowania z wprowadzonych danych uczących generuje się zestaw wzorcowych regionów na podstawie wybranego algorytmu. Przestrzeń wektorów wyekstrahowanych cech jest podzielona przez te regiony, które reprezentowane są przez wzorcowe wektory - $ \tilde{x}$. Zatem każdy punkt rozpatrywanej przestrzeni cech - $x$, należy do regionu reprezentowanego przez wzorcowy wektor do którego ów punkt leży najbliżej w rozumieniu wybranej, zdefiniowanej na tej przestrzeni metryki $ d(x,\tilde{x})$. W fazie testowania, przeprowadzana jest analiza przynależności wektorów wejściowych do regionów reprezentujących weryfikowanego mówcę, to znaczy obliczana jest suma ich odległości:
+W grupie technik deterministycznych, w trakcie trwania fazy modelowania (trenowania), z wprowadzonych danych uczących generowane są wektory wzorcowe w sposób zależny od wybranego algorytmu - mogą to być z góry narzucone wartości, uśrednione wartości wektorów  czyli centroidy (\textit{ang. centroids}), np:
 \begin{equation}
   \tilde{x} = \mu = \frac{1}{N}\sum_{i=1}^{N}x_i.
+  \label{centroid}
 \end{equation}
-Do tego typu technik należy niezmodyfikowana metoda kwantyzacji wektorów - VQ, a także dynamiczne dopasowanie czasowe - DTW.
+lub takie wzorcowe wektory mogą być ustalone w inny sposób. W tej klasie metod dokonuje się porównania w ten sposób uzyskanych wektorów wzorcowych z wektorami cech dostarczonych jako dane wejściowe w celu przeprowadzenia testowania, przy czym zakłada się, że \cite{overview} \cite{campbell} każdy z nich jest nieidealną repliką drugiego, których stopień podobieńśtwa określany jako funkcja miary dopasowania (\textit{ang. match function}), która również różni się w zależności od zastosowanej metody. Do tego typu technik należy niezmodyfikowana metoda kwantyzacji wektorów - VQ, a także dynamiczne dopasowanie czasowe - DTW.
 
 W drugiej grupie - technik probabilistycznych każdego mówce modeluje się jako pewną przyjętą funkcję gęstości prawdopodobieństwa. W fazie uczenia systemu dokonuje się estymacji parametrów takiej funkcji gęstości prawdopodobieństwa na podstawie danych wejściowych - wektorów cech reprezentujących próbkę wypowiedzi mówcy. W fazie testowania najczęściej oszacowuje się prawdopodobieństwo tego czy zbiór lub sekwencja wektorów pochodzących z ekstrakcji testowanej wypowiedzi należy do zarejestrowanego modelu reprezentowanego przez ustaloną wcześniej funkcję gęstości prawdopodobieństwa. Może to odbywać się poprzez obliczenie sumy prawdopodobieństw wartości uzyskanych z funkcji gęstości prawdopodobieństwa w realizacjach zmiennej losowej reprezentowanych przez wektory wejściowe. %TODO do weryfikacji + matematyczka xD
 Do zbioru technik probabilistycznych należą m.in. techniki ukrytych model Markova - HMM oraz mikstur Gaussowskich - GMM.
@@ -275,24 +276,82 @@ Do zbioru technik probabilistycznych należą m.in. techniki ukrytych model Mark
 \begin{figure}
   \centering
     \input{dtw.pgf}
-    \caption{Wykresy funkcji przekształcenia dziedziny sygnałów porównywanych. }
+    \caption{Przykładowe trajektorie  dla przebiegów podobnych przebiegów czasowych w technice DTW. Każdy punkt sygnałów może reprezentować pojedynczy wektor cech.}
     \label{dtw}
 \end{figure}
 
-Dynamiczne dopasowanie czasowe (DTW) jest jedną z najstarszych metod dopasowania wzorca \cite{multidsp} wykorzystywana zarówno w dziedzinie rozpoznawania mowy jak i rozpoznawania mówcy. Metoda ta służy szczególnie w wypadkach kiedy potrzebna jest kompensacja różnic w długości porównywanych sygnałach. Dane wejściowe są traktowane jako sekwencja, a więc ważna jest kolejność ich dostarczania - jest to metoda zależna od czasu (\textit{time dependent}). Z tego względu możliwe jest jej zastosowanie tylko w rozpoznawaniu mówcy zależnym od tekstu (\textit{text-dependent}) lub z wyświetlanym hasłem (\textit{time-prompted}). Podczas fazy testowania sekwencja wektorów akustycznych weryfikowanego mówcy $(\tilde{x_1},..,\tilde{x_N})$ jest porównywana z z sekwencją wzorcową $(\tilde{x_1},..,\tilde{x_M})$. Wymiary $M$ i $N$ najczęściej różnią się od siebie dla problemu rozpoznawania mowy oraz mówcy, co czyni tę metodę użyteczną dla tego zastosowania. W przypadku gdy $M=N$, problem redukuje się do obliczenia odległości dla pewnej zdefiniowanej metryki $d(x_i, \tilde{x})$ na przestrzeni rozpatrywanych sygnałów. W metodzie dynamicznego dopasowania czasowego wartość dopasowania sygnału wyraża się jako asynchroniczna suma:
+Dynamiczne dopasowanie czasowe (DTW) jest jedną z najstarszych metod dopasowania wzorca \cite{multidsp} wykorzystywana zarówno w dziedzinie rozpoznawania mowy jak i rozpoznawania mówcy. Metoda ta służy szczególnie w wypadkach kiedy potrzebna jest kompensacja różnic w długości porównywanych sygnałach. Dane wejściowe są traktowane jako sekwencja, a więc ważna jest kolejność ich dostarczania - jest to metoda zależna od czasu (\textit{time dependent}). Z tego względu możliwe jest jej zastosowanie tylko w rozpoznawaniu mówcy zależnym od tekstu (\textit{text-dependent}) lub z wyświetlanym hasłem (\textit{time-prompted}). Regiony Podczas fazy testowania sekwencja wektorów akustycznych weryfikowanego mówcy $(\tilde{x_1},..,\tilde{x_N})$ jest porównywana z z sekwencją wzorcową $(\tilde{x_1},..,\tilde{x_M})$. Wymiary $M$ i $N$ najczęściej różnią się od siebie dla problemu rozpoznawania mowy oraz mówcy, co czyni tę metodę użyteczną dla tego zastosowania. W przypadku gdy $M=N$, problem redukuje się do obliczenia odległości dla pewnej zdefiniowanej metryki $d(x_i, \tilde{x})$ na przestrzeni rozpatrywanych sygnałów. W metodzie dynamicznego dopasowania czasowego wartość dopasowania sygnału wyraża się jako asynchroniczna suma:
 \begin{equation}
   z = \sum_{i=1}^{M} d(x_i,\tilde{x_{j(i)}}).
   \label{z}
 \end{equation}
 gdzie: $i \in M, j \in N$, oraz $j(i)$ jest funkcją indeksu $i$.
-Opisane przekształcenie dokonuje mapowania: $j(i)$ - które tworzy pary iloczynów próbek sygnału wzorcowego i sygnału porównywanego poprzez zmianę indeksowania kolejnych próbek tego drugiego. Sposób tego przekształcenia jest zależny od wybranego algorytmu realizującego technikę DTW. Najczęściej jest to krzywa szukająca najmniejszej zagregowanej odległości. Założeniem jest wybór takiego sposobu przekształcenia (trajektorii na wykresie) aby minimalizować funkcję miary dopasowania \ref{z}. Zatem uzyskana droga powinna prezentować sekwencje iloczynów wspomnianych dwóch sygnałów, które w sumie dają najmniejszy wynik. Wyidealizowane (idealnie dobrana droga przy założeniu bardzo dużej ilości próbek) trajektorie reprezentujące takie przekształcenia zaprezentowane są na rysunku \ref{dtw}. Wykres reprezentuje iloczyn kartezjański dziedzin obu sygnałów. Na tej przestrzeni rozpięta jest funkcja metryki $d(\tilde{x}(t), x(\tau))$. Porównywane sygnały są przesuniętym i przeskalowanym sygnałem wzorcowym w dziedzinie czasu. Sygnał \textit{fun 3.} jest sygnałem wzorcowym zatem przekształcenie j(i) jest przekształceniem identycznościowym. Sygnał \textit{fun 2.} jest przeskalowany w czasie o wsp. 1.5 i staje się funkcją liniową. \textit{Fun 3.} jest dodatkowo przesunięty względem sygnału wzorcowego w czasie, zaś sygnał \textit{fun 1.} jest w obu swoich połowach przeskalowany przez inny czynnik, z tego powodu jego trajektoria jest linią łamaną na wykresie. W ogólności znalezione przekształcenie nie jest funkcją - algorytm zazwyczaj pozwala na krok w kierunku równoległym do osi czasu sygnału wzorcowego. Dla sygnału uzyskana trajektoria nie jest linią prostą co widać na rysunku \ref{dtwspeech} gdzie sygnałami wzorcowym i porównywanym są bardziej rzeczywiste przebiegi. Na tym rysunku widać również często stosowane ograniczenia dla algorytmu wykrywania drogi - otóż grubszą linią zaznaczony jest obszar dozwolony przez algorytm do prowadzenia trajektorii. Dodatkowo punkty początkowe i końcowe są ustalone "na sztywno". Klasycznym i prostym podejściem algorytmicznym jest wybór punku startowego z ograniczonego obszaru w pobliżu na osi współrzędnych w pobliżu punktu (0,0). Następnie szukanie najmniejszej wartości spośród sąsiadujących punktów o indeksach określonych jako: $(i, j) + \Delta.$ gdzie $ \Delta \in \{ [1,0], [0, 1], [1, 1]$\}. 
+
+Opisane przekształcenie dokonuje mapowania: $j(i)$ - które tworzy pary iloczynów próbek sygnału wzorcowego i sygnału porównywanego poprzez zmianę indeksowania kolejnych próbek tego drugiego. Sposób tego przekształcenia jest zależny od wybranego algorytmu realizującego technikę DTW. Najczęściej jest to krzywa szukająca najmniejszej zagregowanej odległości. Założeniem jest wybór takiego sposobu przekształcenia (trajektorii na wykresie) aby minimalizować funkcję miary dopasowania \textbf{(\ref{z})}. Zatem uzyskana droga powinna prezentować sekwencje iloczynów wspomnianych dwóch sygnałów, które w sumie dają najmniejszy wynik. Wyidealizowane (idealnie dobrana droga przy założeniu bardzo dużej ilości próbek) trajektorie reprezentujące takie przekształcenia zaprezentowane są na rysunku \ref{dtw}. Wykres reprezentuje iloczyn kartezjański dziedzin obu sygnałów. Na tej przestrzeni rozpięta jest funkcja metryki $d(\tilde{x}(t), x(\tau))$. Porównywane sygnały są przesuniętym i przeskalowanym sygnałem wzorcowym w dziedzinie czasu. Sygnał \textit{fun 3.} jest sygnałem wzorcowym zatem przekształcenie j(i) jest przekształceniem identycznościowym. Sygnał \textit{fun 2.} jest przeskalowany w czasie o wsp. 1.5 i staje się funkcją liniową. \textit{Fun 3.} jest dodatkowo przesunięty względem sygnału wzorcowego w czasie, zaś sygnał \textit{fun 1.} jest w obu swoich połowach przeskalowany przez inny czynnik, z tego powodu jego trajektoria jest linią łamaną na wykresie. W ogólności znalezione przekształcenie nie jest funkcją - algorytm zazwyczaj pozwala na krok w kierunku równoległym do osi czasu sygnału wzorcowego. Dla sygnału uzyskana trajektoria nie jest linią prostą co widać na rysunku \ref{dtwspeech} gdzie sygnałami wzorcowym i porównywanym są bardziej rzeczywiste przebiegi. Na tym rysunku widać również często stosowane ograniczenia dla algorytmu wykrywania drogi - otóż grubszą linią zaznaczony jest obszar dozwolony przez algorytm do prowadzenia trajektorii. Dodatkowo punkty początkowe i końcowe są ustalone "na sztywno". Klasycznym i prostym podejściem algorytmicznym jest wybór punku startowego z ograniczonego obszaru w pobliżu na osi współrzędnych w pobliżu punktu (0,0). Następnie szukanie najmniejszej wartości spośród sąsiadujących punktów o indeksach określonych jako: $(i, j) + \Delta.$ gdzie $ \Delta \in \{ [1,0], [0, 1], [1, 1]$\}. 
 \begin{figure}[ht!]
   \centering
     \includegraphics[width=0.6\textwidth]{dtwspeech.jpg}
-    \caption{Rezultat działania metody DTW na bardziej skomplikowanej sekwencji. Adaptacja z artykułu \cite{campbell}}
+    \caption{Rezultat działania metody DTW na bardziej skomplikowanej sekwencji.} Adaptacja z artykułu \cite{campbell}. Na głównym wykresie widać trajektorię z zaznaczonym ograniczeniem dla ścieżki algorytmu.
 \end{figure}
 Ze względu na wspomniane ograniczenia w zastosowaniu podana metoda nie jest już chętnie stosowana w systemach rozpoznawania mówcy. Dodatkową wadą jest duża złożoność obliczeniowa, szczególnie w przypadku dużej ilości sekwencji do sprawdzenia. Jego skuteczność maleje wraz ze wzrostem długości sekwencji. Zaletą tego rozwiązania jest jednak prostota implementacji i w zastosowaniach z detekcją krótkich haseł metoda może okazać się być skuteczna.
 
+\subsection{Kwantyzacja wektorów - VQ.}
+
+Inną deterministyczną metodą (\textit{ang. template model}) stosowaną w etapie dopasowania wzorca w problemach rozpoznawania mówcy jest kwantyzacja wektorów (\textit{ang. vector quantization}). W odróżnieniu do wcześniej omawianej metody DTW, ta technika jest jest niezależna od kolejności analizowanych wektorów cech - tzn. jest niezmienny w czasie (\textit{ang. time-invariant)}. Z tego powodu możliwe jest zastosowanie tej techniki dla systemów rozpoznawania mówcy niezależnego od wypowiadanego tekstu (\textit{ang. text-independent}). 
+Technika kwantyzacji wektorów należy do klasy problemów z zakresu technik dopasowania wzorca jaką jest uczenie bez nadzoru  (\textit{ang. unsupervised learning}). Tego typu problem nazywany jest także \cite{fosr} klasteryzacją (\textit{ang. clustering}). Jest to zagadnienie analizy skupień to znaczy dokonywane jest grupowanie przestrzeni elementów na którą składa się większa ilość - w przypadku rozpoznawania mówcy - wektorów cech na mniejszą ilość regionów. Regiony te reprezentowane są przez pewien ustalony wektor wzorcowy $ \tilde{x}$. Zatem każdy punkt rozpatrywanej przestrzeni wektorów cech - $x$, należy do regionu reprezentowanego przez wzorcowy wektor, względem którego ów punkt leży najbliżej w rozumieniu wybranej, zdefiniowanej na tej przestrzeni metryki $d(x,\tilde{x})$.
+W fazie testowania, przeprowadzana jest analiza przynależności wektorów wejściowych do regionów reprezentujących weryfikowanego mówcę, to znaczy obliczana jest suma ich odległości do najbliższego wektora wzorcowego:
+\begin{equation}
+  z = \sum_{j=1}^{L} \min_{\tilde{x} \in  C} \left\{ d(x_j, \tilde{x}) \right\}. 
+\end{equation}
+Funkcja ta wyraża miarę dopasowania wektorów wejściowych do weryfikowanego modelu mówcy. 
+W tej metodzie zbiór wektorów reprezentujących poszczególnych mówców nazywany jest książką kodową (\textit{ang. codebook}), zaś każdy wektor wchodzący w jej skład nazywa się kodem lub hasłem (\textit{ang. codeword}).
+
+Przykładowy proces klasteryzacji w procesie uczenia się został przedstawiony na rysunku \ref{VQjpg}. Z puli 5000 wektorów akustycznych cech został stworzony model mówcy reprezentowany przez 64 wektory wzorcowe - tzw. \textit{codebook}.
+
+\begin{figure}[ht!]
+  \centering
+    \includegraphics[width=0.8\textwidth]{overwiewVQ.jpg}
+    \label{VQjpg}
+    \caption{Klasteryzacja przestrzeni. Adaptacja z artykułu \cite{overview}. Na rysunku zostały przedstawione tylko 2 arbitralnie wybrane wymiary z wektora cech. Dane uczące składające się z 5000 wektorów zostały przekształcone na model 64 wektorów wzorcowych w procesie kwantyzacji wektorów.}
+\end{figure}
+
+Metoda ta cechuje się tym, że nie przechowuje informacji związanej z sekwencją wypowiedzi, więc nie jest w stanie wychwycić pewnych cech związanych z konkretnym przejściem pomiędzy kolejnymi segmentami mowy. Z drugiej strony upraszcza w sposób znaczący implementację systemu.
 
 
+W tej pracy metoda kwantyzacji wektorów została użyta w przykładowej implementacji systemu weryfikacji mówcy w postaci realizującego nią algorytmu LGB.
+
+\subsubsection{Algorytm LGB.}
+
+Algorytm Linde, Buzo i Greya - LGB \cite{linde} przedstawia sposób uzyskania wektorów wzorcowych (ksiązki kodów - "codebook") reprezentujących mówcę, uzyskanego z danych uczących zawierających dużą ilość wektorów cech wyekstrahowanych z wypowiedzi modelowanego mówcy. Jest to algorytm szeroko znany i chętnie wykorzystywany \cite{minidsp} w zadanie rozpoznawania mówcy. Zaczynając od jednego punktu, np. uśrednionego wektora cech (jak we wzorze \ref{centroid}) produkowane są kolejne centroidy poprzez podział. Ten algorytm więc produkuje książkę kodów o rozmiarze K gdzie K jest potęgą dwójki. W kolejnych etapach algorytmu dokonuje się detekcji najbliższej centroidy dla każdego wektora cech danych trenujących. Ze względu na nowo powstałe regiony aktualizuje się położenie centroid. Po każdej aktualizacji jest prawdopodobne, że kolejne wektory cech zmienią swój region klasteryzacji, a zatem proces powtarza się aż do ustabilizowania się tychże regionów. Następnie powtarza się podwajanie wektorów wzorcowych aż do uzyskania pożądanej ich ilości K. Poniżej podsumowano w sposób szczegółowo kolejne etapy algorytmu, na rysunku \ref{lgbblock} przedstawiono schemat blokowy algorytmu, a na rysunkach \ref{lgbvis} przedstawiono wizualnie kolejne etapy przetwarzania algorytmu dla dwóch arbitralnie wybranych wymiarów z wektorów cech.
+\\
+
+\begin{figure}
+  \centering
+    \input{lbz.pgf}
+    \label{lbzpy}
+    \caption{Wizualizacja procesu podwajania i aktualizacji pozycji w algortymie LBZ.}
+\end{figure}
+
+\textbf{Kolejne kroki algorytmu Linde, Buzo i Greya.\cite{minidsp}}
+\begin{enumerate}
+  \item Utwórz jedno-elementową książkę kodów - zawierającą uśrednioną centroidę jak we wzorze \textbf{\ref{centroid}} dla wszystkich treningowych wektorów cech.
+  \item Podwój ilość elementów w książce kodów. Zmodyfikuj ich poszczególne wartości ze względu na wybrany, mały czynnik $\epsilon$ w następujący sposób, dla każdego \textbf{k} gdzie \textbf{$ k \in \{1,...,K\}$}:
+    \begin{itemize}
+      \item $ \bm{\tilde{x}_k} = (1 - \epsilon) \cdot \bm{\tilde{x}_k} $,
+      \item $ \bm{\tilde{x}_{k+1}} = (1 + \epsilon) \cdot \bm{\tilde{x}_k} $.
+    \end{itemize}
+    Co oznacza przesunięcie je w przeciwnych kierunkach (w N-wymiarowej przestrzeni).
+  \item Dokonaj klasyfikacji wszystkich wektorów trenujących - znajdź dla każdego najbliższą centroidę w rozumieniu przyjętej metryki $ d(\bm{\tilde{x}_k}, \bm{x})$. 
+  \item Zaktualizuj położenie każdej centroidy jako średniej \textbf{\ref{centroid}} ze wszystkich wektorów cech sklasyfikowane jako leżące najbliżej.
+  \item Powtarzaj kroki 3 i 4 dopóki położenie nowych centroid nie ustabilizuje się (różnica przesunięcia dwóch ostatnich iteracji jest poniżej ustalonego progu).
+  \item Powtarzaj kroki 2, 3, 4 i 5 do momentu otrzymania słownika o żądanej długości \textbf{K}.
+\end{enumerate}
+
+\begin{figure}[ht!]
+  \centering
+    \includegraphics[width=1\textwidth]{lbgdiagram.png}
+    \label{lgbblock}
+    \caption{Schemat blokowy algorytmu Linde, Buzo i Greya. \cite{minidsp}}
+\end{figure}
 \section{Klasyfikacja i teoria decyzji}
+

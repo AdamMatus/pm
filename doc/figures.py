@@ -139,3 +139,67 @@ ax2.set_title('Sygnaly porownywane')
 
 plt.tight_layout()
 savefig('dtw')
+
+#lbz
+
+plt.clf()
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+
+
+ax0 = plt.subplot2grid((3,2), (0,0))
+mat = sio.loadmat('./D1.mat');
+D = mat['D']
+mat = sio.loadmat('./C1.mat');
+C = mat['C']
+ax0.plot(D[0],D[1],',')
+ax0.plot(C[0],C[1],'.r')
+
+ax0.set_title('Etap podwajania')
+
+ax0 = plt.subplot2grid((3,2), (0,1))
+mat = sio.loadmat('./D2.mat');
+D = mat['D']
+mat = sio.loadmat('./C2.mat');
+C = mat['C']
+ax0.plot(D[0],D[1],',')
+ax0.plot(C[0],C[1],'.r')
+
+ax0.set_title('Po etapie aktualizacji pozycji')
+
+ax0 = plt.subplot2grid((3,2), (1,0))
+mat = sio.loadmat('./D3.mat');
+D = mat['D']
+mat = sio.loadmat('./C3.mat');
+C = mat['C']
+ax0.plot(D[0],D[1],',')
+ax0.plot(C[0],C[1],'.r')
+
+
+ax0 = plt.subplot2grid((3,2), (1,1))
+mat = sio.loadmat('./D4.mat');
+D = mat['D']
+mat = sio.loadmat('./C4.mat');
+C = mat['C']
+ax0.plot(D[0],D[1],',')
+ax0.plot(C[0],C[1],'.r')
+
+
+ax0 = plt.subplot2grid((3,2), (2,0))
+mat = sio.loadmat('./D5.mat');
+D = mat['D']
+mat = sio.loadmat('./C5.mat');
+C = mat['C']
+ax0.plot(D[0],D[1],',')
+ax0.plot(C[0],C[1],'.r')
+
+ax0 = plt.subplot2grid((3,2), (2,1))
+mat = sio.loadmat('./D6.mat');
+D = mat['D']
+mat = sio.loadmat('./C6.mat');
+C = mat['C']
+ax0.plot(D[0],D[1],',')
+ax0.plot(C[0],C[1],'.r')
+
+savefig('lbz')
