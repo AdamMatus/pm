@@ -268,7 +268,7 @@ W grupie technik deterministycznych, w trakcie trwania fazy modelowania (trenowa
 \end{equation}
 lub takie wzorcowe wektory mogą być ustalone w inny sposób. W tej klasie metod dokonuje się porównania w ten sposób uzyskanych wektorów wzorcowych z wektorami cech dostarczonych jako dane wejściowe w celu przeprowadzenia testowania, przy czym zakłada się, że \cite{overview} \cite{campbell} każdy z nich jest nieidealną repliką drugiego, których stopień podobieńśtwa określany jako funkcja miary dopasowania (\textit{ang. match function}), która również różni się w zależności od zastosowanej metody. Do tego typu technik należy niezmodyfikowana metoda kwantyzacji wektorów - VQ, a także dynamiczne dopasowanie czasowe - DTW.
 
-W drugiej grupie - technik probabilistycznych każdego mówce modeluje się jako pewną przyjętą funkcję gęstości prawdopodobieństwa. W fazie uczenia systemu dokonuje się estymacji parametrów takiej funkcji gęstości prawdopodobieństwa na podstawie danych wejściowych - wektorów cech reprezentujących próbkę wypowiedzi mówcy. W fazie testowania najczęściej oszacowuje się prawdopodobieństwo tego czy zbiór lub sekwencja wektorów pochodzących z ekstrakcji testowanej wypowiedzi należy do zarejestrowanego modelu reprezentowanego przez ustaloną wcześniej funkcję gęstości prawdopodobieństwa. Może to odbywać się poprzez obliczenie sumy prawdopodobieństw wartości uzyskanych z funkcji gęstości prawdopodobieństwa w realizacjach zmiennej losowej reprezentowanych przez wektory wejściowe. %TODO do weryfikacji + matematyczka xD
+W drugiej grupie - technik probabilistycznych każdego mówce modeluje się jako funkcję gęstości prawdopodobieństwa $ p(X|\lambda)$, gdzie $\lambda$ oznacza model mówcy. W fazie uczenia systemu dokonuje się estymacji parametrów takiej funkcji gęstości prawdopodobieństwa na podstawie danych wejściowych - wektorów cech reprezentujących próbkę wypowiedzi mówcy. W fazie testowania najczęściej oszacowuje się prawdopodobieństwo tego czy zbiór lub sekwencja wektorów pochodzących z ekstrakcji testowanej wypowiedzi należy do zarejestrowanego modelu reprezentowanego przez ustaloną wcześniej funkcję gęstości prawdopodobieństwa. Może to odbywać się poprzez obliczenie iloczynu prawdopodobieństw wartości uzyskanych z funkcji gęstości w realizacjach zmiennej losowej reprezentowanych przez wektory wejściowe przy założeniu, że są zdarzeniami niezależnymi. %TODO do weryfikacji + matematyczka xD
 Do zbioru technik probabilistycznych należą m.in. techniki ukrytych model Markova - HMM oraz mikstur Gaussowskich - GMM.
 
 \subsection{Dynamiczne dopasowanie czasowe - DTW.}
@@ -322,14 +322,21 @@ W tej pracy metoda kwantyzacji wektorów została użyta w przykładowej impleme
 
 \subsubsection{Algorytm LGB.}
 
-Algorytm Linde, Buzo i Greya - LGB \cite{linde} przedstawia sposób uzyskania wektorów wzorcowych (ksiązki kodów - "codebook") reprezentujących mówcę, uzyskanego z danych uczących zawierających dużą ilość wektorów cech wyekstrahowanych z wypowiedzi modelowanego mówcy. Jest to algorytm szeroko znany i chętnie wykorzystywany \cite{minidsp} w zadanie rozpoznawania mówcy. Zaczynając od jednego punktu, np. uśrednionego wektora cech (jak we wzorze \ref{centroid}) produkowane są kolejne centroidy poprzez podział. Ten algorytm więc produkuje książkę kodów o rozmiarze K gdzie K jest potęgą dwójki. W kolejnych etapach algorytmu dokonuje się detekcji najbliższej centroidy dla każdego wektora cech danych trenujących. Ze względu na nowo powstałe regiony aktualizuje się położenie centroid. Po każdej aktualizacji jest prawdopodobne, że kolejne wektory cech zmienią swój region klasteryzacji, a zatem proces powtarza się aż do ustabilizowania się tychże regionów. Następnie powtarza się podwajanie wektorów wzorcowych aż do uzyskania pożądanej ich ilości K. Poniżej podsumowano w sposób szczegółowo kolejne etapy algorytmu, na rysunku \ref{lgbblock} przedstawiono schemat blokowy algorytmu, a na rysunkach \ref{lgbvis} przedstawiono wizualnie kolejne etapy przetwarzania algorytmu dla dwóch arbitralnie wybranych wymiarów z wektorów cech.
-\\
-
 \begin{figure}
   \centering
     \input{lbz.pgf}
-    \label{lbzpy}
-    \caption{Wizualizacja procesu podwajania i aktualizacji pozycji w algortymie LBZ.}
+    \caption{\label{lgbvis} Wizualizacja procesu podwajania i aktualizacji pozycji w algortymie LBZ.}
+\end{figure}
+
+Algorytm Linde, Buzo i Greya - LGB \cite{linde} przedstawia sposób uzyskania wektorów wzorcowych (ksiązki kodów - "codebook") reprezentujących mówcę, uzyskanego z danych uczących zawierających dużą ilość wektorów cech wyekstrahowanych z wypowiedzi modelowanego mówcy. Jest to algorytm szeroko znany i chętnie wykorzystywany \cite{minidsp} w zadanie rozpoznawania mówcy. Zaczynając od jednego punktu, np. uśrednionego wektora cech (jak we wzorze \ref{centroid}) produkowane są kolejne centroidy poprzez podział. Ten algorytm więc produkuje książkę kodów o rozmiarze K gdzie K jest potęgą dwójki. W kolejnych etapach algorytmu dokonuje się detekcji najbliższej centroidy dla każdego wektora cech danych trenujących. Ze względu na nowo powstałe regiony aktualizuje się położenie centroid. Po każdej aktualizacji jest prawdopodobne, że kolejne wektory cech zmienią swój region klasteryzacji, a zatem proces powtarza się aż do ustabilizowania się tychże regionów. Następnie powtarza się podwajanie wektorów wzorcowych aż do uzyskania pożądanej ich ilości K. Poniżej podsumowano w sposób szczegółowo kolejne etapy algorytmu, na rysunku \ref{lgbblock} przedstawiono schemat blokowy algorytmu, a na rysunkach \ref{lgbvis} przedstawiono wizualnie kolejne etapy przetwarzania algorytmu dla dwóch arbitralnie wybranych wymiarów z wektorów cech.
+\\
+
+
+\begin{figure}[ht!]
+  \centering
+    \includegraphics[width=1\textwidth]{lbgdiagram.png}
+    \label{lgbblock}
+    \caption{Schemat blokowy algorytmu Linde, Buzo i Greya. \cite{minidsp}}
 \end{figure}
 
 \textbf{Kolejne kroki algorytmu Linde, Buzo i Greya.\cite{minidsp}}
@@ -347,11 +354,16 @@ Algorytm Linde, Buzo i Greya - LGB \cite{linde} przedstawia sposób uzyskania we
   \item Powtarzaj kroki 2, 3, 4 i 5 do momentu otrzymania słownika o żądanej długości \textbf{K}.
 \end{enumerate}
 
-\begin{figure}[ht!]
-  \centering
-    \includegraphics[width=1\textwidth]{lbgdiagram.png}
-    \label{lgbblock}
-    \caption{Schemat blokowy algorytmu Linde, Buzo i Greya. \cite{minidsp}}
-\end{figure}
+
+\subsection{Mikstury Gaussowskie - GMM.}
+Techinka modelowanie miksturami Gaussowskimi {\textit{ang. Gaussian mixture modeling}} jest metodą stochastyczną rozpoznawania wzorca. GMM jest sposobem modelowania uważanym za swego rodzaju standard w metodach rozpoznawania mówcy niezależnym od wypowiadanego tekstu. Tak jak wspomniano w rozważaniach ogólnych (\ref{featurematching}), w metodach probabilistycznych należy ustalić funkcję gęstości prawdopodobieństwa $p(X|\lambda)$ charakteryzującą danego mówcę. Dla problemu rozpoznawania mówcy niezależnego od tekstu, nie ma żadnej wiedzy apriori, którą można by było wykorzystać do założenia jakiegoś rozkładu. Dlatego też metoda GMM proponuje dokonania aproksymacji tzw. miksturami Gaussa (\textit{ang. Gaussian mixtures}). Okazuje się, że taka reprezentacja funkcji gęstości prawdopodobieństwa jest równie skuteczna co dużo bardziej skomplikowana reprezentacja ukrytymi modelami Markova (HMM) dla problemu rozpoznawania bez znajomości tekstu \cite{reynolds}, ze względu na brak przydatności wiedzy o sekwencji wektorów cech. Dla K-wymiarowych wektorów cech funkcja gęstości prawdopodobieństwa dla modeli GMM wyraża się jako:
+\begin{equation}
+  p(X|\lambda) = \sum^{M}_{i=1} w_ip_i(X).
+\end{equation}
+gdzie: $w_i$ są współczynnikami wagowymi ustalanymi w fazie uczenia oraz $\sum_{i=1}^{M} w_i =1$. M oznacza zaś liczbę wykorzystanych misktur Gaussowskich do aproksymacji funkcji gęstości prawdopodobieństwa dla modelu $ \lambda$. Kolejna mikstura Gaussowska przybiera postać wielowymiarowej funkcji rozkładu Gaussa:
+\begin{equation}
+  p_i(X)=\frac{1}{(2\pi)^{K/2} \cdot |\bm{\Sigma_i}|^{\frac{1}{2}}} \cdot \exp\left\{-\frac{1}{2}(X- \bm{\mu_i})'(\bm{\Sigma_i})^{-1}(X-\bm{\mu_i})\right\}
+\end{equation}
+gdzie: $\bm{\Sigma_i}$ oznacza macierz kowariancji wektora cech X, $\mu_i$ jest wektorem średnim (K-wymiarową wartością oczekiwaną). Pełny opis modelu $\lambda$ zapewnia zbiór parametrów $\lambda = \{w_i,\bm{\mu_i},\bm{\Sigma_i} \}$. Przy pomocy wektorów cech danych trenujących dokonywana jest estymacja parametrów dla poszczególnych mikstur Gaussowskich. W tym celu najczęściej używa się się metod maksymalnego prawdopodobieństwa a posteriori MAP (\textit{maximum a posteriori probability}) oraz algorytmu EM (\textit{ang. expectation-maximization}).
 \section{Klasyfikacja i teoria decyzji}
 

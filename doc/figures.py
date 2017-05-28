@@ -166,7 +166,7 @@ C = mat['C']
 ax0.plot(D[0],D[1],',')
 ax0.plot(C[0],C[1],'.r')
 
-ax0.set_title('Po etapie aktualizacji pozycji')
+ax0.set_title('Etap podwajania')
 
 ax0 = plt.subplot2grid((3,2), (1,0))
 mat = sio.loadmat('./D3.mat');
