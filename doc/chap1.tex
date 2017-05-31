@@ -109,13 +109,17 @@ Fonologia bada
 %plagiat z wikipedii xd 
 \subsubsection{Prozodia}
 Prozodia zajmuje się brzmieniowymi właściwościami mowy na które składają się trzy elementy - intonacja, akcent oraz iloczas.
-
+\section{Front-end processing}
+\subsection{PREEMPHASIS}
+\subsection{Usuwanie szumu?}
+\subsection{VAD}
 \section{Ekstrakcja cech sygnału mowy.}
 
 \subsection{Przegląd.}
 
-Celem ekstrakcji cech z sygnału mowy (\textit{feature extraction}) jest uzyskanie zbioru cech charakteryzujących sygnał ludzkiej mowy za pomocą technik cyfrowego przetwarzania sygnału. Jednocześnie jest to zamiana sygnału z którym zawarta jest redundantna informacja na sygnał o niskiej zawartości informacji znaczących dla problemu rozpoznawania mówcy/mowy. 
+Celem ekstrakcji cech z sygnału mowy (\textit{feature extraction}) jest uzyskanie zbioru cech charakteryzujących sygnał ludzkiej mowy za pomocą technik cyfrowego przetwarzania sygnału. Jednocześnie jest to zamiana sygnału w którym zawarta jest redundantna informacja na sygnał o niskiej zawartości informacji znaczących dla problemu rozpoznawania mówcy/mowy. 
 
+%TODO bezsensu xD ogólnie cały podrozdział kupą śmierdzi
 Tak jak zostało wspomniane wcześniej, problem rozpoznawania mówcy w standardowym podejściu rozpatrywany jest jako problem estymacji parametrów ustalonego modelu. W zależności od rozpatrywanej odmiany rozpoznawania mówcy dokonywane są odpowiednie założenia konkretyzujące postać problemu.
 
 %cite fosr 5.3 and block diagram
@@ -131,7 +135,6 @@ Ważnym elementem toru przetwarzania systemu są również elementy związane z 
 %todo zdefiniuj skalę Mela i opisz (związek z budową ślimaka).
 %todo zdefiniuj loudness
 
-%todo PREEMPHASIS
 
 Ekstrakcja cech za pomocą współczynników cepstrum w dziedzinie częstotliwości Mela składa się z dwóch głównych etapów: uzyskania współczynników mocy w dziedzinie częstotliwości Mela na podstawie widma mocy sygnału mowy (\textit{freqency warping}) oraz obliczenia współczynników cepstrum na podstawie uzyskanych wcześniej współczynników mocy w skali Mela. Wynikiem przeprowadzonej operacji jest uzyskanie wektora cech jx dla każdej ramki j.
 %todo wektor jX math
@@ -252,7 +255,66 @@ gdzie
 
 Uzyskane współczynniki MFCC noszą nazwę wektora akustycznego (\textit{ang. acoustic vector}) reprezentującą cechy pojedynczej ramki i są w procesie weryfikacji mówcy dalej wykorzystywane w tzw. procesie dopasowywania cech opisanym w sekcji \ref{featurematching}.
 
-\section{Dopasowanie wzorca.}
+W wektorze cech zwykle stosuje się od 12 do 15 najniższych współczynników uzyskanych z DCT. Zwykle uzupełnia się go dodatkowymi współczynnikami $\Delta$ oraz $\Delta\Delta$ zawierające dodatkową informację o dynamice sygnału. 
+
+\subsubsection{Współczynniki Delta cepstrum oraz Delta-Delta cepstrum}
+
+TODO delta
+
+\subsection{LPCC}
+
+Współczynniki liniowego kodowania predykcyjnego cepstrum - LPCC (\textit{ang. linear predicting ceptstral coding}) są alternatywną metodą ekstrakcji cech z sygnału mowy. Jest to synteza metody kodowania LPC wraz z zastosowaniem współczynników cepstrum. Liniowe kodowanie predykcyjne (LPC) jest techniką opartą na zastosowaniu modeli autoregresyjnych (AR). Główną różnicą w stosunku do techniki MFCC jest więc sposób aproksymacji widmowej gęstości mocy przy pomocy współczynników $|H_k(\omega)|^2$. Kroki wstępnego przetwarzania poprzedzające estymację, łącznie z aplikacją na ramkę okna czasowego, są identyczne jak w przypadku procedury obliczania współczynników MFCC. Zamiast posługiwać się dyskretnym przekształceniem Fouriera (DFT), korzysta się z modelu autoregresyjnego, kształtując widmo przy pomocy transmitancji $H(z)$ posiadającej same bieguny (\textit{ang. all-pole}) i jednym zerem w punkcie $z =0$:
+\begin{equation}
+  \label{transar}
+  \tilde{H}(z) = \frac{\tilde{G}}{1-\sum_{k=1}^{p} a_k z^{-k}}
+\end{equation}
+gdzie $ a_k = \frac{\alpha_k}{\alpha_0} $, $\tilde{G} = \frac{1}{\alpha_0}$, a współczynniki $\alpha_0,...,\alpha_p$ oznaczają współczynniki modelu AR, nazywane również w rozpatrywanym przypadku jako współczynniki predykcji - PC (\textit{ang. predictor coefficients}).
+
+W dziedzinie czasu modele liniowej predykcji (LP) określają zależność próbki sygnału $s_n$ poprzez liniową kombinację wcześniejszych p próbek przeskalowanych przez współczynniki predykcji - PC:
+\begin{equation}
+  s_n = - \sum_{k=1}^{p}a_k\cdot s_{n-k}+\tilde{G}\cdot u_n
+\end{equation}
+W metodach liniowej predykcji zazwyczaj ignoruje się wartość $u_n$ oznaczającą obecną próbkę wejściową - w przypadku mowy oznaczającą sygnał tonu krtaniowego. W ten sposób otrzymuje się wektor współczynników $a_1,...,a_n$ modelujących danego mówcę. Popularną metodą estymacji tych wartości jest minimalizowanie wartości błędu średniokwadratowego wartości resztowych (rezydua):
+\begin{equation}
+  V = \sum_{n} e_n^2 = \sum_n \left\{ s_n + \sum_{k=1}^p \alpha_k \cdot s_{n-k} \right\}.
+\end{equation}
+Kryterium minimalizacji
+\begin{equation}
+  \frac{\delta E}{\delta \alpha_i} = 0, \quad i=1,..,p
+\end{equation}
+daje w wyniku zależność:
+\[
+  \label{yweq}
+  \sum_{k=1}^{p} a+k \cdot \sum_n s_{n-k} s_{n-i} = - \sum_n s_n s_{n-i}, \quad  i=1,...,p.
+\]
+Lewa suma $ \sum_n s_{n-k} s_{n-i} $ jest funkcja autokorelacji o opóźnieniu $ \tau = n-k $, czyli $ r(|n-k|) $, zaś analogicznie prawa jest funkcją autokorelacji o opóźnieniu $ \tau = n $ tzn. $ r(n)$, gdzie w obu przypadkach $i=1,...,p$.
+Układ tych równań nazywany jest równaniami Yule'a-Walkera (\textit{Yule-Walker Equations}). Otrzymana z tych równań macierz autokorelacji $ \bm{R} $ przyjmuje postać macierzy Toeplitza - posiada te same wartości na poszczególnych przekątnych. Rozwiązanie problemu minimalizacji przedstawia się jako:
+\[
+  \bm{\alpha} = \bm{R^{-1}} \bm{r},
+\]
+gdzie wektor $ \bm{r}$ jest wektorem kolumnowym prawych sum równań \ref{yweq} tzn. autokorelacji $ r(n)$, zaś wektor $ \bm{\alpha} $ wektorem kolumnowym współczynników $\alpha_1,...,\alpha_n$. Wspomniana własność macierzy $\bm{R}$ jako macierzy Toeplitza w dużym stopniu upraszcza procedurę odwracania macierzy dla algorytmu \textit{Levinsona-Durbina}\cite{durbin}. Możliwy do zastosowania algorytm Shura\cite{shur} pozwala przyspieszyć obliczenia poprzez paralelizację. Obliczone wartości $\alpha_i$ reprezentują współczynniki LPC. Wraz z wartością:
+\[
+  \tilde{G} = r(0) - \sum_{i=1}^{p} a_i r(i)
+\] 
+umożliwiając aproksymację funkcji gęstości widma przy pomocy równania \ref{transar}.
+
+\subsubsection{Obliczanie współczynników LPCC}
+W praktyce \cite[fosr] jako wektory cech najczęściej używa się współczynników cepstrum obliczonych przy pomocy uzyskanych współczynników LPC. Rekursywny algorytm zaproponowany przez Rabinera i Juanga \cite{rabinerjuangfosr60} oblicza współczynniki cepstrum w następujący sposób:
+\begin{enumerate}
+    \centering
+  \item $c_0 = log(\tilde{G}^2)$,
+  \item $c_d = \alpha_d + \sum_{i=1}^{d-1} c_j a_{d-i} \quad \textrm{\textbf{dla}} \quad 1\leq d \leq p$
+  \item $c_d = \sum_{i=1}d + \sum_{i=1}^{d-1} c_j a_{d-i} \quad \textrm{\textbf{dla}} \quad d > p$
+
+
+\end{enumerate}
+
+Rekomendowana ilość $p$ dla obliczania współczynników LPCC powyższym sposobem to zakres od 8 do 16 \cite{fosr}. Najczęściej stosuje się liczbę 8 do 20 elementów w wektorze cech. 
+\subsection{Inne metody ekstrakcji cech.}
+\subsubsection{Metody LP}
+\subsubsection{}
+
+\section{Metody klasyfikacji sygnału mowy. Modelowanie mówcy.}
 \label{featurematching}
 
 Procesy rozpoznawania mówcy, a w szczególności weryfikacji mówcy są podklasą szerszego zagadnienia znanego z techniki jako dopasowania wzorca (\textit{ang. pattern matching}). W ogólności celem przeprowadzonego zadania dopasowania wzorca jest określenie czy w dostarczonej na wejściu systemu sekwencji danych można znaleźć pewien znany wzorzec oraz określenie ilościowej relacji stopnia podobieństwa. W rozpatrywanym w tej pracy zadaniu weryfikacji mówcy oczekuje się, że element systemu odpowiedzialny za proces dopasowania wzorca zwróci wynik reprezentujący miarę podobieństwa wejściowego wektora cech do weryfikowanego modelu mówcy. Takie modele mówcy powstają z wektorów akustycznych dostarczonych jako zestaw danych uczących. W praktycznym systemie weryfikacji mówcy tak skonstruowane modele przechowywane są w postaci zaszyfrowanych danych. Następnie używane są do podjęcia decyzji o tym czy podający się za weryfikowaną osobę otrzyma dostęp do chronionych zasobów.
