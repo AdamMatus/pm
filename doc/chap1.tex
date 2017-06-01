@@ -262,6 +262,7 @@ W wektorze cech zwykle stosuje się od 12 do 15 najniższych współczynników u
 TODO delta
 
 \subsection{LPCC}
+\label{LPCC}
 
 Współczynniki liniowego kodowania predykcyjnego cepstrum - LPCC (\textit{ang. linear predicting ceptstral coding}) są alternatywną metodą ekstrakcji cech z sygnału mowy. Jest to synteza metody kodowania LPC wraz z zastosowaniem współczynników cepstrum. Liniowe kodowanie predykcyjne (LPC) jest techniką opartą na zastosowaniu modeli autoregresyjnych (AR). Główną różnicą w stosunku do techniki MFCC jest więc sposób aproksymacji widmowej gęstości mocy przy pomocy współczynników $|H_k(\omega)|^2$. Kroki wstępnego przetwarzania poprzedzające estymację, łącznie z aplikacją na ramkę okna czasowego, są identyczne jak w przypadku procedury obliczania współczynników MFCC. Zamiast posługiwać się dyskretnym przekształceniem Fouriera (DFT), korzysta się z modelu autoregresyjnego, kształtując widmo przy pomocy transmitancji $H(z)$ posiadającej same bieguny (\textit{ang. all-pole}) i jednym zerem w punkcie $z =0$:
 \begin{equation}
@@ -292,28 +293,50 @@ Układ tych równań nazywany jest równaniami Yule'a-Walkera (\textit{Yule-Walk
 \[
   \bm{\alpha} = \bm{R^{-1}} \bm{r},
 \]
-gdzie wektor $ \bm{r}$ jest wektorem kolumnowym prawych sum równań \ref{yweq} tzn. autokorelacji $ r(n)$, zaś wektor $ \bm{\alpha} $ wektorem kolumnowym współczynników $\alpha_1,...,\alpha_n$. Wspomniana własność macierzy $\bm{R}$ jako macierzy Toeplitza w dużym stopniu upraszcza procedurę odwracania macierzy dla algorytmu \textit{Levinsona-Durbina}\cite{durbin}. Możliwy do zastosowania algorytm Shura\cite{shur} pozwala przyspieszyć obliczenia poprzez paralelizację. Obliczone wartości $\alpha_i$ reprezentują współczynniki LPC. Wraz z wartością:
+gdzie wektor $ \bm{r}$ jest wektorem kolumnowym prawych sum równań \ref{yweq} tzn. autokorelacji $ r(n)$, zaś wektor $ \bm{\alpha} $ wektorem kolumnowym współczynników $\alpha_1,...,\alpha_n$. Wspomniana własność macierzy $\bm{R}$ jako macierzy Toeplitza w dużym stopniu upraszcza procedurę odwracania macierzy poprzez zastosowanie rekursywnego algorytmu \textit{Levinsona-Durbina}\cite{durbin}. Możliwy do zastosowania algorytm Shura\cite{shur} pozwala przyspieszyć obliczenia poprzez paralelizację. Obliczone wartości $\alpha_i$ reprezentują współczynniki LPC. Wraz z wartością:
 \[
   \tilde{G} = r(0) - \sum_{i=1}^{p} a_i r(i)
 \] 
 umożliwiając aproksymację funkcji gęstości widma przy pomocy równania \ref{transar}.
 
 \subsubsection{Obliczanie współczynników LPCC}
-W praktyce \cite[fosr] jako wektory cech najczęściej używa się współczynników cepstrum obliczonych przy pomocy uzyskanych współczynników LPC. Rekursywny algorytm zaproponowany przez Rabinera i Juanga \cite{rabinerjuangfosr60} oblicza współczynniki cepstrum w następujący sposób:
+W praktyce \cite{fosr} jako wektory cech najczęściej używa się współczynników cepstrum obliczonych przy pomocy uzyskanych współczynników LPC. Rekursywny algorytm zaproponowany przez Rabinera i Juanga \cite{rabinerjuangfosr60} oblicza współczynniki cepstrum w następujący sposób:
 \begin{enumerate}
     \centering
   \item $c_0 = log(\tilde{G}^2)$,
-  \item $c_d = \alpha_d + \sum_{i=1}^{d-1} c_j a_{d-i} \quad \textrm{\textbf{dla}} \quad 1\leq d \leq p$
-  \item $c_d = \sum_{i=1}d + \sum_{i=1}^{d-1} c_j a_{d-i} \quad \textrm{\textbf{dla}} \quad d > p$
-
-
+  \item $c_d = \alpha_d + \sum_{i=1}^{d-1} c_i a_{d-i} \quad \textrm{\textbf{dla}} \quad 1\leq d \leq p$
+  \item $c_d = \sum_{i=1}d + \sum_{i=1}^{d-1} c_i a_{d-i} \quad \textrm{\textbf{dla}} \quad d > p$
 \end{enumerate}
 
 Rekomendowana ilość $p$ dla obliczania współczynników LPCC powyższym sposobem to zakres od 8 do 16 \cite{fosr}. Najczęściej stosuje się liczbę 8 do 20 elementów w wektorze cech. 
 \subsection{Inne metody ekstrakcji cech.}
+Najczęściej stosowanymi metodami ekstrakcji cech są następujące: MFCC, LPCC, LSF, PLP \cite{overview}. Dwie pierwsze zostały omówione wcześniej bardziej szczegółowo. W tym zaś podrozdziale pokrótce zostały omówione dwie kolejne oraz inne wybrane metody, które pojawiają się w literaturze fachowej oraz artykułach użytych jako źródła w tej pracy jako te metody które mogą mieć znaczenie w dalszym rozwoju omawianej dziedziny.
 \subsubsection{Metody LP}
-\subsubsection{}
+Istnieje szereg innych metod opartych na współczynnikach LP. Zwykle cechuje je nieliniowa transformacja dziedziny czasu/częstotliwości oraz amplitud współczynników mocy widma, która na celu ma przybliżyć sposób funkcjonowania percepcji ludzkiego aparatu słuchowego w konstruowanym systemie. 
+\begin{itemize}
+  \item{PARCORs (\textit{ang. partial correlation coefficients})} - \textit{współczynniki częściowej korelacji} są współczynnikami cech $\kappa_k$ interpretowanymi jako wartość reprezentującą nieredundantną informację o autokorelacji\cite{fosr}. Wielkości te są obliczane jako wartości pośrednie w algorytmie obliczania współczynników LPC we wcześniej wspomnianym (\ref{LPCC}) algorytmie Levinsona-Durbina. Współczynniki te również mają interpretację fizyczną jako modelujące wartości współczynników odbicia w modelu traktu głosowego jako cylindrów o różnych średnicach przez które przepływa strumień powietrza z płuc\cite{flanganfosr21}. Z tego też powodu nazywane są także \textit{współczynnikami odbicia} (\textit{ang. reflection coefficients}).
 
+  \item{LAR \textit{ang. Log Area Ratios}} - wielkości wynikające z modelu cylindrów tak jak w metodzie PARCORs. Współczynniki $ g_i $ otrzymuje się jako stosunki logarytmów średnic kolejnych cylindrów modelu. Tak obliczone współczynniki cechują się bardziej równomierną wrażliwością w dziedzinie częstotliwości niż współczynniki odbicia\cite{campbell}.
+
+  \item{PLP (\textit{ang. Perceptual Linear Predictive analysis}} - metoda ekstrakcji cech oparta na współczynnikach predykcji liniowej (LP) inspirująca się metodą MFCC. Zamiast zastosowania skali mela, w tej metodzie używa się skali Barka \ref{bark}, stosuje się zmodyfikowaną preemfazę ze względu na krzywą jednakowej głośności (\textit{ang. equal-loudness pre-emphasis}) \ref{loudness} oraz dokonuje się transformacji widma amplitudowego poprzez podniesienie wartości do potęgi $\frac{1}{3}$ co powoduje wygładzenie widma - zmniejszeniem dynamiki - i jest nazywana konwersją natężenia dźwięku do poziomu głośności (\textit{ang. Intensity to Louadness Conversion}) \cite{hoening}. Po tych etapach, z tak przekształconego widma uzyskiwane są współczynniki predykcji liniowej (model AR). Tak jak w metodzie MFCC także i tutaj używa się procedury DFT i IDFT. Współczynniki cepstrum uzyskiwane są tak jak w metodzie LPCC, np. przy wykorzystaniu metody Levinsona-Durbina. Na rysunku \ref{plp} przedstawiono etapy analizy PLP tak jak w pracy źródłowej \cite{fosr30hermansky}.
+
+\begin{figure}[ht!]
+  \centering
+    \includegraphics[width=1.1\textwidth]{plp.png}
+    \caption{\label{plp} Etapy analizy PLP.}
+\end{figure}
+
+\item{LSF (\textit{ang. line spectral frequencies} lub LSP (\textit{ang. line spectral pairs}))} - metody reprezentacji sygnału mowy w których zaproponowana jest alternatywna postać mianownika transmitancji z \ref{transar}. Oznaczając mianownik jako $A(z)$ przyjmowana jest reprezentacja:
+  \begin{equation}
+  \begin{gathered}
+    A(z) = \frac{1}{2} [P(z) + Q(z)] \\
+    P(z) = A(z) + z^{p+1} A(Z^{-1}) \\
+    Q(z) = A(z) - z^{p+1} A(Z^{-1}). 
+  \end{gathered}
+  \end{equation}
+    gdzie wielomian $P(z)$ jest interpretowany fizycznie jako odpowiadający odpowiedzi impulsowej dróg głosowych przy głośni zamkniętej zaś wielomian $Q(z)$ przy otwartej. Pierwiastki wielomianów $P$ i $Q$ leżą na okręgu jednostkowym na płaszczyźnie zespolonej $z$. Techinka ta jest nazywana \textit{ang. reverse-filtering}. 
+
+\end{itemize}
 \section{Metody klasyfikacji sygnału mowy. Modelowanie mówcy.}
 \label{featurematching}
 
