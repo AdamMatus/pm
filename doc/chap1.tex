@@ -83,8 +83,14 @@ Tembr głosu mówcy ustalony jest przez budowę jego dróg głosowych.
 \subsubsection{Aparat słuchowy.}
 Narząd słuchu człowieka można rozpatrywać jako transduktor, co znaczy, że mapuje zmiany ciśnienia akustycznego w powietrzu na sygnał elektryczny w układzie nerwowym. Na samym początku toru przetwarzania sygnału audio znajduje się małżowina uszna, której zadaniem jest skupienie dźwięku. Sygnał akustyczny wpadający do kanału słuchowego jest filtrowany ze względu na jego fizyczne rozmiary, usuwane są niskie częstotliwości. Zmiany ciśnienia akustycznego zamieniane są na fale mechaniczne w ciele stałym na błonie bębenkowej, a następnie wzmacniane przez układ kosteczek słuchowych - młoteczka, kowadełka i strzemiączka. Strzemiączko łączy się z uchem wewnętrznym poprzez błonę okienka owalnego (łac. \textit{fenestra vestibuli}), którego zadaniem jest wzbudzenie drgań %TODO w domu zobacz kurwa anatomie ucha xD     
 
+--- wykorzystanie wiedzy na temat budowy aparatu słuchowego w metodach ekstrakcji cech - skala mela skala barka  - testy subiektywne troche na pograniczu ukladu nerwowego ?
+
 %TODO
 \subsubsection{Układ nerwowy}
+
+Dziedzina rozpoznawania głosu jest szczególnie zainteresowana naturalną aparaturą w którą wyposażony jest człowiek dla zadania rozpoznawania mowy czy identyfikowania swoich rozmówców. Dotyczy to także całego obszaru metod rozpoznawania sygnałów akustycznych. Trend jest szczególnie widoczny związku z bardzo dynamicznym rozwojem dziedziny sztucznych sieci neuronowych i sztucznej inteligencji. Tak jak wspomniano wyżej, szereg metod związanych z rozkodowywaniem sygnału mowy - ekstrakcją cech - korzysta z wiedzy anatomicznej przy okazji konstrukcji algorytmów. Niestety w dziedzinie klasyfikacji mówców to podejście nie jest stosowane - prawdopodobnie ze względu na skromną wiedzę o tym jak funkcjonuje ludzki umysł. Wydaje się jednak, że można przywołać pewną wiedzę na temat tego jak człowiek interpretuje sygnał mowy poprzez wskazanie pewnych obszarów mózgu odpowiedzialnych za zadania związane z analizą mowy - a także połączenia pomiędzy nimi. Wraz z zastosowaniem rezonansu magnetycznego neurologia poczyniła duże postępy i można mieć nadzieję na to, że w najbliższej przyszłości uzyskana wiedza pozwoli na udoskonalenie systemów rozpoznawania głosu.
+
+-----------------------------TODO obszary mózgu, jak informacja się propaguje itd.
 
 \subsection{Lingwistyka a rozpoznawania mówcy.}
 
@@ -198,7 +204,7 @@ Funkcja cepstrum mocy dla ciągłego przekształcenia Fouriera zdefiniowana jest
     \tilde{h_{pc}} = \left[\frac{1}{2\pi}\int_{-\pi}^{\pi}log\left(| H(\omega)  |^2\right)e^{i \omega t}\right]^2
 \end{equation}
 gdzie $ |H(\omega)|^2 $ oznacza funkcję widma gęstości mocy sygnału oryginalnego. Jest to odwrotne przekształcenie Fouriera zastosowane na logarytmie funkcji gęstości mocy sygnału.
-
+   
 Pojęcie cepstrum pierwotnie zostało wprowadzone do badań nad echem sygnałów akustycznych \cite{hdsp}. Taki sygnał opisywany jest przez wyrażenie 
 \begin{equation}
      x(t) = s(t) + \alpha s(t - \tau) 
@@ -284,19 +290,19 @@ Kryterium minimalizacji
   \frac{\delta E}{\delta \alpha_i} = 0, \quad i=1,..,p
 \end{equation}
 daje w wyniku zależność:
-\[
+\begin{equation}
   \label{yweq}
   \sum_{k=1}^{p} a+k \cdot \sum_n s_{n-k} s_{n-i} = - \sum_n s_n s_{n-i}, \quad  i=1,...,p.
-\]
+\end{equation}
 Lewa suma $ \sum_n s_{n-k} s_{n-i} $ jest funkcja autokorelacji o opóźnieniu $ \tau = n-k $, czyli $ r(|n-k|) $, zaś analogicznie prawa jest funkcją autokorelacji o opóźnieniu $ \tau = n $ tzn. $ r(n)$, gdzie w obu przypadkach $i=1,...,p$.
 Układ tych równań nazywany jest równaniami Yule'a-Walkera (\textit{Yule-Walker Equations}). Otrzymana z tych równań macierz autokorelacji $ \bm{R} $ przyjmuje postać macierzy Toeplitza - posiada te same wartości na poszczególnych przekątnych. Rozwiązanie problemu minimalizacji przedstawia się jako:
-\[
+\begin{equation}
   \bm{\alpha} = \bm{R^{-1}} \bm{r},
-\]
+\end{equation}
 gdzie wektor $ \bm{r}$ jest wektorem kolumnowym prawych sum równań \ref{yweq} tzn. autokorelacji $ r(n)$, zaś wektor $ \bm{\alpha} $ wektorem kolumnowym współczynników $\alpha_1,...,\alpha_n$. Wspomniana własność macierzy $\bm{R}$ jako macierzy Toeplitza w dużym stopniu upraszcza procedurę odwracania macierzy poprzez zastosowanie rekursywnego algorytmu \textit{Levinsona-Durbina}\cite{durbin}. Możliwy do zastosowania algorytm Shura\cite{shur} pozwala przyspieszyć obliczenia poprzez paralelizację. Obliczone wartości $\alpha_i$ reprezentują współczynniki LPC. Wraz z wartością:
-\[
+\begin{equation}
   \tilde{G} = r(0) - \sum_{i=1}^{p} a_i r(i)
-\] 
+\end{equation}
 umożliwiając aproksymację funkcji gęstości widma przy pomocy równania \ref{transar}.
 
 \subsubsection{Obliczanie współczynników LPCC}
@@ -335,8 +341,21 @@ Istnieje szereg innych metod opartych na współczynnikach LP. Zwykle cechuje je
   \end{gathered}
   \end{equation}
     gdzie wielomian $P(z)$ jest interpretowany fizycznie jako odpowiadający odpowiedzi impulsowej dróg głosowych przy głośni zamkniętej zaś wielomian $Q(z)$ przy otwartej. Pierwiastki wielomianów $P$ i $Q$ leżą na okręgu jednostkowym na płaszczyźnie zespolonej $z$. Techinka ta jest nazywana \textit{ang. reverse-filtering}. 
-
 \end{itemize}
+
+\subsubsection{Metody wykorzystujące transformację falkową.}
+
+Tak jak wcześniej opisano w rozważaniach o krótko-czasowej transformacie Fouriera (STFT) \ref{stft}, niestacjonarny sygnał mowy możemy analizować metodami czasowo-częstotliwościowymi z odpowiednio małym oknem dobranym na podstawie czasu trwania pojedynczych głosek. Segmentacja sygnału na takie ramki pozwalała zastosować metody estymacji widma dla sygnały stacjonarnego. Metody estymacji widma z zastosowaniem modeli autoregresyjnych (AR) również przyjmują, że działają na sygnale stacjonarnym. Transformacja falkowa dostarcza szeregu ortogonalnych funkcji jądra dla uogólnionego szeregu Fouriera. Wspomniane funkcje powstają poprzez rozciąganie i przemieszczanie funkcji matki dla danej transformacji falkowej. Warto zwrócić uwagę na to, że transformacja Gabora, będącą transformacją falkową z funkcją matką równą iloczynowi jądra transformaty Fouriera $ exp(-2\pi j f \tau)$ oraz funkcją Gaussowską $ exp(-\pi(\tau-t)^2) $ stanowi przypadek krótko-czasowej transformaty Fouriera (STFT) dla której użyto okna Gaussowkiego. Zatem widać, że istnieje pole do zastosowania analizy czasowo-częstotliwościowej w postaci transformacji falkowej w miejsce STFT czy estymacji za pomocą modeli autoregresyjnych. Odpowiednikiem dyskretnej transformaty Fouriera (DFT) jest dyskretna transformata falkowa (DWT -\textit{ang. discrete wavelet transform}).
+\begin{enumerate}
+  \item{MFCWC - \textit{Mel-Frequency Discrete Wavelet Coefficients}} - technika oparta na generacji współczynników MFCC - jest praktycznie identyczna w kolejnych krokach za wyjątkiem wykorzystania transformaty cosinusowej (DCT) w zamian za użycie dyskretnej transformaty falkowej (DWT). Okazuje się, że zastosowanie DWT przyczynia się do polepszenia rezultatów w 'agresywnie' hałaśliwym środowisku\cite{fosr}.
+  \item{WOCOR - \textit{Wavelet Octave Coefficients Of Residues}} - jest wektorem cech wyekstrahowanych za pomocą transformacji falkowej z funkcją matką związaną z tonem wypowiadanej głoski, co wiąże się z rozmiarem analizowanej ramki. Jest to metoda oparta na współczynnikach liniowej predykcji (LP) rezyduł sygnału w ramce. Rozważana technika jest efektywna w użytku z sygnałem mowy zawierającym języki oparte na intonacji (\textit{ang. pitch-based}) takie jak dialekty języka Chińskiego  - Mandaryński czy Kantoński \cite{fosr}.
+\end{enumerate}
+
+\subsubsection{Inne metody ekstrakcji cech.}
+
+Istnieje szereg metod bazujących na przekształceniu dziedziny czy wartości współczynników funkcji gęstości widmowej sygnału za pomocą banku filtrów o różnych właściwościach. Przykładami są metody ekstrakcji cech bazujące na kolejnych, specyficznych modelach ludzkiego narządu słuchu\cite{fosr}.
+
+
 \section{Metody klasyfikacji sygnału mowy. Modelowanie mówcy.}
 \label{featurematching}
 
