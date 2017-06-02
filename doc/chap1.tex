@@ -83,7 +83,7 @@ Tembr głosu mówcy ustalony jest przez budowę jego dróg głosowych.
 \subsubsection{Aparat słuchowy.}
 Narząd słuchu człowieka można rozpatrywać jako transduktor, co znaczy, że mapuje zmiany ciśnienia akustycznego w powietrzu na sygnał elektryczny w układzie nerwowym. Na samym początku toru przetwarzania sygnału audio znajduje się małżowina uszna, której zadaniem jest skupienie dźwięku. Sygnał akustyczny wpadający do kanału słuchowego jest filtrowany ze względu na jego fizyczne rozmiary, usuwane są niskie częstotliwości. Zmiany ciśnienia akustycznego zamieniane są na fale mechaniczne w ciele stałym na błonie bębenkowej, a następnie wzmacniane przez układ kosteczek słuchowych - młoteczka, kowadełka i strzemiączka. Strzemiączko łączy się z uchem wewnętrznym poprzez błonę okienka owalnego (łac. \textit{fenestra vestibuli}), którego zadaniem jest wzbudzenie drgań %TODO w domu zobacz kurwa anatomie ucha xD     
 
---- wykorzystanie wiedzy na temat budowy aparatu słuchowego w metodach ekstrakcji cech - skala mela skala barka  - testy subiektywne troche na pograniczu ukladu nerwowego ?
+--- wykorzystanie wiedzy na temat budowy aparatu słuchowego w metodach ekstrakcji cech - perceptualnych skal częstotliwości mela skala barka  - testy subiektywne troche na pograniczu ukladu nerwowego ?
 
 %TODO
 \subsubsection{Układ nerwowy}
@@ -123,57 +123,60 @@ Prozodia zajmuje się brzmieniowymi właściwościami mowy na które składają 
 
 \subsection{Przegląd.}
 
-Celem ekstrakcji cech z sygnału mowy (\textit{feature extraction}) jest uzyskanie zbioru cech charakteryzujących sygnał ludzkiej mowy za pomocą technik cyfrowego przetwarzania sygnału. Jednocześnie jest to zamiana sygnału w którym zawarta jest redundantna informacja na sygnał o niskiej zawartości informacji znaczących dla problemu rozpoznawania mówcy/mowy. 
+Celem ekstrakcji cech z sygnału mowy (\textit{ang. feature extraction}) jest uzyskanie zbioru cech charakteryzujących sygnał ludzkiej mowy za pomocą technik cyfrowego przetwarzania sygnału. Jednocześnie jest to zamiana sygnału w którym zawarta jest redundantna informacja na sygnał o niskiej zawartości informacji znaczących dla problemu rozpoznawania mówcy/mowy. 
 
 %TODO bezsensu xD ogólnie cały podrozdział kupą śmierdzi
 Tak jak zostało wspomniane wcześniej, problem rozpoznawania mówcy w standardowym podejściu rozpatrywany jest jako problem estymacji parametrów ustalonego modelu. W zależności od rozpatrywanej odmiany rozpoznawania mówcy dokonywane są odpowiednie założenia konkretyzujące postać problemu.
 
 %cite fosr 5.3 and block diagram
 %todo przeredagowac bo to nie ma sensu xd nie rozumiem tych reduckji
-W ogólności system produkcji mowy człowieka można przedstawić jako układ regulacji automatyki z kontrolerem reprezentującym układ nerwowy wraz z kontrolowaną przezeń motoryką aparatu mowy. Sygnał sterujący kontrolera powoduje pobudzenie układu charakterystyk sygnału mowy charakteryzowany przez budowę dróg głosowych. Dopiero wyjściem tego ostatniego jest akustyczny sygnał mowy. Podczas gdy problem rozpoznawania mowy próbuje wyeliminować wpływ na formułowany model postaci układu charakterystyk głosowych, tak rozpoznawanie niezależne od tekstu próbuje ustalić model charakterystyk głosowych bez względu na postać układu kontrolera. Ponieważ oba rozpatrywane modele są mocno nieliniowe najtrudniejszym zadaniem w rozpoznawaniu mówcy jest ich rozdzielenie. Z tego właśnie powodu problem ze znanym wypowiadanym tekstem jest o wiele prostszym zagadnieniem od problemu rozpoznawania mówcy niezależnego od wypowiadanego tekstu. W tym pierwszym przypadku dokonujemy redukcji do tylko znanych pobudzeń oraz konkretyzować model kontrolera Gc.
+W ogólności system produkcji mowy człowieka można przedstawić jako układ regulacji automatyki z kontrolerem reprezentującym układ nerwowy wraz z kontrolowaną przezeń motoryką aparatu mowy. Sygnał sterujący kontrolera powoduje pobudzenie układu charakterystyk sygnału mowy charakteryzowany przez budowę dróg głosowych. Dopiero wyjściem tego ostatniego jest akustyczny sygnał mowy. Podczas gdy problem rozpoznawania mowy próbuje wyeliminować wpływ na formułowany model postaci układu charakterystyk głosowych, tak rozpoznawanie niezależne od tekstu próbuje ustalić model charakterystyk głosowych bez względu na postać układu kontrolera. Ponieważ oba rozpatrywane modele są mocno nieliniowe najtrudniejszym zadaniem w rozpoznawaniu mówcy jest ich rozdzielenie. Z tego właśnie powodu problem ze znanym wypowiadanym tekstem jest o wiele prostszym zagadnieniem od problemu rozpoznawania mówcy niezależnego od wypowiadanego tekstu. W tym pierwszym przypadku dokonujemy redukcji do tylko znanych pobudzeń oraz konkretyzować model kontrolera $G_c$. %TODO
 
-Przedstawione w tym podrozdziale techniki ekstrakcji cech okazują się równie przydatne i powszechnie stosowane zarówna dla technik rozpoznawania mówcy jak i rozpoznawania mowy. Najpopularniejszą obecnie stosowaną metodą ekstrakcji cech z sygnału mowy jest współczynnikami cepstrum w dziedzinie częstotliwości Mela -  MFCC (\textit{mel-frequency cepstral coeficcients}). 
+Przedstawione w tym podrozdziale techniki ekstrakcji cech okazują się równie przydatne i powszechnie stosowane zarówna dla technik rozpoznawania mówcy jak i rozpoznawania mowy. Najpopularniejszą obecnie stosowaną metodą ekstrakcji cech z sygnału mowy jest współczynnikami cepstrum w dziedzinie częstotliwości Mela -  MFCC (\textit{ang. Mel-Frequency Cepstral Coeficcients}). 
 
 Ważnym elementem toru przetwarzania systemu są również elementy związane z zaszumieniem sygnału mowy, przetwornikiem elektroakustycznym oraz procesem dyskretyzowania elektrycznego sygnału mowy przez przetwornik analogowo-cyfrowy. Jednak ze względu na prostotę te zagadnienia zostaną omówione oddzielnie od problemu ekstrakcji cech.
 
 \subsection{MFCC.}
 
-%todo zdefiniuj skalę Mela i opisz (związek z budową ślimaka).
-%todo zdefiniuj loudness
+Ekstrakcja cech za pomocą współczynników cepstrum w dziedzinie częstotliwości Mela składa się z dwóch głównych etapów: uzyskania współczynników mocy w dziedzinie częstotliwości Mela na podstawie estymacji widma mocy sygnału mowy (\textit{freqency warping}) oraz obliczenia współczynników cepstrum na podstawie uzyskanych wcześniej współczynników mocy w skali Mela. Wynikiem przeprowadzonej operacji jest uzyskanie wektora cech $x_j$ dla numeru ramki $j$.
 
-
-Ekstrakcja cech za pomocą współczynników cepstrum w dziedzinie częstotliwości Mela składa się z dwóch głównych etapów: uzyskania współczynników mocy w dziedzinie częstotliwości Mela na podstawie widma mocy sygnału mowy (\textit{freqency warping}) oraz obliczenia współczynników cepstrum na podstawie uzyskanych wcześniej współczynników mocy w skali Mela. Wynikiem przeprowadzonej operacji jest uzyskanie wektora cech jx dla każdej ramki j.
-%todo wektor jX math
-%
-%todo STFT definicja oraz ograniczenie do przesunięcia o K [calkowita dstft niepotrzebna bo troche stacjonarny - zredukowana STFT][K ten sam rzad wielkosci co N][motywacja uzycia okna - dlugosc zmienia rozdzielczosci time-frequency, albo ze w definicji STFT tak jest - nie wiem xD]
+\subsubsection{DSTFT - dyskretna krótkookresowa transformata Fouriera}
+Dyskretna krótkookresowa transformata Fouriera (DSTFT - \textit{ang. Discrete Short-time Fourier Transform}) jest dyskretną wersją ciągłej transformaty Fouriera (STFT - \textit{ang. Short-time Fourier Transform} dla sygnału próbkowanego w czasie oraz dyskretnego w dziedzinie częstotliwości. Jest to metoda analizy czasowo-częstotliwościowej, przeprowadzając oparację dyskretnej transformaty Fouriera (DFT - \textit{ang. Discrete Fourier Transform}) na ramkach sygnału dla których możemy założyć jego lokalną stacjonarność. Relacja pomiędzy STFT, a DSTFT jest relacją analogiczną do relacji ciągłej transformaty Fouriera, a DFT.  Estymacja widma za pomocą metody DSTFT jest podstawą techniki ekstrakcji cech MFCC.
 
 \subsubsection{Podział sygnału na ramki.}
-Ze względu na własność quasi-stacjonarności sygnału mowy, aby wydobyć informację dotyczącą wypowiadanej głoski konieczne jest rozdzielenie sygnału na ramki (\textit{framing the signal}).
-Liczbę próbek dla pojedynczej ramki wybiera się ze względu na konieczność uzyskania lokalnej stacjonarności - w taki sposób aby było możliwe zbadanie charakterystyki częstotliwości pojedynczej głoski. Średnia długość głoski to 80 ms. Jednak trzeba mieć na względzie, że samogłoski trwają długo w stosunku do przerw pomiędzy (trwających zwykle ok. 5 ms). Zatem aby móc uchwycić krótsze głoski oraz przerwy zwykle ustala się długość ramki na 20 do 30 ms. Jednocześnie długość ramki w ilości próbek jest funkcją częstotliwości próbkowania. Do przedstawionych założeń dochodzi zwykle warunek dotyczący użycia algorytmu szybkiej transformaty Fouriera (\textit{Fast Fourier Transform, FFT}) wymagającej aby sygnał był długości potęgi dwójki. W przypadku pierwszej oraz ostatniej ramki stosowana jest techinka uzupełniania zerami w przypadku braku próbek do zapełnienia całej ramki.
+Ze względu na własność quasi-stacjonarności sygnału mowy, aby wydobyć informację dotyczącą wypowiadanej głoski konieczne jest rozdzielenie sygnału na ramki.
+Liczbę próbek dla pojedynczej ramki wybiera się ze względu na konieczność uzyskania lokalnej stacjonarności - w taki sposób aby było możliwe zbadanie charakterystyki częstotliwości pojedynczej głoski. Średnia długość głoski to 80 ms. Jednak trzeba mieć na względzie, że samogłoski trwają długo w stosunku do przerw pomiędzy (trwających zwykle ok. 5 ms). Zatem aby móc uchwycić krótsze głoski oraz przerwy zwykle ustala się długość ramki na 20 do 30 ms. Jednocześnie długość ramki w ilości próbek jest funkcją częstotliwości próbkowania. Do przedstawionych założeń dochodzi zwykle warunek dotyczący użycia algorytmu szybkiej transformaty Fouriera (FFT - \textit{ang. Fast Fourier Transform}) wymagającej aby sygnał był długości potęgi dwójki. W przypadku pierwszej oraz ostatniej ramki stosowana jest technika uzupełniania zerami w przypadku braku próbek do zapełnienia całej ramki.
 
 \subsubsection{Aplikacja okna na ramki.}
-W stosowanej, 
-%TODO
-zredukowanej techince STFT stosowane są okna inne niż okno prostokątne o długości ramki lh w celu polepszenia właściwości widmowych dla dalszej analizy. Zastosowanie okna czasowego odbywa się poprzez przemnożenie wartości próbek ramki przez wartości okna w następujący sposób:
-%todo lhn = lhnw(n) dla n zawiera sie w {0,1,...,N-1}
+W wykorzystywanej technice DSTFT stosowane są zazwyczaj okna inne niż okno prostokątne o takiej samej długości jak ramki w celu zredukowania przecieku widma. Zastosowanie okna czasowego odbywa się poprzez przemnożenie wartości próbek ramki przez wartości okna w następujący sposób:
+\begin{equation}
+  h_i = w_i \cdot x_i, \quad i \in {1,...,N}
+\end{equation}
+gdzie $x_i$ oznacza i-tą próbkę sygnału, $h_i$ - zmodyfikowaną wartość próbki użytej dla wyznaczania współczynników DFT, $w_i$ - i-tą wartości funkcji okna, $N$ ilość próbek w ramce. 
 
-Najpopularniejszymi oknami stosowanymi w tym przypadku są okna czasowe Hanna, Hamming oraz okna Gaussowskie.
-%todo zdefiniowac okna? ktore?
+Najpopularniejszymi oknami stosowanymi w tym przypadku są okna czasowe Hanna, Hamminga oraz okna Gaussowskie \cite{fosr}.
 
 \subsubsection{Estymacja widma.}
-Po zaaplikowaniu okien czasowych dla kolejnych ramek, kolejnym etapem do otrzymania współczynników MFCC jest znalezienie widma ramki za pomocą dyskretnej transformaty fouriera. Kolejne współczynniki uzyskanego widma zdefiniowane są następująco:
-%todo DFT def
-W omawianej metodzie korzysta się jedynie z informacji o amplitudzie uzyskanego widma. Wartość wielkości amlitud otrzymywane są w następujący sposób:
-%todo abs(Hk)
+\label{stft}
+Po zaaplikowaniu okien czasowych dla kolejnych ramek sygnału, kolejnym etapem procedury obliczania współczynników MFCC jest znalezienie widma ramki za pomocą dyskretnej transformaty fouriera (DFT). Kolejne współczynniki uzyskanego widma zdefiniowane są następująco:
+\begin{equation}
+  H_k = \sum^{N-1}_{n=0} h_n exp(\frac{-2\pi kn}{N} )
+\end{equation}
+W omawianej metodzie korzysta się jedynie z informacji o amplitudzie uzyskanego widma. Kolejne współczynniki widma amplitudowego zdefiniowane są w następujący sposób:
+\begin{equation}
+  M_k = |H_k| = \sqrt{H_k^2}
+\end{equation}
 
 \subsubsection{Przejście do dziedziny częstotliwości Mela.}
 Przejście do dziedziny częstotliwości Mela (\textit{frequency warping}) uzasadnione jest nieliniową percepcją układu słuchowego człowieka. Ponieważ procedura DFT produkuje liniowe widmo w dziedzinie widmo częstotliwościowe, dokonywana jest jego transformacja do dziedziny częstotliwości Mela. Jest to proces imitujący cechę sygnału akustycznego - wysokości tonu.
 Rozpatrywana operacja polega na zastosowaniu banku filtrów trójkątnych na uzyskanych amplitudach widma kHz:
-%todo Hk^ = SUM (Hk(f) * F(f) ) dla każdego filtru z banku.
+\begin{equation}
+  \tilde{H}_j = \sum_{k=1}^{K} H_k \cdot F_k, \quad k \in {1...N}, \quad  j \in {1...M}
+\end{equation}
+gdzie $\tilde{H}_j$ oznacza j-ty współczynnik amplitudy widma w dziedzinie częstotliwości Mela, $F_k$, zaś $M$ oznacza ilość filtrów.
 W wyniku tej operacji otrzymuje się wektor współczynników częstotliwości w skali Mela o długości równej ilości użytych filtrów. Najczęściej stosowanym filtrem jest okno trójkątne zdefiniowane w dziedzinie częstotliwości. Każdy kolejny filtr zaczyna się w środku pasma wcześniejszego. Ponieważ przetwarzany jest sygnał składający się z próbek o wartościach rzeczywistych, pokryte pasmo częstotliwości zawiera próbki od 0-wej do próbki o oznaczonej numerem N/2. Ilość filtrów oraz ich rozmieszczenie w dziedzinie częstotliwości ustalane są na jeden z kilku sposobów.
 Pierwszym sposobem jest skorzystanie z 24 obszarów krytycznych zdefiniowanych w skali Barka. Każdy filtr ma niezerowe wartości w zakresie częstotliwości od k-1 częstotliwości krytycznej, aż do k+1 częstotliwości krytycznej. Maksimum zaś przypada na k-tą częstotliwość krytyczną.
 Drugim i najpopularniejszym podejściem jest zastosowanie ustalonej ilości filtrów i rozmieszczenie ich równomiernie w dziedzinie częstotliwości mela.
-%todo minimum pomiedzy critical bands ???
 
 \begin{figure}
   \centering
@@ -182,7 +185,7 @@ Drugim i najpopularniejszym podejściem jest zastosowanie ustalonej ilości filt
     \caption{Przykładowe 24 trójkątne filtry dla sygnału o częstotliwości próbkowania \textit{fs=12500 Hz.}}
 \end{figure}
 
-Stosowane są również filtry trapezowe oraz kosinusowe. Innym proponowanym podejściem jest znalezienie filtrów poprzez proces uczenia maszynowego, uczoną ze względu na %todo ... (reducing  cross-entropy which is closer to objective)  %todo zrodlo
+Stosowane są również filtry trapezowe oraz kosinusowe, a także zmianę wzmocnienia filtrów ze względu na psychoakustyczną krzywą jednakowej głośności. 
 
 \subsubsection{Uzyskanie współczynników głośności.}
 Wartości otrzymane w procesie przejścia do dziedziny częstotliwości Mela z prążków reprezentujących widmową gęstość mocy sygnału mogą reprezentować natężenie dźwięku w danym momencie czasu. Ponieważ zadaniem ekstrakcji cech przy pomocy współczynników MFCC jest mimika ludzkiego układu percepcji konieczne jest przekształcenie wartości reprezentujących energię na głośność (\textit{ang. magnitude warping}). Zgodnie z przedstawioną definicją \ref{glosnosc} \textit{głośność} jest funkcją zarówno \textit{wysokości tonu} oraz natężenia dźwięku $ I $. Relację z \textit{wysokością tonu} imituje się za pomocą etapu \textit{equalizacji} sygnału. Zatem pozostaje jedynie zdefiniować współczynniki głośności $ C_k $ \cite{fosr} dla każdej ramki sygnału:
@@ -261,11 +264,19 @@ gdzie
 
 Uzyskane współczynniki MFCC noszą nazwę wektora akustycznego (\textit{ang. acoustic vector}) reprezentującą cechy pojedynczej ramki i są w procesie weryfikacji mówcy dalej wykorzystywane w tzw. procesie dopasowywania cech opisanym w sekcji \ref{featurematching}.
 
-W wektorze cech zwykle stosuje się od 12 do 15 najniższych współczynników uzyskanych z DCT. Zwykle uzupełnia się go dodatkowymi współczynnikami $\Delta$ oraz $\Delta\Delta$ zawierające dodatkową informację o dynamice sygnału. 
+W wektorze cech zwykle stosuje się od 12 do 15 najniższych współczynników uzyskanych z DCT. Zwykle uzupełnia się go dodatkowymi współczynnikami $\Delta$ oraz $\Delta^2$ zawierające dodatkową informację o dynamice sygnału. 
 
 \subsubsection{Współczynniki Delta cepstrum oraz Delta-Delta cepstrum}
 
-TODO delta
+  Tak jak opisano dalej w tej pracy w \ref{otherfeatures}, duże znaczenie w procesie rozpoznawania mówcy ma informacja temporalna zawarta w sygnale mowy - związana z dynamiką zmian współczynników kolejnych ramek wektorów cech. Najpopularniejszą metodą na dodanie informacji tego rodzaju jest dołączenie do wektora cech MFCC współczynników \textit{Delta} - $\Delta$ oraz \textit{Delta-Delta} - $\Delta^2$ które kolejno reprezentują pierwszą i drugą pochodną dyskretną dla kolejnych ramek sygnału. Okazuje się, że dodanie wspomnianych współczynników daje znaczącą poprawę procesu rozpoznawania, szczególnie w systemach rozpoznawania mówcy z hasłem lub zależnego od wypowiadanego tekstu \cite{delta}. Najczęściej, stosuje się następującą formułę do obliczenia cech delta cepstrum:
+\begin{equation}
+  \Delta_{t, k} = \frac{\sum^N_{n=1} n(c_{t+n,k} - c_{t-n,k})}{2\sum^N_{n=1} n^2} 
+\end{equation}
+gdzie $N$ przyjmuje typową wartość 2, $C_{t,k}$ oznacza współczynnik cepstrum dla ramki $t$ i numerze współczynnika w ramce $k$. Współczynniki Delta-Delta obliczane są w ten sam sposób za wyjątkiem użycia współczynników Delta w miejsce współczynników cepstrum:
+\begin{equation}
+  \Delta^2_{t, k} = \frac{\sum^N_{n=1} n(\Delta_{t+n,k} - \Delta_{t-n,k})}{2\sum^N_{n=1} n^2} 
+\end{equation}
+Do wektora cech MFCC dodaje się zwykle taką samą ilość współczynników $\Delta$ oraz $\Delta^2$ co współczynników cepstrum $c_{k}$. W systemach rozpoznawania mówcy bez znajomości wypowiadanego tekstu proponuje się ograniczyć ilość współczynników delta w stosunku do współczynników cepstrum i współczynników delta-delta w stosunku do współczynników delta \cite{fosr}.
 
 \subsection{LPCC}
 \label{LPCC}
@@ -317,7 +328,7 @@ W praktyce \cite{fosr} jako wektory cech najczęściej używa się współczynni
 Rekomendowana ilość $p$ dla obliczania współczynników LPCC powyższym sposobem to zakres od 8 do 16 \cite{fosr}. Najczęściej stosuje się liczbę 8 do 20 elementów w wektorze cech. 
 \subsection{Inne metody ekstrakcji cech.}
 Najczęściej stosowanymi metodami ekstrakcji cech są następujące: MFCC, LPCC, LSF, PLP \cite{overview}. Dwie pierwsze zostały omówione wcześniej bardziej szczegółowo. W tym zaś podrozdziale pokrótce zostały omówione dwie kolejne oraz inne wybrane metody, które pojawiają się w literaturze fachowej oraz artykułach użytych jako źródła w tej pracy jako te metody które mogą mieć znaczenie w dalszym rozwoju omawianej dziedziny.
-\subsubsection{Metody LP}
+\subsubsection{Metody bazujące na LP}
 Istnieje szereg innych metod opartych na współczynnikach LP. Zwykle cechuje je nieliniowa transformacja dziedziny czasu/częstotliwości oraz amplitud współczynników mocy widma, która na celu ma przybliżyć sposób funkcjonowania percepcji ludzkiego aparatu słuchowego w konstruowanym systemie. 
 \begin{itemize}
   \item{PARCORs (\textit{ang. partial correlation coefficients})} - \textit{współczynniki częściowej korelacji} są współczynnikami cech $\kappa_k$ interpretowanymi jako wartość reprezentującą nieredundantną informację o autokorelacji\cite{fosr}. Wielkości te są obliczane jako wartości pośrednie w algorytmie obliczania współczynników LPC we wcześniej wspomnianym (\ref{LPCC}) algorytmie Levinsona-Durbina. Współczynniki te również mają interpretację fizyczną jako modelujące wartości współczynników odbicia w modelu traktu głosowego jako cylindrów o różnych średnicach przez które przepływa strumień powietrza z płuc\cite{flanganfosr21}. Z tego też powodu nazywane są także \textit{współczynnikami odbicia} (\textit{ang. reflection coefficients}).
@@ -352,10 +363,15 @@ Tak jak wcześniej opisano w rozważaniach o krótko-czasowej transformacie Four
 \end{enumerate}
 
 \subsubsection{Inne metody ekstrakcji cech.}
+\label{otherfeatures}
 
-Istnieje szereg metod bazujących na przekształceniu dziedziny czy wartości współczynników funkcji gęstości widmowej sygnału za pomocą banku filtrów o różnych właściwościach. Przykładami są metody ekstrakcji cech bazujące na kolejnych, specyficznych modelach ludzkiego narządu słuchu\cite{fosr}.
+Istnieje szereg metod bazujących na przekształceniu dziedziny czy wartości współczynników funkcji gęstości widmowej sygnału za pomocą banku filtrów o różnych właściwościach. Zamiast banku filtrów mela (MFCC) lub Barka (PLP) konstruowane są filtry bazujące na innych, bardziej specyficznych modelach ludzkiego narządu słuchu \cite{fosr}.
 
+Większość opisanych wcześniej techniki ekstrakcji cech z sygnału mowy są metodami określanymi jako widmowe i krótko-czasowe (\textit{ang. Short-Term Spectral Features})\ref{overview} z ramkami sygnału o długości od 20 do 30 ms.
 
+Cechy temporalno-widmowych(\textit{ang. Spectro-Temporal Features})\cite{overview} są zbiorem wielkości dostarczających informacji na temat tożsamości mówcy zawartej w przejściach pomiędzy formantami czy modulacją amplitudy współczynników widma w czasie. Jednym ze sposobów na uzyskanie tego typu informacji jest zastosowanie opisanych wcześniej współczynników Delta ($\Delta$) i Delta-Delta ($\Delta^2$) dla cech MFCC \ref{delta}. Innymi skutecznymi technikami jest użycie współczynników regresji liniowej  czy wartościami aproksymacji wielomianami punktów dla kolejnych kilku wektorów cech (zwykle 2 lub 3) \cite{multidsp}. Nowszymi rozwiązaniami jest badanie wolnych modulacji amplitudy i częstotliwości w ramkach zawierających po ok 10wektorów cech, jak np. w metodzie TDCT (\textit{Temporal Discrete Cosine Transform}) [modulacja amplitud].
+
+Istnieją również cechy wysokiego poziomu, takie jak cechy prozodyczne (\textit{ang. prosodic features}) które mogą identyfikować mówcę za pomocą rytmu, akcentu czy intonacji wypowiedzi. Opisywane w literaturze są również takie zestawy cech które operą nie na charakterystykach takich związanych ze stylem wypowiedzi czy zasobem słownictwa\cite{overview}.
 \section{Metody klasyfikacji sygnału mowy. Modelowanie mówcy.}
 \label{featurematching}
 
