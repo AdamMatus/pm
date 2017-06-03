@@ -52,7 +52,7 @@ System weryfikacji mówcy może być skojarzony z innymi systemami rozpoznawania
   \item Analiza kształtu małżowiny usznej - może być użyta w połączeniu z weryfikacją mówcy w połączeniu telefonicznym na odległość np. poprzez użycie czujnika (obraz uzyskany za pomocą kamery, lub analiza akustyczna) w telefonie komórkowym. Okazuje się, że kształt małżowiny usznej różni się na tyle w obrębie populacji, iż można zastosować tą technikę jako wsparcie dla systemów weryfikacji mówcy. 
   \item System rozpoznawania twarzy - ze względu na powszechność nagrań typu audio-wideo, system weryfikacji mówcy świetnie nadaje się do współpracy z systemami biometrycznymi wykorzystującymi rozpoznawanie mówcy. Kombinacja ta pozwala stwierdzić tożsamość osób znajdujących się na takich nagraniach. 
   \item Skaner odcisku palca - ze względu na tanie, dedykowane czujniki, rozsądnym jest wyposażenie lokalnego punktu dostępu w system biometryczny oparty na skanie odcisku palca.
-  \item Do innych cech biometrycznych, potencjalnie nadających się do współpracy z systemem rozpoznawania mówcy należą: wygląd i geometria dłoni, obraz tęczówki oka, obraz siatkówki oka, obraz termograficzny ciała, rozkład żył w dłoni, sposób chodzenia, pismo czy sposób pisania na klawiaturze. Do tego wyróżnia się systemy wielomodalne zawierające szereg podanych metod w jednym systemie.
+  \item Do innych cech biometrycznych, potencjalnie nadających się do współpracy z systemem rozpoznawania mówcy należą: wygląd i geometria dłoni, obraz tęczówki oka, obraz siatkówki oka, obraz termograficzny ciała, rozkład żył w dłoni, sposób chodu, pismo czy sposób pisania na klawiaturze. Do tego wyróżnia się systemy wielomodalne zawierające szereg podanych metod w jednym systemie.
   
 \end{itemize}
 
@@ -78,57 +78,76 @@ System weryfikacji mówcy w którym w celu dokonania weryfikacji wyświetlany je
 
 \section{Sygnał mowy.}
 
-%todo high-rate information signal na low-rate sygnal. Zawartość spektralna.
-%Quasi stacjonarność.
+\subsection{Produkcja sygnału mowy.}
+Sygnał mowy jest sygnałem akustycznym, którego medium jest powietrze a informacja w nim zawarta jest rejestrowana jako chwilowe zmiany ciśnienia akustycznego. Źródłem różnicy ciśnień są płuca człowieka, a dalej za pomocą fałd głosowych jest modulowane - powstaje tzw. ton krtaniowy (\textit{glottal pulse}) który dalej filtrowany przez charakterystyki budowy aparatu głosowego człowieka. Ton krtaniowy i wspomniane charakterystyki różnią się ze względu na każdego mówcę i ta cech jest podstawą wykorzystania w systemie biometrycznym mówcy. Tak zaproponowany model produkcji mowy może być przedstawiony jako szeregowe połączenie tych elementów\cite{multidsp}:
+\begin{equation}
+  S_x(f,t) = S_r(f,t) \cdot |H(f,t)|^2
+\end{equation}
+gdzie $S_x(f,t)$ reprezentuje transmitancję sygnału mowy, $S_r(f,t)$ transmitancję tonu krtaniowego oraz H(f,t) funkcję transmitancji dróg głosowych. Charakterystyki dróg głosowych są zmienne w czasie i zależą od stanu 4-5 komór rezonansowych znajdujących się w aparacie głosowym człowieka.
 
-Człowiek dysponuje doskonałymi narzędziami do przeprowadzenia procesów rozpoznawania mowy oraz rozpoznawania mówcy. Analiza oraz zrozumienie mechanizmów powstawania mowy u człowieka dostarcza podstaw do sformułowania metod syntezy języka naturalnego. Podobna analiza systemu percepcji mowy na który składa się aparat słuchowy oraz układ nerwowy związany z dekodowaniem sygnału mowy daje podstawy do identyfikacji cech którymi posługuje się ludzki organizm do efektywnego rozpoznawania mówcy.
+Rozpatrywany sygnał głosowy cechuje się pasmem sygnału o szerokości nawet 8 kHz. Z tego powodu spróbkowany sygnał mowy cechuje się stosunkowo wysoką zawartością informacji. Z punktu widzenia rozpoznawania mówcy sygnał mowy zawiera w wysokim stopniu informację redundantną. Z tego powodu stosuje się parametryzację mowy w procesie ekstrakcji cech (\ref{featureextraction}).
+
+Człowiek dysponuje doskonałymi narzędziami do przeprowadzenia procesów rozpoznawania mowy oraz rozpoznawania mówcy. Analiza oraz zrozumienie mechanizmów powstawania mowy u człowieka dostarcza podstaw do tworzenia modelu produkcji mowy i umożliwia budowę takich systemów jak systemy syntezy mowy. Podobna analiza systemu percepcji mowy na który składa się aparat słuchowy oraz układ nerwowy związany z dekodowaniem sygnału mowy daje podstawy do identyfikacji cech którymi posługuje się ludzki organizm do efektywnego przeprowadzenia zadania rozpoznania mówcy.
 
 Układ produkcji mowy oraz jej percepcji są ze sobą nierozerwalnie związane. Sposób ekstrakcji informacji przez narząd słuchu odzwierciedla fizjologię produkcji mowy - zatem może wskazać najważniejsze cechu sygnału mowy dla naturalnego procesu rozpoznania mówcy. Dlatego wydaje się właściwe prześledzenie związków pomiędzy tymi dwoma elementami.
 
 Ludzki układ percepcji dokonuje rozróżnienia sygnałów audio poprzez rozróżnienie trzech własności: wysokości dźwięku, głośności oraz barwy dźwięku - tembru. 
-%
-\subsection{Produkcja sygnału mowy.}
 
-%TODO
-\subsubsection{Aparat mowy człowieka.}
-Tembr głosu mówcy ustalony jest przez budowę jego dróg głosowych.
+\subsection{Aparat słuchowy.}
+Narząd słuchu człowieka można rozpatrywać jako transduktor, co znaczy, że mapuje zmiany ciśnienia akustycznego w powietrzu na sygnał elektryczny w układzie nerwowym. Na samym początku toru przetwarzania sygnału audio znajduje się małżowina uszna, której zadaniem jest skupienie dźwięku. Sygnał akustyczny wpadający do kanału słuchowego jest filtrowany ze względu na jego fizyczne rozmiary, usuwane są niskie częstotliwości. Zmiany ciśnienia akustycznego zamieniane są na fale mechaniczne w ciele stałym na błonie bębenkowej, a następnie wzmacniane przez układ kosteczek słuchowych - młoteczka, kowadełka i strzemiączka. Strzemiączko łączy się z uchem wewnętrznym poprzez błonę okienka owalnego (łac. \textit{łac. fenestra vestibuli}), które jest wejściem do ślimaka, który z kolej jest częścią narządu Cortiego. Ruch membrany okienka owalnego powoduje ruch płynu nazywanego perylimfą w ślimaku. W taki sposób powstaje fala rozchodząca się w obszarze ślimaka propaguje się do szczytu tego narządu i następnie kanałem połączonym wraca w kierunku okienka okrągłego. Błona podstawna oddziela oba kanały od siebie i w zależności od długości fali w cieczy jest wyginana w innym obszarze - jest aparatem analizy częstotliwościowej sygnału. Schemat działania z rejonami które są pobudzane dla konkretnych częstotliwości przedstawia rysunek \ref{fig:ucho}.
+\begin{figure}[ht!]
+  \centering
+    \includegraphics[width=0.8\textwidth]{./ucho.jpg}
+    \caption{\label{fig:ucho} Schemat budowy ślimaka. Źródło \cite{enciclopidiabritanica}.}
+\end{figure}
+Znajdujące się na błonie podstawnej rzęski zagłębione, ustawione w rzędzie, wzdłuż ślimaka, zamieniają wychylenie błony na impulsy elektryczne wysyłane dalej przez nerw przedsionkowo-ślimakowy do mózgu. Ze względu na różnią sztywność błony podstawnej, narząd Cortiego w różny sposób interpretuje intensywność danej częstotliwości. Inne trzy równoległe rzędy rzęsek znajdujących dostarczają sprzężenia zwrotnego ze strony mózgu pozwalając na zwiększenie rozdzielczości przeprowadzonej analizy częstotliwościowej. Rzęski zewnętrzne pobudzane są głównie w rejonie największego ugięcia błony i poprzez to pobudzenie 'dostrajają' się do słyszanej częstotliwości.
 
-\subsection{Percepcja sygnału mowy przez człowieka}
+Wykorzystanie wiedzy na temat budowy aparatu słuchowego przyniosło zdefiniowanie skal perceptualnych skal psychoakustycznych
+\subsubsection{Skala Mela. \label{mel}}
+Skala Mela jest nieliniową skalą częstotliwości powstałą poprzez subiektywne badanie psychoakustyczne. Relację pomiędzy skalą Mela a liniową skalą częstotliwości przybliża się zwykle wzorem:
+\begin{equation}
+  m = 2595\log_{10} \left( 1+ \frac{f}{700}\right),
+\end{equation}
+gdzie m oznacza wartość częstotliwości w Melach.
 
-\subsubsection{Aparat słuchowy.}
-Narząd słuchu człowieka można rozpatrywać jako transduktor, co znaczy, że mapuje zmiany ciśnienia akustycznego w powietrzu na sygnał elektryczny w układzie nerwowym. Na samym początku toru przetwarzania sygnału audio znajduje się małżowina uszna, której zadaniem jest skupienie dźwięku. Sygnał akustyczny wpadający do kanału słuchowego jest filtrowany ze względu na jego fizyczne rozmiary, usuwane są niskie częstotliwości. Zmiany ciśnienia akustycznego zamieniane są na fale mechaniczne w ciele stałym na błonie bębenkowej, a następnie wzmacniane przez układ kosteczek słuchowych - młoteczka, kowadełka i strzemiączka. Strzemiączko łączy się z uchem wewnętrznym poprzez błonę okienka owalnego (łac. \textit{łac. fenestra vestibuli}), którego zadaniem jest wzbudzenie drgań %TODO w domu zobacz kurwa anatomie ucha xD     
+\begin{figure}[ht!]
+  \centering
+    \input{mel.pgf}
+    \caption{\label{fig:mel} Relacja pomiędzy skalą Mela i liniową skalą częstotliwości.}
+\end{figure}
+\subsubsection{Skala Barka. \label{bark}}
+Inną skalą perceptualną opartą na modelu ślimaka jako banku liniowych filtrów w skali częstotliwości jest skala Barka. Wyróżnia ona 24 pasma krytyczne. Zakłada się, że 1 bark odpowiada 100 melom, zaś funkcją przekształcenia ze skali liniowej jest:
+\begin{equation}
+  B = 13 \arctan \left( 0.00076\cdot f \right)+4.5\arctan\left(\frac{f}{7500}^2\right),
+\end{equation}
+gdzie B oznacza wartość w Barkach.
 
---- wykorzystanie wiedzy na temat budowy aparatu słuchowego w metodach ekstrakcji cech - perceptualnych skal częstotliwości mela skala barka  - testy subiektywne troche na pograniczu ukladu nerwowego ?
+\subsubsection{Krzywe jednakowej głośności }
+Ze względu na różną sztywność błony podstawnej (tak jak wskazano wczesniej w tym rozdziale) człowiek z inną intensywnością odbiera bodźce dźwiękowe związane z różnymi częstotliwościami. Z pomiarów subiektywnych na większej populacji wyznaczone zostały krzywe jednakowej głośności. Stosowane są one w niektórych technikach ekstrakcji cech (np. \ref{plp}) we wstępnym wzmocnieniu sygnału mowy.
 
-%TODO
-\subsubsection{Układ nerwowy}
+\subsubsection{Układ nerwowy.}
 
-Dziedzina rozpoznawania głosu jest szczególnie zainteresowana naturalną aparaturą w którą wyposażony jest człowiek dla zadania rozpoznawania mowy czy identyfikowania swoich rozmówców. Dotyczy to także całego obszaru metod rozpoznawania sygnałów akustycznych. Trend jest szczególnie widoczny związku z bardzo dynamicznym rozwojem dziedziny sztucznych sieci neuronowych i sztucznej inteligencji. Tak jak wspomniano wyżej, szereg metod związanych z rozkodowywaniem sygnału mowy - ekstrakcją cech - korzysta z wiedzy anatomicznej przy okazji konstrukcji algorytmów. Niestety w dziedzinie klasyfikacji mówców to podejście nie jest stosowane - prawdopodobnie ze względu na skromną wiedzę o tym jak funkcjonuje ludzki umysł. Wydaje się jednak, że można przywołać pewną wiedzę na temat tego jak człowiek interpretuje sygnał mowy poprzez wskazanie pewnych obszarów mózgu odpowiedzialnych za zadania związane z analizą mowy - a także połączenia pomiędzy nimi. Wraz z zastosowaniem rezonansu magnetycznego neurologia poczyniła duże postępy i można mieć nadzieję na to, że w najbliższej przyszłości uzyskana wiedza pozwoli na udoskonalenie systemów rozpoznawania głosu.
------------------------------TODO obszary mózgu, jak informacja się propaguje itd.
+Dziedzina rozpoznawania głosu jest szczególnie zainteresowana naturalną aparaturą w którą wyposażony jest człowiek dla zadania rozpoznawania mowy czy identyfikowania swoich rozmówców. Dotyczy to także całego obszaru metod rozpoznawania sygnałów akustycznych. Trend jest szczególnie widoczny związku z bardzo dynamicznym rozwojem dziedziny sztucznych sieci neuronowych i sztucznej inteligencji. Tak jak wspomniano wyżej, szereg metod związanych z rozkodowywaniem sygnału mowy - ekstrakcją cech - korzysta z wiedzy anatomicznej przy okazji konstrukcji algorytmów. Niestety w dziedzinie klasyfikacji mówców to podejście nie jest stosowane - prawdopodobnie ze względu na skromną wiedzę o tym jak funkcjonuje ludzki umysł. Wydaje się jednak, że można przywołać pewną wiedzę na temat tego jak człowiek interpretuje sygnał mowy poprzez wskazanie pewnych obszarów mózgu odpowiedzialnych za zadania związane z analizą mowy - a także połączenia pomiędzy nimi. Wraz z zastosowaniem rezonansu magnetycznego (MRI) neurologia poczyniła duże postępy i można mieć nadzieję na to, że w najbliższej przyszłości uzyskana wiedza pozwoli na udoskonalenie systemów rozpoznawania głosu.
 
-\subsection{Lingwistyka a rozpoznawania mówcy.}
+\subsection{Klasyfikacja języka.}
+\label{formant}
+Na rysunku \ref{fig:spectrum} znajduje się przykładowe widmo pojedynczej ramki sygnału. Obszary koncentracji energii w dziedzinie częstotliwości nazywane są formantami. Analiza zmiany pozycji formantów pomiędzy kolejnymi fonemami okazuje się być bardzo ważna w zadaniu rozpoznawania mówców. 
 
-Występuje silny związek pomiędzy językiem a procesem rozpoznawania mówcy. Obszarami lingwistyki, które szczególnie dotyczą badanej kwestii są: fonetyka, fonologia oraz prozodia.
+\begin{figure}[ht!]
+  \centering
+    \input{spectrum.pgf}
+    \caption{\label{fig:spectrum} Przykładowe spektrum pojedynczej ramki sygnału mowy.}
+\end{figure}
 
-% fonetyka stan 0/10, plagiat z fosr
 \subsubsection{Fonetyka}
-Fonetyka zajmuje się badaniem dźwięków produkowanych przez aparat mowy człowieka. Elementarnym dźwiękiem rozpatrywanym przez fonetykę jest głoska. Z punktu widzenia całej lingwistyki jest to najmniejszy segment mowy. Budowa i funkcjonalność narządu mowy determinują zakres produkowanych głosek. Fonetyka bada podstawowe dźwięki mowy bez rozróżnianie ze względu na konkretny język czy znaczenie głoski.
-Fonem jest najmniejszą jednostką mowy na podstawie której możliwa jest interpretacja jej znaczenia. To znaczy, że jest semantycznie istotna. Fonem rozpatruje się ze względu na znaczenie w konkretnym języku. Głoska może być realizacją fonemu. Dwie różne głoski mogą stanowić realizację tego samego fonemu - to znaczy nieść tę samą informację semantycznie. Dla przykładu 
-%TODO przyklad
-Zbiór takich głosek nazywany jest alofonem.
+Fonetyka zajmuje się badaniem dźwięków produkowanych przez aparat mowy człowieka. Elementarnym dźwiękiem rozpatrywanym przez fonetykę jest głoska. Z punktu widzenia całej lingwistyki jest to najmniejszy segment mowy. Budowa i funkcjonalność narządu mowy determinują zakres produkowanych głosek. Fonetyka bada podstawowe dźwięki mowy bez rozróżniania ze względu na konkretny język czy znaczenie głoski.
+Fonem jest najmniejszą jednostką mowy na podstawie której możliwa jest interpretacja jej znaczenia. To znaczy, że jest semantycznie istotna. Fonem rozpatruje się ze względu na znaczenie w konkretnym języku. Głoska może być realizacją fonemu. Dwie różne głoski mogą stanowić realizację tego samego fonemu - to znaczy nieść tę samą informację semantycznie. Zbiór takich głosek realizujących dany fonem nazywany jest alofonem.
 
 Z punktu widzenia mechanizmów powstawania dźwięków w ludzkim narządzie mowy, można wyróżnić trzy z których zbudowany jest każdy emitowany dźwięk mowy. Składa się na nie:
 - dźwięk rezonujący powstały w wibrującym źródle (np. drgające fałdy głosowe) i rezonujący w przestrzeni rezonansowej na którą składają się drogi oddechowe znajdującą się powyżej krtani,
 - dźwięk powstały przez nielaminarny przepływ powietrza,
 - dźwięk impulsowy powstały przez energiczne wypuszczenie powietrza z układu oddechowego.
 
-%TODO fonologia
-\subsubsection{Fonologia}
-Fonologia bada
-
-%plagiat z wikipedii xd 
-\subsubsection{Prozodia}
-Prozodia zajmuje się brzmieniowymi właściwościami mowy na które składają się trzy elementy - intonacja, akcent oraz iloczas.
 \section{Wstępne przetwarzanie sygnału mowy.}
 \subsection{Preemfaza.}
 \subsection{Redukcja szumu.}
@@ -136,7 +155,7 @@ Prozodia zajmuje się brzmieniowymi właściwościami mowy na które składają 
 \section{Ekstrakcja cech sygnału mowy.}
 
 \subsection{Przegląd.}
-
+\label{featureextraction}
 Celem ekstrakcji cech z sygnału mowy (\textit{ang. feature extraction}) jest uzyskanie zbioru cech charakteryzujących sygnał ludzkiej mowy za pomocą technik cyfrowego przetwarzania sygnału. Jednocześnie jest to zamiana sygnału w którym zawarta jest redundantna informacja na sygnał o niskiej zawartości informacji znaczących dla problemu rozpoznawania mówcy/mowy. 
 
 %TODO bezsensu xD ogólnie cały podrozdział kupą śmierdzi
@@ -349,7 +368,7 @@ Istnieje szereg innych metod opartych na współczynnikach LP. Zwykle cechuje je
 
   \item{LAR \textit{ang. Log Area Ratios}} - wielkości wynikające z modelu cylindrów tak jak w metodzie PARCORs. Współczynniki $ g_i $ otrzymuje się jako stosunki logarytmów średnic kolejnych cylindrów modelu. Tak obliczone współczynniki cechują się bardziej równomierną wrażliwością w dziedzinie częstotliwości niż współczynniki odbicia\cite{campbell}.
 
-  \item{PLP (\textit{ang. Perceptual Linear Predictive analysis}} - metoda ekstrakcji cech oparta na współczynnikach predykcji liniowej (LP) inspirująca się metodą MFCC. Zamiast zastosowania skali mela, w tej metodzie używa się skali Barka \ref{bark}, stosuje się zmodyfikowaną preemfazę ze względu na krzywą jednakowej głośności (\textit{ang. equal-loudness pre-emphasis}) \ref{loudness} oraz dokonuje się transformacji widma amplitudowego poprzez podniesienie wartości do potęgi $\frac{1}{3}$ co powoduje wygładzenie widma - zmniejszeniem dynamiki - i jest nazywana konwersją natężenia dźwięku do poziomu głośności (\textit{ang. Intensity to Louadness Conversion}) \cite{hoening}. Po tych etapach, z tak przekształconego widma uzyskiwane są współczynniki predykcji liniowej (model AR). Tak jak w metodzie MFCC także i tutaj używa się procedury DFT i IDFT. Współczynniki cepstrum uzyskiwane są tak jak w metodzie LPCC, np. przy wykorzystaniu metody Levinsona-Durbina. Na rysunku \ref{plp} przedstawiono etapy analizy PLP tak jak w pracy źródłowej \cite{fosr30hermansky}.
+  \item{PLP (\textit{ang. Perceptual Linear Predictive analysis}\label{plp}} - metoda ekstrakcji cech oparta na współczynnikach predykcji liniowej (LP) inspirująca się metodą MFCC. Zamiast zastosowania skali mela, w tej metodzie używa się skali Barka \ref{bark}, stosuje się zmodyfikowaną preemfazę ze względu na krzywą jednakowej głośności (\textit{ang. equal-loudness pre-emphasis}) \ref{loudness} oraz dokonuje się transformacji widma amplitudowego poprzez podniesienie wartości do potęgi $\frac{1}{3}$ co powoduje wygładzenie widma - zmniejszeniem dynamiki - i jest nazywana konwersją natężenia dźwięku do poziomu głośności (\textit{ang. Intensity to Louadness Conversion}) \cite{hoening}. Po tych etapach, z tak przekształconego widma uzyskiwane są współczynniki predykcji liniowej (model AR). Tak jak w metodzie MFCC także i tutaj używa się procedury DFT i IDFT. Współczynniki cepstrum uzyskiwane są tak jak w metodzie LPCC, np. przy wykorzystaniu metody Levinsona-Durbina. Na rysunku \ref{plp} przedstawiono etapy analizy PLP tak jak w pracy źródłowej \cite{fosr30hermansky}.
 
 \begin{figure}[ht!]
   \centering
@@ -383,7 +402,7 @@ Istnieje szereg metod bazujących na przekształceniu dziedziny czy wartości ws
 
 Większość opisanych wcześniej techniki ekstrakcji cech z sygnału mowy są metodami określanymi jako widmowe i krótko-czasowe (\textit{ang. Short-Term Spectral Features})\ref{overview} z ramkami sygnału o długości od 20 do 30 ms.
 
-Cechy temporalno-widmowych(\textit{ang. Spectro-Temporal Features})\cite{overview} są zbiorem wielkości dostarczających informacji na temat tożsamości mówcy zawartej w przejściach pomiędzy formantami czy modulacją amplitudy współczynników widma w czasie. Jednym ze sposobów na uzyskanie tego typu informacji jest zastosowanie opisanych wcześniej współczynników Delta ($\Delta$) i Delta-Delta ($\Delta^2$) dla cech MFCC \ref{delta}. Innymi skutecznymi technikami jest użycie współczynników regresji liniowej  czy wartościami aproksymacji wielomianami punktów dla kolejnych kilku wektorów cech (zwykle 2 lub 3) \cite{multidsp}. Nowszymi rozwiązaniami jest badanie wolnych modulacji amplitudy i częstotliwości w ramkach zawierających po ok 10wektorów cech, jak np. w metodzie TDCT (\textit{Temporal Discrete Cosine Transform}) [modulacja amplitud].
+Cechy temporalno-widmowych(\textit{ang. Spectro-Temporal Features})\cite{overview} są zbiorem wielkości dostarczających informacji na temat tożsamości mówcy zawartej w przejściach pomiędzy formantami (\ref{formant}) czy modulacją amplitudy współczynników widma w czasie. Jednym ze sposobów na uzyskanie tego typu informacji jest zastosowanie opisanych wcześniej współczynników Delta ($\Delta$) i Delta-Delta ($\Delta^2$) dla cech MFCC \ref{delta}. Innymi skutecznymi technikami jest użycie współczynników regresji liniowej  czy wartościami aproksymacji wielomianami punktów dla kolejnych kilku wektorów cech (zwykle 2 lub 3) \cite{multidsp}. Nowszymi rozwiązaniami jest badanie wolnych modulacji amplitudy i częstotliwości w ramkach zawierających po ok 10wektorów cech, jak np. w metodzie TDCT (\textit{Temporal Discrete Cosine Transform}) [modulacja amplitud].
 
 Istnieją również cechy wysokiego poziomu, takie jak cechy prozodyczne (\textit{ang. prosodic features}) które mogą identyfikować mówcę za pomocą rytmu, akcentu czy intonacji wypowiedzi. Opisywane w literaturze są również takie zestawy cech które operą nie na charakterystykach takich związanych ze stylem wypowiedzi czy zasobem słownictwa\cite{overview}.
 \section{Metody klasyfikacji sygnału mowy. Modelowanie mówcy.}

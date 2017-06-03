@@ -79,7 +79,7 @@ savefig('e_cepstrum')
 
 # melfb
 
-fig, ax = newfig(0.8)
+fig, ax = newfig(1)
 
 mat = sio.loadmat('./melfb.mat');
 t = mat['t']
@@ -89,9 +89,50 @@ ax.plot(t,y)
 ax.set_xlabel('Czestotliwosc [Hz]');
 savefig('melfb')
 
+import numpy as np
+#mel
+
+fig, ax = newfig(1)
+
+mat = sio.loadmat('./mel.mat');
+ty = mat['t']
+yy = mat['y']
+
+ax.plot(ty[0],yy[0],'b')
+ax.set_xlabel('Czestotliwosc [Hz]');
+ax.set_ylabel('Skala mela [Mel]');
+savefig('mel')
+#spectrum
+
+fig, ax = newfig(1)
+
+mat = sio.loadmat('./spectrum.mat');
+spec = mat['spectrum'];
+t = np.linspace(0,6250, num=128)
+
+plt.annotate('formant', xy=(600, 2), xytext=(1200, 2.2),
+            arrowprops=dict(facecolor='black', shrink=0.05),
+            )
+
+plt.annotate('formant', xy=(2600, 1.2), xytext=(3000, 2),
+            arrowprops=dict(facecolor='black', shrink=0.05),
+            )
+
+plt.annotate('formant', xy=(4200, -0.2), xytext=(4800, 0.5),
+            arrowprops=dict(facecolor='black', shrink=0.05),
+            )
+
+plt.annotate('formant', xy=(4850, -1.3), xytext=(5300, -0.5),
+            arrowprops=dict(facecolor='black', shrink=0.05),
+            )
+
+ax.plot(t,spec);
+ax.axes.get_yaxis().set_ticks([])
+ax.set_xlabel('Czestotliwosc [Hz]');
+savefig('spectrum')
+
 # DTW
 #
-import numpy as np
 x = np.arange(0, 6.28, 0.1)
 y = np.cos(x)
 
