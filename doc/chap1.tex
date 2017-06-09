@@ -13,12 +13,13 @@ Z zaprezentowanych powyżej rozważań widać, iż kluczowym zagadnieniem dotycz
 
 Równie istotnym czynnikiem ograniczającym powszechne istnienie tego typu systemów jest ich skuteczność identyfikacji. Dotychczasowe rozwiązania dla systemów weryfikacji mówcy osiągały błąd sięgający 4\% (ERR), (2\% w przypadku fuzji systemów)\cite{overview}. Szybki rozwój w dziedzinie rozpoznawania wzorca, spowodowany m. in. dynamicznym rozwojem w dziedzinie metod sztucznej inteligencji pozwala redukować błędy - dla problemu identyfikacji mówcy - nawet do 0.4 \% (ERR) \cite{deepfeaturelearning2017err}. Szeroko stosowana miara oceny systemów weryfikacji mówcy - ERR (\textit{ang. equal error rate}) mówi o prawdopodobieństwie błędu systemu dla progu decyzji dla którego błąd odrzucenia prawdziwego mówcy jest równy błędowi akceptacji mówcy prawdziwego.  
 
-W niniejszej pracy podejmowana jest próba przedstawienia architektury oprogramowania pozwalającej efektywną obliczeniowo aplikację algorytmów realizujących zadanie weryfikacji mówcy na platformach sprzętowych systemów wbudowanych. Projekt zakłada, że przetwarzanie wejściowego sygnału mowy przeprowadzane jest w czasie rzeczywistym i umożliwia otrzymanie decyzji o autoryzacji w czasie nie dłuższym niż oczekiwany przez potencjalnych użytkowników takiego systemu. Platformy sprzętowe za pomocą których realizowane jest przetwarzanie, przewidziane są jako systemy mikroprocesorowe - ogólnego przeznaczenia (CPU), procesory sygnałowe (DSP) czy mikrokontrolery (MCU) posiadające wsparcie dla języka programowania C++ dla jego najnowsych standardów: C++11, C++14 i C++17. Propozycja architektury nie bazuje na żadnym systemie operacyjnym i może być wykorzystana również w systemach wbudowanych które nie oferują żadnego środowiska uruchomieniowego. Jednak obecność takiego systemu, zwłaszcza systemu operacyjnego czasu rzeczywistego (RTOS) w dużym stopniu może ułatwić implementację konkretnego systemu na urządzeniu. W proponowanym zastosowaniu prezentowanym przez niniejszą pracę autor korzysta ze wsparcia systemu operacyjnego linux w dystrybucji debianowej. Platformą uruchomieniową jest komputer jednopłytkowy Raspberry Pi 3.
-
+W niniejszej pracy podejmowana jest próba przedstawienia architektury oprogramowania pozwalającej efektywną obliczeniowo aplikację algorytmów realizujących zadanie weryfikacji mówcy na platformach sprzętowych systemów wbudowanych. Projekt zakłada, że przetwarzanie wejściowego sygnału mowy przeprowadzane jest w czasie rzeczywistym i umożliwia otrzymanie decyzji o autoryzacji w czasie nie dłuższym niż oczekiwany przez potencjalnych użytkowników takiego systemu. Platformy sprzętowe za pomocą których realizowane jest przetwarzanie, przewidziane są jako systemy mikroprocesorowe - ogólnego przeznaczenia (CPU), procesory sygnałowe (DSP) czy mikrokontrolery (MCU) posiadające wsparcie dla języka programowania C++ dla jego najnowsych standardów: C++11, C++14 i C++17. Propozycja architektury nie bazuje na żadnym systemie operacyjnym i może być wykorzystana również w systemach wbudowanych które nie oferują żadnego środowiska uruchomieniowego. Jednak obecność takiego systemu, zwłaszcza systemu operacyjnego czasu rzeczywistego (RTOS) w dużym stopniu może ułatwić implementację konkretnego systemu na urządzeniu. 
 \textbf{DO ZROBIENIA: WSTĘPNY OPIS ARCHITEKTURY}
 Projektowana architektura ma w zamierzeniu ułatwiać aplikację różnych technik realizujących weryfikację mówcy proponując narzędzia reprezentujące abstrakcję etapów  ... %TODO opisac pokrotce architekture ktorej jeszcze nei znam xd
 ----- Chociaż proponowane oprogramowanie przeznaczone jest jedynie dla systemów mikroprocesorowych to może być wykorzystane jako element systemu przetwarzający wstępnie dane - np. tworzący wektory akustyczne przekazywane dalej do innych systemów np. sieci neuronowej zaimplementowanej na układzie FPGA. Niewykluczone jest też użycie abstrakcji dopasowywania cech do implementacji sieci neuronowej na mikroprocesorze - co może jednak być nieefektywne. %TODO
 \textbf{KONIEC DO ZROBIENIA.}
+
+Praca przedstawia jedną przykładową implementację systemu weryfikacji mówcy opartą na zaprojektowanej architekturze. W proponowanym zastosowaniu autor korzysta ze wsparcia systemu operacyjnego linux w dystrybucji debianowej. Platformą uruchomieniową jest komputer jednopłytkowy Raspberry Pi 3. Powstałe urządzenie w zamierzeniu ma stanowić lokalny punkt dostępu w budynku chroniący zastrzeżony obszar przed nieautoryzowanym dostępem. System funkcjonalnie realizuje weryfikację mówcy z wyświetlanym hasłem, korzystającym z technik MFCC (\ref{mfcc}) i VQ (\ref{vq}) - zaproponowany w publikacji \cite{10digits98} (cechujący się wartością ERR na poziomie 2\%), w odróżnieniu jednak charakteryzującym się przetwarzaniem w czasie rzeczywistym. Wybrano to rozwiązanie ze względu na ambicję zmodyfikowania go na system zaproponowany w \cite{finprunning} - czyli system weryfikacji mówcy w czasie rzeczywistym oparty na metodach MFCC i VQ dodatkowo wykorzystujący tzw. \textit{prunning}\ref{prunning} w celu wykorzystanie nowoczesnego i wydajnego systemu weryfikacji mówcy w czasie rzeczywistym (cechującym się wartością ERR na poziomie 0.5\% oraz bardzo szybką odpowiedzią systemu).
 
 \section{Weryfikacja mówcy}
 \label{verification}
@@ -148,20 +149,12 @@ Z punktu widzenia mechanizmów powstawania dźwięków w ludzkim narządzie mowy
 - dźwięk powstały przez nielaminarny przepływ powietrza,
 - dźwięk impulsowy powstały przez energiczne wypuszczenie powietrza z układu oddechowego.
 
-\section{Wstępne przetwarzanie sygnału mowy.}
-\subsection{Preemfaza.}
-\subsection{Redukcja szumu.}
-\subsection{System detekcji mowy.}
 \section{Ekstrakcja cech sygnału mowy.}
 
-\subsection{Przegląd.}
 \label{featureextraction}
+\subsection{Przegląd.}
 Celem ekstrakcji cech z sygnału mowy (\textit{ang. feature extraction}) jest uzyskanie zbioru cech charakteryzujących sygnał ludzkiej mowy za pomocą technik cyfrowego przetwarzania sygnału. Jednocześnie jest to zamiana sygnału w którym zawarta jest redundantna informacja na sygnał o niskiej zawartości informacji znaczących dla problemu rozpoznawania mówcy/mowy. 
 
-%TODO bezsensu xD ogólnie cały podrozdział kupą śmierdzi
-Tak jak zostało wspomniane wcześniej, problem rozpoznawania mówcy w standardowym podejściu rozpatrywany jest jako problem estymacji parametrów ustalonego modelu. W zależności od rozpatrywanej odmiany rozpoznawania mówcy dokonywane są odpowiednie założenia konkretyzujące postać problemu.
-
-%cite fosr 5.3 and block diagram
 %todo przeredagowac bo to nie ma sensu xd nie rozumiem tych reduckji
 W ogólności system produkcji mowy człowieka można przedstawić jako układ regulacji automatyki z kontrolerem reprezentującym układ nerwowy wraz z kontrolowaną przezeń motoryką aparatu mowy. Sygnał sterujący kontrolera powoduje pobudzenie układu charakterystyk sygnału mowy charakteryzowany przez budowę dróg głosowych. Dopiero wyjściem tego ostatniego jest akustyczny sygnał mowy. Podczas gdy problem rozpoznawania mowy próbuje wyeliminować wpływ na formułowany model postaci układu charakterystyk głosowych, tak rozpoznawanie niezależne od tekstu próbuje ustalić model charakterystyk głosowych bez względu na postać układu kontrolera. Ponieważ oba rozpatrywane modele są mocno nieliniowe najtrudniejszym zadaniem w rozpoznawaniu mówcy jest ich rozdzielenie. Z tego właśnie powodu problem ze znanym wypowiadanym tekstem jest o wiele prostszym zagadnieniem od problemu rozpoznawania mówcy niezależnego od wypowiadanego tekstu. W tym pierwszym przypadku dokonujemy redukcji do tylko znanych pobudzeń oraz konkretyzować model kontrolera $G_c$. %TODO
 
@@ -170,6 +163,7 @@ Przedstawione w tym podrozdziale techniki ekstrakcji cech okazują się równie 
 Ważnym elementem toru przetwarzania systemu są również elementy związane z zaszumieniem sygnału mowy, przetwornikiem elektroakustycznym oraz procesem dyskretyzowania elektrycznego sygnału mowy przez przetwornik analogowo-cyfrowy. Jednak ze względu na prostotę te zagadnienia zostaną omówione oddzielnie od problemu ekstrakcji cech.
 
 \subsection{MFCC.}
+\label{mfcc}
 
 Ekstrakcja cech za pomocą współczynników cepstrum w dziedzinie częstotliwości Mela składa się z dwóch głównych etapów: uzyskania współczynników mocy w dziedzinie częstotliwości Mela na podstawie estymacji widma mocy sygnału mowy (\textit{freqency warping}) oraz obliczenia współczynników cepstrum na podstawie uzyskanych wcześniej współczynników mocy w skali Mela. Wynikiem przeprowadzonej operacji jest uzyskanie wektora cech $x_j$ dla numeru ramki $j$.
 
@@ -201,7 +195,7 @@ W omawianej metodzie korzysta się jedynie z informacji o amplitudzie uzyskanego
 \end{equation}
 
 \subsubsection{Przejście do dziedziny częstotliwości Mela.}
-Przejście do dziedziny częstotliwości Mela (\textit{frequency warping}) uzasadnione jest nieliniową percepcją układu słuchowego człowieka. Ponieważ procedura DFT produkuje liniowe widmo w dziedzinie widmo częstotliwościowe, dokonywana jest jego transformacja do dziedziny częstotliwości Mela. Jest to proces imitujący cechę sygnału akustycznego - wysokości tonu.
+Przejście do dziedziny częstotliwości Mela (\textit{ang. frequency warping}) uzasadnione jest nieliniową percepcją układu słuchowego człowieka. Ponieważ procedura DFT produkuje liniowe widmo w dziedzinie widmo częstotliwościowe, dokonywana jest jego transformacja do dziedziny częstotliwości Mela. Jest to proces imitujący cechę sygnału akustycznego - wysokości tonu.
 Rozpatrywana operacja polega na zastosowaniu banku filtrów trójkątnych na uzyskanych amplitudach widma kHz:
 \begin{equation}
   \tilde{H}_j = \sum_{k=1}^{K} H_k \cdot F_k, \quad k \in {1...N}, \quad  j \in {1...M}
@@ -257,7 +251,7 @@ Jak widać z tej postaci, widmo sygnału oryginalnego $S(f)$ modulowane jest prz
 \end{equation}
 Ostatni składnik powyższej sumy objawia się w postaci widocznego w cepstrum skupionego impulsu którego położenie w skali cepstrum określa przesunięcie $\tau$ zaś jego amplituda jest związana z czynnikiem osłabienia $\alpha$. 
 
-Okazuje się, że problem wykrycia wysokości tonu (\textit{ang. pitch detection}) sygnału mowy jest podobny do problemu analizy echa sygnału akustycznego. Zaproponowana została więc wersja wykorzystująca cepstrum dla analizy STDFT\cite{noll}. Tak jak wspomniano wcześniej w tym rozdziale \%TODO ODNOŚNIK prosty model produkcji sygnału mowy zakłada, że ten jest wynikiem splotu odpowiedzi impulsowej dróg głosowych $h_1$ oraz quasi-okresowym sygnałem impulsowym $h_2$ (\textit{ang. quasi-periodic pulse train}) - wymuszeniem produkowanym przez głośnię:
+Okazuje się, że problem wykrycia wysokości tonu (\textit{ang. pitch detection}) sygnału mowy jest podobny do problemu analizy echa sygnału akustycznego. Zaproponowana została więc wersja wykorzystująca cepstrum dla analizy STDFT\cite{noll}. Prosty model produkcji sygnału mowy zakłada, że ten jest wynikiem splotu odpowiedzi impulsowej dróg głosowych $h_1$ oraz quasi-okresowym sygnałem impulsowym $h_2$ (\textit{ang. quasi-periodic pulse train}) - wymuszeniem produkowanym przez głośnię:
 \begin{equation}
     h(t) = h_1(t)*h_2(t)
 \end{equation}
@@ -421,7 +415,7 @@ W grupie technik deterministycznych, w trakcie trwania fazy modelowania (trenowa
 \end{equation}
 lub takie wzorcowe wektory mogą być ustalone w inny sposób. W tej klasie metod dokonuje się porównania w ten sposób uzyskanych wektorów wzorcowych z wektorami cech dostarczonych jako dane wejściowe w celu przeprowadzenia testowania, przy czym zakłada się, że \cite{overview} \cite{campbell} każdy z nich jest nieidealną repliką drugiego, których stopień podobieńśtwa określany jako funkcja miary dopasowania (\textit{ang. match function}), która również różni się w zależności od zastosowanej metody. Do tego typu technik należy niezmodyfikowana metoda kwantyzacji wektorów - VQ, a także dynamiczne dopasowanie czasowe - DTW.
 
-W drugiej grupie - technik probabilistycznych każdego mówce modeluje się jako funkcję gęstości prawdopodobieństwa $ p(X|\lambda)$, gdzie $\lambda$ oznacza model mówcy. W fazie uczenia systemu dokonuje się estymacji parametrów takiej funkcji gęstości prawdopodobieństwa na podstawie danych wejściowych - wektorów cech reprezentujących próbkę wypowiedzi mówcy. W fazie testowania najczęściej oszacowuje się prawdopodobieństwo tego czy zbiór lub sekwencja wektorów pochodzących z ekstrakcji testowanej wypowiedzi należy do zarejestrowanego modelu reprezentowanego przez ustaloną wcześniej funkcję gęstości prawdopodobieństwa. Może to odbywać się poprzez obliczenie iloczynu prawdopodobieństw wartości uzyskanych z funkcji gęstości w realizacjach zmiennej losowej reprezentowanych przez wektory wejściowe przy założeniu, że są zdarzeniami niezależnymi. %TODO do weryfikacji + matematyczka xD
+W drugiej grupie - technik probabilistycznych każdego mówce modeluje się jako funkcję gęstości prawdopodobieństwa $ p(X|\lambda)$, gdzie $\lambda$ oznacza model mówcy. W fazie uczenia systemu dokonuje się estymacji parametrów takiej funkcji gęstości prawdopodobieństwa na podstawie danych wejściowych - wektorów cech reprezentujących próbkę wypowiedzi mówcy. W fazie testowania najczęściej oszacowuje się prawdopodobieństwo tego czy zbiór lub sekwencja wektorów pochodzących z ekstrakcji testowanej wypowiedzi należy do zarejestrowanego modelu reprezentowanego przez ustaloną wcześniej funkcję gęstości prawdopodobieństwa. Może to odbywać się poprzez obliczenie iloczynu prawdopodobieństw wartości uzyskanych z funkcji gęstości w realizacjach zmiennej losowej reprezentowanych przez wektory wejściowe przy założeniu, że są zdarzeniami niezależnymi. 
 Do zbioru technik probabilistycznych należą m.in. techniki ukrytych model Markova - HMM oraz mikstur Gaussowskich - GMM.
 
 \subsection{Dynamiczne dopasowanie czasowe - DTW.}
@@ -449,6 +443,7 @@ Opisane przekształcenie dokonuje mapowania: $j(i)$ - które tworzy pary iloczyn
 Ze względu na wspomniane ograniczenia w zastosowaniu podana metoda nie jest już chętnie stosowana w systemach rozpoznawania mówcy. Dodatkową wadą jest duża złożoność obliczeniowa, szczególnie w przypadku dużej ilości sekwencji do sprawdzenia. Jego skuteczność maleje wraz ze wzrostem długości sekwencji. Zaletą tego rozwiązania jest jednak prostota implementacji i w zastosowaniach z detekcją krótkich haseł metoda może okazać się być skuteczna.
 
 \subsection{Kwantyzacja wektorów - VQ.}
+\label{vq}
 
 Inną deterministyczną metodą (\textit{ang. template model}) stosowaną w etapie dopasowania wzorca w problemach rozpoznawania mówcy jest kwantyzacja wektorów (\textit{ang. vector quantization}). W odróżnieniu do wcześniej omawianej metody DTW, ta technika jest jest niezależna od kolejności analizowanych wektorów cech - tzn. jest niezmienny w czasie (\textit{ang. time-invariant)}. Z tego powodu możliwe jest zastosowanie tej techniki dla systemów rozpoznawania mówcy niezależnego od wypowiadanego tekstu (\textit{ang. text-independent}). 
 Technika kwantyzacji wektorów należy do klasy problemów z zakresu technik dopasowania wzorca jaką jest uczenie bez nadzoru  (\textit{ang. unsupervised learning}). Tego typu problem nazywany jest także \cite{fosr} klasteryzacją (\textit{ang. clustering}). Jest to zagadnienie analizy skupień to znaczy dokonywane jest grupowanie przestrzeni elementów na którą składa się większa ilość - w przypadku rozpoznawania mówcy - wektorów cech na mniejszą ilość regionów. Regiony te reprezentowane są przez pewien ustalony wektor wzorcowy $ \tilde{x}$. Zatem każdy punkt rozpatrywanej przestrzeni wektorów cech - $x$, należy do regionu reprezentowanego przez wzorcowy wektor, względem którego ów punkt leży najbliżej w rozumieniu wybranej, zdefiniowanej na tej przestrzeni metryki $d(x,\tilde{x})$.
@@ -474,6 +469,7 @@ Metoda ta cechuje się tym, że nie przechowuje informacji związanej z sekwencj
 W tej pracy metoda kwantyzacji wektorów została użyta w przykładowej implementacji systemu weryfikacji mówcy w postaci realizującego nią algorytmu LGB.
 
 \subsubsection{Algorytm LGB.}
+\label{lgb}
 
 \begin{figure}
   \centering
@@ -518,5 +514,103 @@ gdzie: $w_i$ są współczynnikami wagowymi ustalanymi w fazie uczenia oraz $\su
   p_i(X)=\frac{1}{(2\pi)^{K/2} \cdot |\bm{\Sigma_i}|^{\frac{1}{2}}} \cdot \exp\left\{-\frac{1}{2}(X- \bm{\mu_i})'(\bm{\Sigma_i})^{-1}(X-\bm{\mu_i})\right\}
 \end{equation}
 gdzie: $\bm{\Sigma_i}$ oznacza macierz kowariancji wektora cech X, $\mu_i$ jest wektorem średnim (K-wymiarową wartością oczekiwaną). Pełny opis modelu $\lambda$ zapewnia zbiór parametrów $\lambda = \{w_i,\bm{\mu_i},\bm{\Sigma_i} \}$. Przy pomocy wektorów cech danych trenujących dokonywana jest estymacja parametrów dla poszczególnych mikstur Gaussowskich. W tym celu najczęściej używa się się metod maksymalnego prawdopodobieństwa a posteriori MAP (\textit{maximum a posteriori probability}) oraz algorytmu EM (\textit{ang. expectation-maximization}).
-\section{Klasyfikacja i teoria decyzji}
+\subsection{Inne metody modelowania mówcy.}
+\begin{itemize}
+  \item{\textbf{Sztuczne sieci neuronowe} (\textit{ang. Artificial Neural Network - ANN})} - są metodą uczenia maszynowego wykorzystującą tzw. neurony będące strukturą matematyczną realizującą funkcję nieliniową o wielu wejściach i jednym wyjściu. Takie systemy mają zastosowanie w tworzeniu nowych metod zarówno w dziedzinie parametryzowania mowy (ekstrakcji cech) a także w dziedzinie modelowania mówcy. Tworzone są także systemy złożone z sieci neuronowych realizujące systemy rozpoznawania mówcy od początku do końca. Główną zaletą takich systemów z punktu widzenia wykonania zadania rozpoznawania w czasie rzeczywistym jest możliwość implementacji takiego algorytmu bezpośrednio na sprzęcie za pomocą układów FPGA.
+  \item{\textbf{Maszyny wektorów wspierających} (\textit{ang. Support Vector Machine - SVM}) \label{svm}} - są metodą uczenia maszynowego służącą do rozwiązania zadania uczenia z nadzorowaniem. Stosowana jest z sukcesem dla cech niskiego i wysokiego poziomu. Szczególnie chętnie jest stosowany w zadaniu weryfikacji mówcy. Dla tego problemu metoda SVM w fazie trenowania korzysta z oznaczonych wektorów dla mówcy modelowanego w celu konstrukcji hiperpłaszczyzny rozdzielającej wektory należące do mówcy oraz wektory tła. Problem znalezienia takiej hiperpłaszczyzny jest problemem optymalizacji funkcji decyzyjnej postaci:
+\begin{equation}
+  f(\bm{X}) =\sum^N_{i=1}\alpha_it_iK(\bm{X},\bm{X_i}) + d
+\end{equation}
+    gdzie $\bm{x_i}$ - wektory wspierające, $t_i \in \{-1,1\}$ - oznaczenie przynależności wektorów, $\alpha$ waga wektora oraz funkcja jądra $K(\bm{X},\bm{X_i})$ określająca odległość od hiperpłaszczyzny $g(X)$.
+    W najprostszym przypadku, klasyfikatora maksymalnego marginesu - (który był zaproponowany w oryginalnej pracy Vapnika \cite{vapniksvm}) maksymalizuje się odległość (margines) najbliższych wektorów $\bm{x_i}$ (czyli \textit{wektorów wspierających}  (\textit{ang. support vectors})) do wspomnianej hiperpłaszczyzny  $g(X)$. W wyniku uzyskiwany jest model - granica oddzielająca mówcę od tła.
+  \item{\textbf{Fuzja} (\textit{ang. fusion})} - dla problemu rozpoznawania mówcy zostały zastosowane systemy korzystające z kombinacji różnych typów wektorów cech sparametryzowanego sygnały mowy. Realizowane są również systemy korzystające z różnych modeli uzyskanych na podstawie tych samych wektorów cech. Decyzja na wyjściu takiego systemu jest podejmowana za pomocą funkcji uwzględniające wyniki wszystkich zastosowanych wewnętrznych systemów. Najlepsze rezultaty otrzymywane są gdy korzysta się z jak najbardziej niezależnych od siebie metod - tzn. uwydatniających różne właściwości sygnały mowy. Widoczne jest to szczególnie przy fuzji cech wysokiego i niskiego poziomu.
+\end{itemize}
+\section{Teoria decyzji}
 
+System weryfikacji mówcy uzupełnia zadanie rozpoznawania mówcy o etap weryfikacji - tzn. podjęcia decyzji o autoryzacji osoby podającej się za mówcę znajdującego się w bazie modeli systemu. Każdy system może popełnić dwa rodzaje błędów:
+\begin{itemize}
+  \item{\textbf{Błąd I rodzaju}} - pozytywna weryfikacja fałszywego mówcy,
+  \item{\textbf{Błąd II rodzaju}} - negatywna weryfikacja prawdziwego mówcy.
+\end{itemize}
+Intuicyjnie można powiedzieć, że błąd rodzaju I jest znacznie poważniejszy od błędu II rodzaju. Relacja częstotliwości tych błędów regulowana jest w większości metod za pomocą progu $\theta$. Pożądane jest zatem zwykle przyjmowanie wartości progu w taki sposób aby minimalizować ten poważniejszy. Ze względów na wygodę i efektywność wymaga się także odpowiednio małego progu odrzuceń systemu. Z drugiej strony, tak jak opisano wcześniej w tej pracy (\cite{err}), poziom tych błędów może być miarą jakości działania systemu weryfikacji. Główną metodą w omawianych systemach jest testowanie hipotez w ujęciu bayesowskim, co jest przedstawione dalej.  
+
+\subsection{Testowanie hipotez w zadaniu weryfikacji mówcy.}
+
+Dla testowanego segmentu mowy $Y$ w zadaniu weryfikacji mówcy usiłuje się ustalić czy został on wyprodukowany przez mówcę $S$. Na potrzeby tego zadania można postawić dwie przeciwne wobec siebie hipotezy:
+\begin{enumerate}
+  \item{$\quad\bm{H_0}$}: sygnał mowy $Y$ pochodzi od mówcy $S$,
+  \item{$\quad\bm{H_1}$}: sygnał mowy $Y$ nie pochodzi od mówcy $S$.
+\end{enumerate}
+Powszechnie w dziedzinie weryfikacji mówcy stosowane jest kryterium stosunku modeli prawdopodobieństwa $\lambda_S$ (\textit{ang. likelihood ratio}) sformułowane następująco:
+\begin{equation}
+  \label{likratio}
+  \lambda_S = \frac{p(Y|H_0)}{p(Y|H_1)}
+  \begin{cases}
+    \ge \theta, \textrm{ przyjmij hipotezę } H_0 \\
+    < \theta, \textrm{ odrzuć hipotezę } H_0
+  \end{cases}
+\end{equation}
+gdzie funkcje $p(Y|H_0)$ i $p(Y|H_1)$ oznaczają warunkowe funkcje gęstości prawdopodobieństwa dla sygnału Y, $\theta$ oznacza prób przyjęcia. 
+
+Mając jednak na uwadze klasycznie podejście od problemu - zawierające etapy ekstrakcji cech/parametryzacji sygnału mowy \textbf{\ref{featureextraction}} oraz modelowania mówcy \textbf{\ref{featurematching}} - oczekujemy, że z sygnału $Y$ zostanie wyekstrahowany zbiór cech $X = \{x_1,...,x_T\}$ dla kolejnych chwil czasu $t = \{1,...,T\}$. Z tego powodu \textbf{\ref{likratio}} można zapisać jako:
+
+\begin{equation}
+  \lambda_S = \frac{p(X|\lambda_S)}{p(X|\lambda_{\tilde{S}})}
+  \begin{cases}
+    \ge \theta, \textrm{ przyjmij hipotezę } H_0 \\
+    < \theta, \textrm{ odrzuć hipotezę } H_0
+  \end{cases}
+\end{equation}
+taka postać współczynnika uwarunkowana jest tym, że funkcja gęstości prawdopodobieństwa jest scharakteryzowana przez zbiór cech $X$ sparametryzowanej mowy $Y$, a hipoteza $\bm{H_0}$ jest reprezentowana przez model mówcy $S$ - $\lambda_{S}$  oraz hipoteza $\bm{H_1}$ jest zdefiniowana przez model odniesienia $\lambda_{\tilde{S}}$.
+
+W ostateczności jako kryterium decyzji używa się logarytmu wspomnianego czynnika $\log \left( \lambda_S \right)$ (\textit{ang. log likeligood ratio}). Ostatecznie omawiane kryterium przyjmuje postać:
+\begin{equation}
+  \label{loglike}
+  \Lambda(X)= \log({p(X|\lambda_S)}) - \log({p(X|\lambda_{\tilde{S}})}
+  \begin{cases}
+    \ge \theta, \textrm{ przyjmij hipotezę } H_0 \\
+    < \theta, \textrm{ odrzuć hipotezę } H_0
+  \end{cases}
+\end{equation}
+
+Model odniesienia $\lambda_{\tilde{S}}$ zazwyczaj przybiera jedną z dwóch form:
+\begin{itemize}
+  \item{Model tła (\textit{ang. background model})} - używa się przekształcenia $\mathcal{F}(p_1(X|\lambda_1),...,p_N(X|\lambda_N))$ do skonstruowania jednego modelu tła i co za tym idzie funkcji gęstości prawdopodobieństwa $p(X|\lambda_{\tilde{S}})$. Jednym z najbardziej popularnych modeli tego typu jest UBM (\textit{ang. Universal Background Model}). Niewątpliwą korzyścią płynąca z zastosowania tej metody jest tylko jednokrotna operacja obliczenia modelu który stosowany jest dla wszystkich testów.
+  \item{Model kohorty (\textit{ang. cohort})} - model odniesienia konstruowany jest za pomocą tylko najbliższych znanych modeli. Możliwy jest wybór $p(X|\lambda_{\tilde{S}})$ np. jako tego cechującego się największym prawdopodobieństwem dla realizacji X lub jako średni model towarzyszących modeli.
+\end{itemize}
+
+Podana metoda wykorzystywana jest z łatwością dla technik GMM i HMM modelowania. Jednak metody deterministyczne, w szczególności technika kwantyzacji wektorów (VQ) wymaga zastosowania dodatkowych, bardziej skomplikowanych technik z zakresu teorii decyzji aby wykorzystać opisywaną metodę. 
+
+\subsection{Weryfikacja dla metod deterministycznych.}
+\subsubsection{Stały próg.}
+System weryfikacji mówcy korzystający z podstawowej wersji techniki kwantyzacji wektorów (VQ), z racji tego, iż nie jest modelem probabilistycznym oraz ze względu na prostotę, korzysta zwykle ze stałego progu $\theta$. Metoda jest odpowiednikiem weryfikacji mówcy z jednym mówcą tła. Przyjęty próg nie posiada jednak wymiaru prawdopodobieństwa. W przypadku VQ próg $\theta$ przyjmuje wartość związaną z przyjętą miarą dopasowania $D_{avg}(X, X_{\lambda})$. Przykładem takiego systemu jest system weryfikacji mówcy z wyświetlanym hasłem, opisany w \cite{10digits92}, na którym to wzoruje się prezentowany w niniejszej pracy przykład systemu. Próg dla takiego przypadku często wyznacza się empirycznie. 
+
+\subsubsection{Próg dla modelu kohorty.}
+Dla metod deterministycznych możliwe jest także wykorzystanie analogicznego warunku jak w \ref{loglike}, z tym, że zastępując warunkową funkcję gęstości prawdopodobieństwa przez funkcję miary dopasowania $D_{avg}(X_{\lambda}, X_{\tilde{\lambda}_{kohorta}})$, gdzie $X_{\tilde{\lambda}_{kohorta}}$ oznacza model uzyskany ze względu na mówców zawartych w kohorcie. Zatem podobnie jak poprzednio otrzymuje się:
+
+\begin{equation}
+  \label{loglikedis}
+  d(X)= \log({D_{avg} (X, X_{\lambda}})) - \log(D(X, X_{\lambda_{kohorta}}))
+  \begin{cases}
+    \ge \theta, \textrm{ przyjmij hipotezę } H_0 \\
+    < \theta, \textrm{ odrzuć hipotezę } H_0
+  \end{cases}
+\end{equation}
+
+Dla metody SVM (\ref{svm}) zaś kryterium to może przyjąć postać:
+
+\begin{equation}
+  \label{loglikesvm}
+  f(X)= \sum_{i\in\{i|t_i = 1\}} \alpha_i K(\bm{X},\bm{X_i}) - \sum_{i\in\{i|t_i = 1\}}\alpha_i K(\bm{X},\bm{X_i)} + d
+  \begin{cases}
+    \ge \theta, \textrm{ przyjmij hipotezę } H_0 \\
+    < \theta, \textrm{ odrzuć hipotezę } H_0
+  \end{cases}
+\end{equation}
+
+\subsection{Przycinanie mówców\\ (\textit{ang. speaker pruning}).}
+
+\textit{Speaker pruning} (tzn. 'przycinanie mówców') jest techniką wspomagającą zadanie identyfikacji mówcy w zastosowaniach czasu rzeczywistego. Możliwe jest też zastosowanie tej metody dla problemu weryfikacji mówcy korzystającego z modelu kohorty, który wymaga analizy więcej niż jednego modelu odniesienia w czasie rzeczywistym czyli tzw. (\textit{ang. unconstrained cohort normalization}). Omawiana technika ta polega na odrzucaniu nieprawdopodobnych mówców już w trakcie nadchodzenia kolejnych wektorów cech, sparametryzowanego sygnału mowy. Najczęściej przyjmuje się pewien krok ilości nowych wektorów które będą wykorzystane do wstępnego odrzucenia kolejnych nieprawdopodobnych modeli. Przykładem algorytmu dla zastosowaniu w \ref{loglikedis} jest algorytm szybkiego dobierania kohorty (\textit{ang. Fast Cohort Scoring - FCS}) \cite{finprunning}. Algorytm korzysta z wcześniej opisanego algorytmu LGB \ref{lgb}, klasteryzując zbiór wektorów $X$ na mniejszy $\tilde{X} = LBG(X)$. Niech $\lambda$ oznacza zbiór centroid modelu. Dokonywany jest wybór $K$ najbliższych mówców ze względu na miarę podobieństwa $D_{avg}(\tilde{X},\lambda)$. Zbiór wybranych modeli jest wspomnianą kohortą. W ostatnim kroku tego algorytmu oblicza się wartość kryterium d(X) z \ref{loglikedis} jako:
+\begin{equation}
+  d(X) = \frac{D_{avg}(\tilde{X},\lambda)}{\frac{1}{K}\sum_{k=1}^{K}D_{avg}(\tilde{\tilde{X}},\lambda_k)}
+\end{equation}
