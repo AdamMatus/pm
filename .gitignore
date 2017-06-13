@@ -1,6 +1,8 @@
 *.xml
 *.o
+*.pyc
 *.pgf
+*.pdf
 *.log
 *.toc
 *.aux

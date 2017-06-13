@@ -129,7 +129,39 @@ Poniżej opisano trzy bloki przetwarzania znajdujące się w systemie. Bloki rea
 
 \subsection{Baza danych mówców}
 Dany mówca reprezentowana jest jako następująca struktura danych dla systemu weryfikacji mówcy z wyświetlanym hasłem:
-\begin{lstlisting}
+\begin{lstlisting}[style=lst:cpp, caption=struktura danych przechowująca informację o mówcy\label{lst:database}]
+template <int C, int K>
+using codebook_array = typename std::array<std::array<double, K>, C>; 
 
+
+class speaker {
+  public:
+    speaker(const std::string& name)
+      : speaker_info{name} {}  
+
+    std::string name() {return speaker_info.name;};
+
+    struct Code{
+      Code(const std::string& text, codebook_array<C,K>&& code)
+        : centroids{code}, text{text} {}
+      std::array<std::array<double, K>, C> centroids;
+      std::string text;
+    };
+
+    void add_code(speaker::Code&& code)
+    {
+      codebook.push_back(code); 
+    }
+
+  private:
+    std::vector<Code> codebook;
+
+    struct speaker_info{
+      speaker_info(const std::string& name)
+        : name{name} {}
+      std::string name;
+    } speaker_info;
+};
 \end{lstlisting}
 
+Klasa \textit{speaker} zawiera dwie struktury danych: instancję struktury \textit{speaker\_info} która reprezentuje numer identyfikacyjny mówcy przy pomocy zmiennej łańcuchowej \textit{name} oraz instancji struktury \textit{codebook} przechowującej wektory współczynników charakteryzujących modele (w przypadku metody VQ są to centroidy - stąd nazwa zmiennej \textit{centroids}). Alias do tablicy dwuwymiarowej z której korzysta implementacja to \textit{codebook\_array}.
