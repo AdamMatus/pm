@@ -1,3 +1,204 @@
-\chapter{System werfykacji mówcy}
+\chapter{System weryfikacji mówcy}
+
+W tym rozdziale zostanie opisana implementacja pełnego systemu weryfikacji mówcy. 
 
 \section{Platforma uruchomieniowa}
+
+Weryfikacja poprawności działania systemu i wstępna implementacja zostały wykonane przy pomocy środowiska obliczeniowego Matlab. Rozwijanie oprogramowania w języku C++ na bazie narzędzi GNU odbywało się na systemie operacyjnym linux w dystrybucji debianowej. Docelową platformą uruchomieniową był komputer jednopłytkowy również z systemem takiego typu.
+
+\section{Wybór technologii}
+
+Omawiany system wykonuje parametryzacji sygnału mowy przy pomocy techniki Cepstralnych Współczynników Melowych (MFCC) w sekcji \textbf{\ref{mfcc}}. Rozpoznanie wzorca jest realizowane przy pomocy techniki kwantyzacji wektorów (VQ) (\textbf{sekcja \ref{vq}}), zaś proces modelowania mówcy dodatkowo korzysta z algorytmu LGB (\textbf{sekcja \ref{lgb}}).
+
+\subsection{Sposób implementacji algorytmów}
+
+Do implementacji algorytmów skorzystano ze znajdującej się w standardzie C++ bibliotek STL (Standard Template Library). W omawianej implementacji wykorzystywane są głównie trzy funkcje pochodzące z biblioteki STL są to:
+\begin{itemize}
+  \item{\textbf{std::generate(container\_iter start, container\_iter end, object\_func lambda)}} - funkcja generuje wartość dla każdego elementu pomiędzy iteratorem \textit{start} a iteratorem \textit{end} w jednym kontenerze za pomocą obiektu funkcyjnego \textit{lambda}.
+  \item{\textbf{std::transform(container1\_iter start1, container1\_iter end1,
+                       container2\_iter start2,
+                       container3\_iter start3, object\_func lambda)}} 
+  - funkcja generuje wartości w kontenerze o początku w \textit{start3} za pomocą obiektu funkcyjnego \textit{lambda} przyjmującego za argumenty kolejno wartości od start1 oraz od start2 aż do iteratora end1 i odpowiedniego w kontenerze nr. 2.
+  \item{\textbf{std::for\_each(container\_iter start, container\_iter end, object\_func lambda)}} - produkuje wartości w kontenerze pomiędzy iteratorami start i end za pomocą obiektu funkcyjnego \textit{lambda} przyjmującego za argument wartości z tego kontenera. Funkcja może być zastąpiona pętlą zakresową: \textbf{for(auto \&\&x: container)}.
+
+\end{itemize}
+
+\section{Implementacja algorytmów wstępnego przetwarzania  sygnału mowy}
+
+W tym miejscu została opisana implementacja bloku wstępnego przetwarzania opisanego w \textbf{sekcji \ref{archfeatureextraction}}.
+
+\section{Implementacja ekstrakcji cech MFCC}
+
+W tym miejscu została opisana implementacja bloku ekstrakcji cech opisanego w \textbf{sekcji \ref{archfeatureextraction}}.
+
+Aby utrzymać wektory sparametryzowanego sygnały mowy w postaci współczynników MFCC nazleży wywołać funkcję \textit{mfcc\_extraction} przyjmującą za argumenty częstotliwość próbkowania \textit{samplerate} oraz wektor ramek o długości N z próbkami sygnału mowy \textit{speech\_frames}. Funkcja zwraca wektor tablic długości K cech MFCC:
+
+\begin{lstlisting}[style=lst:cpp, caption=Implementacja funkcji mfcc\_extraction\label{lst:mfcc}]
+
+  std::vector<std::array<double, K>>
+  mfcc_extraction( std::vector<std::array<double, N>>&& speech_frames,
+                   int samplerate)
+  {
+    (...)
+\end{lstlisting}
+
+    \subsubsection{Obliczanie widma mocy dla ramek oraz nałożenie filtrów mela}
+
+Tak jak opisano w sekcji(\textbf{\ref{mfcc}}) pierwszym etapem ekstrakcji cech w tym przypadku jest obliczenie widma gęstości mocy. Kolejno w pętli wykonuje się operacje nakładania widma (za pomocą obiektu funkcyjnego \textit{hamming\_generator}), obliczenia współczynników mocy DTF za pomocą algorytmu FFT (funkcja \textit{power\_power\_frame}). Kolejnym etapem jest nakładanie filtrów mela za pomocą funkcji \textit{mel\_frame} : 
+
+\begin{lstlisting}[style=lst:cpp, caption=funkcja \textit{mfcc\_extraction} - obliczanie widma gęstości mocy\label{lst:mfccpower}]
+    (...)
+    std::vector<std::array<double, K>> mel_coefs_speech_frames;
+    for(auto &frame: speech_frames)
+    {
+      dsp_utils::window_frame( frame,
+                               dsp_utils::Window_type::hamming_generator);
+      dsp_utils::power_fft_frame(frame);
+      mel_coefs_speech_frames.push_back(mel_frame(frame, samplerate));
+    }
+    (...)
+\end{lstlisting}
+
+\subsubsection{Nałożenie logarytmu}
+
+W wektorze \textit{mel\_coefs\_speech\_frames} znajdują się na tym etapie funkcje gęstości widma. Kolejnym krokiem jest nałożenie logarytmu dziesiętnego na każdą ramkę. Realizowane jest to za pomocą obiektu funkcyjnego - lambdy: 
+
+\begin{lstlisting}[style=lst:cpp, caption=funkcja \textit{mfcc\_extraction} - obliczanie logarytmu widma gęstości mocy \label{lst:mfcclog}]
+    (...)
+    for(auto &mel_frame: mel_coefs_speech_frames)
+    {
+      std::for_each( mel_frame.begin(),
+                     mel_frame.end(),
+                     [](double &val)
+                     {
+                       val = std::log10(val); }
+                     );
+    } 
+    (...)
+\end{lstlisting}
+
+\subsubsection{Oblicznie cepstrum}
+
+Kolejnym krokiem jest obliczenie cepstrum za pomocy dyskretnej transformaty kosinusowej (DCT). Aby zmniejszyć złożoność obliczeniową najpierw tablicowana jest funkcja kosinus. Dużym usprawnieniem jest jej deklaracja jako \textit{const} tak aby tą operację wykonać już w czasie kompilacji. Stablicowana funkcja znajduje się w tablicy \textit{cos\_table}. DCT realizowana jest za pomocą obiektu funkcyjnego \textit{dct\_frame}.
+    
+\begin{lstlisting}[style=lst:cpp, caption=funkcja \textit{mfcc\_extraction} - obliczanie cepstrum \label{lst:mfcccepstrum}]
+    (...)
+    std::array<double, 4*K> cos_table;
+    std::generate( cos_table.begin(),
+                   cos_table.end(),
+                   dsp_utils::cos_dct_gen(4*K));
+
+    std::vector<std::array<double, K>> mfcc;
+    for(const auto &mel_frame: mel_coefs_speech_frames)
+    {
+      mfcc.push_back(dsp_utils::dct_frame(mel_frame, cos_table));
+    }
+    return mfcc;
+  }
+\end{lstlisting}
+
+W wyniku wykonanych operacji otrzymany zostaje wektor tablic ze współczynnikami MFCC.
+
+\subsection{Funkcje i obiekty funkcyjne realizujące algorytmy}
+
+W podrozdziale zostały opisane kolejne zaimplementowane w systemie funkcje i obiekty funkcyjne realizujące algorytmy dla zadania obliczenia współczynników MFCC użytych wcześniej w funkcji \textit{mfcc\_extraction}. 
+\begin{itemize}
+\item{\textbf{Funkcja window\_frame} aplikująca okno czasowe na ramkę:
+ \begin{lstlisting}[style=lst:cpp]
+void window_frame( std::array<double, N>& fr,
+                   const Window_type& win_type);
+\end{lstlisting}
+}
+ - przyjmuje jako argument ramkę sygnału \textit{fr} o rozmiarze N, oraz typ enumerowany \textit{win\_type} określający typ zastosowanego okna. W systemie zastosowano okno Hamminga. Aplikacja okna wykonana jest za pomocą funkcji \textit{std::for\_each} z użyciem obiektu funkcyjnego \textbf{hamming\_generator} z określonym operatorem \textit{operator()} jako:
+ \begin{lstlisting}[style=lst:cpp]
+void hamming_generator::operator()(double& x) 
+{
+  x = x*(0.54 - 0.46*gsl_sf_cos(2.0*M_PI*(index++)/(size -1)));
+}
+\end{lstlisting}
+
+\item{\textbf{Funkcja power\_fft\_frame} obliczająca widmową gęstość mocy dla ramki:
+ \begin{lstlisting}[style=lst:cpp]
+  void power_fft_frame(std::array<double, N>& fr);
+\end{lstlisting}
+}
+- przyjmuje za argument referencję do pojedynczej ramki sygnału \textit{fr} i modyfikuje ją do postaci współczynników widmowej gęstości mocy. 
+
+Najpierw użyty zostaje algortym fft na modyfikowanej ramce:
+\begin{lstlisting}[style=lst:cpp]
+    gsl_fft_real_radix2_transform(fr.data(), 1, N);
+\end{lstlisting}
+
+Następnie każdy współczynnik DFT zostaje podniesiony do kwadratu.
+\begin{lstlisting}[style=lst:cpp]
+    std::for_each(fr.begin(),
+                  fr.end(),
+                  [](double &x)
+                  {
+                    x = gsl_pow_2(x);
+                  });
+\end{lstlisting}
+
+A następnie zostają zsumowane wartości rzeczywiste z urojonymi dla kolejnych próbek DFT. Należy zwrócić uwagę, że w wyniku użycia funkcji \textit{gsl\_fft\_real\_radix2\_transform} otrzymano tylko połowę widma z wartościami rzeczywistymi rosnącymi kolejno od 0 do N/2 i wartościami urojonymi z malejącymi indeksami od końca wektora fr. Z tego powodu użyty został iterator rekursywny \textit{crbegin}:
+
+\begin{lstlisting}[style=lst:cpp]
+    std::transform(fr.cbegin() +1, fr.cbegin() + (N/2),
+                   fr.crbegin(),
+                   fr.begin() +1,
+                   std::plus<double>());
+\end{lstlisting}
+W wyniku tych operacji otrzymywany jest wektor współczynników amplitudowego widma mocy.
+
+\item{\textbf{Funkcja mel\_frame} aplikująca filtry melowe:
+ \begin{lstlisting}[style=lst:cpp]
+  std::array<double, K> mel_frame( const std::array<double, N>& fr,
+                                   int samplerate);
+\end{lstlisting}
+}
+- przyjmuje za argument częstotliwość próbkowania \textit{samplerate} oraz ramkę ze współczynnikami reprezentującymi widmową gęstość mocy o długości N. Funkcja zwraca wektor cech o długości K. Dla stworzenia wektora cech odpowiada funkcja \textit{std::generate} oraz obiekt funkcyjny \textit{mel\_frame\_generator}:
+
+ \begin{lstlisting}[style=lst:cpp]
+    (...)
+    std::array<double, K> mel_frame;
+    std::generate(mel_frame.begin(),
+                  mel_frame.end(),
+                  mel_frame_generator<K, N>(fr, samplerate));
+    (...)
+ \end{lstlisting}
+
+Operator \textit{operator()} tego obiektu funkcyjnego zdefiniowany jest następująco:
+
+ \begin{lstlisting}[style=lst:cpp]
+    double operator()(){
+ \end{lstlisting}
+
+Obiekt \textit{mel\_frame\_generator} oblicza i przechowuje wartości indeksów dla początku filtra (\textit{f\_begin}, środku filtra (\textit{f\_center}) oraz końcu filtra (\textit{f\_end}). Do obliczenia wartości szukanego współczynnika wystarczy użyć niezerowych wartości filtru tzn. tylko od indeksu f\_begin do f\_end. Ten zakres jest użyty w dla funkcji \textit{for\_each} w listingu poniżej. Jako funktor użyty jest kolejny obiekt funkcyjny \textit{triangle\_windowed\_sum} inicjowany informacją o ilości próbek dla zbocza rosnącego (f\_center - f\_begin) oraz ilość próbek dla zbocza opadającego (f\_end - f\_begin) używanego filtru trójkątnego. Dla każdego kolejnego współczynnika melowego indeksy położenia filtru trójkątnego są aktualizowane prywatną funkcją \textit{update\_filter\_samples}. Opisana część funkcji operatora to: 
+ \begin{lstlisting}[style=lst:cpp]
+      auto mel_coef = std::for_each(fram.cbegin() + f_begin,
+                      fram.cbegin() + f_end,
+                      triangle_windowed_sum(f_center-f_begin,
+                                            f_end-f_begin));
+      update_filter_samples();
+      return mel_coef.acc;
+    };
+ \end{lstlisting}
+
+ Mnożenie skalarne filtra przez ramkę realizowane jest przez wspomniany obiekt \textit{triangle\_windowed\_sum}. Kolejne próbki (\textit{val}) są przemnażane za pomocą jego przeciążonego operatora \textit{operator()}. Co krok aktualizowana jest wartość filtra - zmienna \textit{win}. Gdy algorytm dojdzie do indeksu środkowego filtru (warunek \textit{cen == i}) zmienia się przyrost wartości filtra na ujemny, co pozwala na zachowanie takiego samego kodu dla obu zboczy filtru. Listing omawianej funkcji znajduje się poniżej:
+ \begin{lstlisting}[style=lst:cpp]
+    void operator()(const double& val){
+      if(cen == i) del = -1.0/static_cast<float>((end-cen));
+
+      acc += win*val;
+      win += del;
+      i++;
+    }
+ \end{lstlisting}
+\end{itemize}
+
+\section{Implementacja rozpoznania wzorca VQ}
+
+W tym miejscu została opisana implementacja bloku rozpoznawania wzorca opisanego w \textbf{sekcji \ref{archpatternmatching}}.
+
+\section{Implementacja algorytmu decyzji progiem}
+
+W tym miejscu została opisana implementacja bloku podejmowania decyzji opisanego w \textbf{sekcji \ref{archpatternmatching}}.
