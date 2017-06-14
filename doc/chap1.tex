@@ -278,6 +278,7 @@ Poprzez obliczenie cepstrum sygnału mowy otrzymujemy zatem rozdzielenie kompone
 
 Należy zwrócić uwagę, że wykorzystywany w tej metodzie jest logarytm z liczb rzeczywistych oraz współczynniki mocy widma. Spowodowane jest to, że podczas procesu rozpoznawania mówcy nie interesuje nas rekonstrukcja sygnału, anie nie korzysta się z informacji zachowanej w fazie sygnału. Z tego też powodu klasycznie w ostatnim etapie obliczania współczynników MFCC zamiast odwrotnej dyskretnej transformaty Fouriera (IDFT) stosuje się dyskretną transformację kosinusową (DCT). Kolejną korzyścią jest otrzymanie w wyniku przeprowadzenia tej transformacji współczynników będącymi liczbami rzeczywistymi. W tej pracy korzysta się z następującej definicji dyskretnej transformaty kosinusowej:
 \begin{equation}
+  \label{dct}
     H_k = \sum_{n=0}^{N-1} h_ncos\left(\frac{\pi (2n+1)k}{2N}\right)
 \end{equation}
 gdzie

@@ -193,6 +193,61 @@ Obiekt \textit{mel\_frame\_generator} oblicza i przechowuje wartości indeksów 
       i++;
     }
  \end{lstlisting}
+
+\item{\textbf{Obiekt funkcyjny cos\_dct\_gen} generujący funkcję kosinus:
+ \begin{lstlisting}[style=lst:cpp]
+  struct cos_dct_gen
+  {
+    cos_dct_gen(int _K): K{_K}, i{0}
+    {}
+
+    double operator()(){
+      double c = gsl_sf_cos(2*M_PI*static_cast<double>(i)/K);
+      ++i;
+      return c;
+    }
+    int K, i;
+  };
+\end{lstlisting}
+}
+- korzystając z bibliotecznej funkcji \textit{gsl\_sf\_cos} generowana jest jeden okres funkcji kosinus dla K próbek. Tak wygenerowana tablica jest wykorzystywana dalej w algorytmie obliczania DCT. Warto zauważyć, że ze względu na definicję \textbf{\ref{dct}} potrzebna jest 4 razy większa tablica.
+
+
+\item{\textbf{Funkcja dct\_frame} obliczająca dyskretną transformatę kosinusową:
+ \begin{lstlisting}[style=lst:cpp]
+  std::array<double, K>
+  dct_frame(const std::array<double, K>& mel_frame,
+            const std::array<double, K*4>& cos_table);
+\end{lstlisting}
+}
+- przyjmuje jako argument tablicę współczynników melowych\textit{mel\_frame} o długości K oraz stablicowaną funkcję kosinus o długości 4*K. Funkcja zwraca tablicę współczynników MFCC.
+
+  Funkcja oblicza współczynniki DCT przy pomocy funkcji \textit{std::generate} oraz obiektu funkcyjnego \textit{mfcc\_gen} który generuje kolejne współczynniki DCT. Obiekt inicjalizowany jest referencjami do ramki cech i tablicy okresu funkcji kosinus:
+ \begin{lstlisting}[style=lst:cpp]
+ (...)
+  std::array<double, K> mfcc_frame;
+  std::generate(mfcc_frame.begin(),
+                mfcc_frame.end(),
+                mfcc_gen<K>(mel_frame, cos_table));
+  (...)
+\end{lstlisting}
+
+Obiekt generuje współczynniki DCT za pomocą przeciążonego operatora \textit{operator()} zgodnie z definicją z rozdziału \textbf{\ref{dct}}:
+ \begin{lstlisting}[style=lst:cpp]
+    double operator()(){
+      double mfcc;
+      auto k = 0;
+      {// for k=0
+        mfcc = (std::sqrt(K/2.0))*(1.0/K)*mel[k];
+      }
+      for(k=1; k<K; ++k)//exclude mean val
+      {
+        mfcc+=(std::sqrt(K/2.0))*(2.0/K)*mel[k]*cos[(k*(2*n+1))%(4*K)]; 
+      }
+      ++n;
+      return mfcc; 
+    };
+ \end{lstlisting}
 \end{itemize}
 
 \section{Implementacja rozpoznania wzorca VQ}
