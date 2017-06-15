@@ -585,6 +585,7 @@ Podana metoda wykorzystywana jest z łatwością dla technik GMM i HMM modelowan
 
 \subsection{Weryfikacja dla metod deterministycznych.}
 \subsubsection{Stały próg.}
+\label{fixed}
 System weryfikacji mówcy korzystający z podstawowej wersji techniki kwantyzacji wektorów (VQ), z racji tego, iż nie jest modelem probabilistycznym oraz ze względu na prostotę, korzysta zwykle ze stałego progu $\theta$. Metoda jest odpowiednikiem weryfikacji mówcy z jednym mówcą tła. Przyjęty próg nie posiada jednak wymiaru prawdopodobieństwa. W przypadku VQ próg $\theta$ przyjmuje wartość związaną z przyjętą miarą dopasowania $D_{avg}(X, X_{\lambda})$. Przykładem takiego systemu jest system weryfikacji mówcy z wyświetlanym hasłem, opisany w \cite{10digits92}, na którym to wzoruje się prezentowany w niniejszej pracy przykład systemu. Próg dla takiego przypadku często wyznacza się empirycznie. 
 
 \subsubsection{Próg dla modelu kohorty.}

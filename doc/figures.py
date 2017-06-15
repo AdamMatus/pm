@@ -89,6 +89,25 @@ ax.plot(t,y)
 ax.set_xlabel('Czestotliwosc [Hz]');
 savefig('melfb')
 
+
+fig, ax = newfig(1)
+
+mat = sio.loadmat('./err.mat');
+x = mat['x']
+y = mat['y']
+
+ax.plot(x,y)
+ax.set_xlabel('Blad falszywej akceptacji [%]');
+ax.set_ylabel('Blad falszywego odrzucenia [%]');
+plt.ylim([0,50])
+plt.xlim([0,15])
+
+plt.annotate('ERR (6,6)', xy=(6, 6), xytext=(8, 20),
+            arrowprops=dict(facecolor='black', shrink=0.05),
+            )
+
+savefig('err')
+
 import numpy as np
 #mel
 
