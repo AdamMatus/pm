@@ -100,7 +100,7 @@ ax.plot(x,y)
 ax.set_xlabel('Blad falszywej akceptacji [%]');
 ax.set_ylabel('Blad falszywego odrzucenia [%]');
 plt.ylim([0,50])
-plt.xlim([0,15])
+plt.xlim([0,50])
 
 plt.annotate('ERR (6,6)', xy=(6, 6), xytext=(8, 20),
             arrowprops=dict(facecolor='black', shrink=0.05),

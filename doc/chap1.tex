@@ -611,7 +611,7 @@ Dla metody SVM (\ref{svm}) zaś kryterium to może przyjąć postać:
   \end{cases}
 \end{equation}
 
-\subsection{Przycinanie mówców\\ (\textit{ang. speaker pruning}).}
+\subsection{Przycinanie mówców\\ (\textit{ang. speaker pruning}) \label{speakerprunning}.}
 
 \textit{Speaker pruning} (tzn. 'przycinanie mówców') jest techniką wspomagającą zadanie identyfikacji mówcy w zastosowaniach czasu rzeczywistego. Możliwe jest też zastosowanie tej metody dla problemu weryfikacji mówcy korzystającego z modelu kohorty, który wymaga analizy więcej niż jednego modelu odniesienia w czasie rzeczywistym czyli tzw. (\textit{ang. unconstrained cohort normalization}). Omawiana technika ta polega na odrzucaniu nieprawdopodobnych mówców już w trakcie nadchodzenia kolejnych wektorów cech, sparametryzowanego sygnału mowy. Najczęściej przyjmuje się pewien krok ilości nowych wektorów które będą wykorzystane do wstępnego odrzucenia kolejnych nieprawdopodobnych modeli. Przykładem algorytmu dla zastosowaniu w \ref{loglikedis} jest algorytm szybkiego dobierania kohorty (\textit{ang. Fast Cohort Scoring - FCS}) \cite{finprunning}. Algorytm korzysta z wcześniej opisanego algorytmu LGB \ref{lgb}, klasteryzując zbiór wektorów $X$ na mniejszy $\tilde{X} = LBG(X)$. Niech $\lambda$ oznacza zbiór centroid modelu. Dokonywany jest wybór $K$ najbliższych mówców ze względu na miarę podobieństwa $D_{avg}(\tilde{X},\lambda)$. Zbiór wybranych modeli jest wspomnianą kohortą. W ostatnim kroku tego algorytmu oblicza się wartość kryterium d(X) z \ref{loglikedis} jako:
 \begin{equation}

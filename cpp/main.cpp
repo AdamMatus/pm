@@ -139,6 +139,25 @@ void static_test_pm(const std::vector<speaker<16, 30>>& speakers)
                           "adam/s16.wav"
   };
 
+  const char* damianfiles[] = {
+                          "damian/s1.wav",
+                          "damian/s2.wav",
+                          "damian/s3.wav",
+                          "damian/s4.wav",
+                          "damian/s5.wav",
+                          "damian/s6.wav",
+                          "damian/s7.wav",
+                          "damian/s8.wav",
+                          "damian/s9.wav",
+                          "damian/s10.wav",
+                          "damian/s11.wav",
+                          "damian/s12.wav",
+                          "damian/s13.wav",
+                          "damian/s14.wav",
+                          "damian/s15.wav",
+                          "damian/s16.wav"
+  };
+
 std::cout << "p=[";
 for(double d = 2; d < 5; d+=0.05)
 {
@@ -189,7 +208,28 @@ for(double d = 2; d < 5; d+=0.05)
 
     sf_close(infile);
   }
-  std::cout << 100.0*na/(16.0*15.0) <<','<<nr/0.16 << ';';
+
+  for(int i=0; i<16; ++i)
+  {
+    SF_INFO wavinfo;
+    auto fi = damianfiles[i];
+    auto wav_probes = load_wav(fi, wavinfo);
+    sf_format_check(&wavinfo); 
+    const auto samplerate = wavinfo.samplerate;
+
+    auto speech_frames {dsp_utils::frame_signal<N>(wav_probes, M)};
+    auto mfcc {mel_utils::mfcc_extraction<256, 30>(std::move(speech_frames), samplerate)};
+
+      double distortion = vq::compute_distortion<16, 30>(speakers.at(9).codebook.at(0).centroids, mfcc)/mfcc.size();
+      auto decision = distortion < d;
+      if(!decision)
+      {
+        ++nr;
+      }
+
+    sf_close(infile);
+  }
+  std::cout << 100.0*na/(16.0*15.0) <<','<<nr/0.32 << ';';
 }
 std::cout << ']';
 } 
