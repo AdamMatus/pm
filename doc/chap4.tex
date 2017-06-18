@@ -4,6 +4,8 @@
 
 Zaimplementowany system weryfikacji mówcy został poddany statycznemu testowi na współczynnik błędu EER (\textit{ang. Equal Error Rate}). Błąd ten jest zdefiniowany dla takiego systemu z progiem $\theta$, że błąd typu fałszywa akceptacja FAR - (\textit{ang. False Acceptance Rate}) jest równy błędowi typu fałszywa odmowa - FRR (\textit{ang. False Rejection Ratio}).
 
+\label{err}
+
 Błąd FAR jest zdefiniowany następująco:
   \begin{equation}
   FAR = \frac{n_{fa}}{n_r} \cdot 100\%
@@ -19,7 +21,7 @@ Błąd FRR jest zdefiniowany następująco:
 
 W testowanym systemie zastosowano K=30 współczynników MFCC, ramki sygnału o długości N=256 oraz C=16 centroid dla modelu mówcy przy użyciu techniki VQ. Test składał się z przeanalizowania wpływu zależności stałego współczynnika $\theta$ (sekcja \textbf{\ref{fixed}}) z szerokiego zakresu wartości na wielkość błędów FAR i FRR w systemie weryfikacji mówcy. W teście użyto 16 modeli mówców i 16 nagrań testowych angielskiego słowa 'zero' od tych samych mówców w celu oszacowania błędów FRR. Daje to 256 testów weryfikacyjnych dla każdej wartości współczynnika $\theta$. Dla oszacowania błędu FAR użyto 3 modeli mówców pochodzących z tej samej książki kodów wraz z 32 nagraniami pochodzącymi od od tych 3 mówców. Wyniki testu przedstawione są na rysunku (\textbf{\ref{fig:err}}). Wynik ERR wyniósł 6\%.
 
-Ze względu na małą ilość danych treningowych oraz danych testowych (szczególnie w przypadku szacowania błędu FAR) otrzymane wyniki mogą nie być w rzeczywistą oceną modelu. 
+Ze względu na małą ilość danych treningowych oraz danych testowych (szczególnie w przypadku szacowania błędu FAR) otrzymane wyniki mogą różnić się w pewnym stopniu od statystycznie istotnej oceny modelu.
 
 
 \begin{figure}[t]

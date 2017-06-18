@@ -24,13 +24,13 @@
 \usepackage{tabularx}
 \usepackage{hhline}
 
-\usepackage{biblatex}
+\usepackage[sorting=nty]{biblatex}
 \addbibresource{./bibliografia.bib}
 
 
 \usepackage{indentfirst}
 
-\usepackage{showlabels}
+%\usepackage{showlabels}
 
 %listings
 \usepackage{listings}
@@ -70,11 +70,10 @@
 \input{chap5.tex}
 %%
 
-\addcontentsline{toc}{chapter}{Bibliografia}
 
 \tableofcontents
 
-\printbibliography
+\printbibliography[title={Bibliografia}]
 
 \end{document}
 
