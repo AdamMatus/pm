@@ -23,12 +23,13 @@
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage{hhline}
+
 \usepackage{biblatex}
+\addbibresource{./bibliografia.bib}
+
+
 \usepackage{indentfirst}
 
-\addbibresource{bibliografia.bib}
-
-%
 \usepackage{showlabels}
 
 %listings
@@ -69,7 +70,11 @@
 \input{chap5.tex}
 %%
 
+\addcontentsline{toc}{chapter}{Bibliografia}
+
 \tableofcontents
 
+\printbibliography
 
 \end{document}
+
