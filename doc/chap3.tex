@@ -1,6 +1,6 @@
 \chapter{System weryfikacji mówcy}
 
-W tym rozdziale zostanie opisana implementacja pełnego systemu weryfikacji mówcy. 
+W niniejszym rozdziale zostanie opisana implementacja pełnego systemu weryfikacji mówcy. 
 
 \section{Platforma uruchomieniowa}
 
@@ -8,11 +8,11 @@ Weryfikacja poprawności działania systemu i wstępna implementacja zostały wy
 
 \section{Wybór technologii}
 
-Omawiany system wykonuje parametryzacji sygnału mowy przy pomocy techniki Cepstralnych Współczynników Melowych (MFCC) w sekcji \textbf{\ref{mfcc}}. Rozpoznanie wzorca jest realizowane przy pomocy techniki kwantyzacji wektorów (VQ) (\textbf{sekcja \ref{vq}}), zaś proces modelowania mówcy dodatkowo korzysta z algorytmu LGB (\textbf{sekcja \ref{lgb}}).
+Omawiany system dokonuje parametryzacji sygnału mowy przy pomocy techniki Cepstralnych Współczynników Melowych (MFCC) w rozdziale {\ref{mfcc}}. Rozpoznanie wzorca jest realizowane przy pomocy techniki kwantyzacji wektorów (VQ) (rozdział \ref{vq}), zaś proces modelowania mówcy dodatkowo korzysta z algorytmu LGB (rozdział \ref{lgb}).
 
 \subsection{Sposób implementacji algorytmów}
 
-Do implementacji algorytmów skorzystano ze znajdującej się w standardzie C++ bibliotek STL (Standard Template Library). W omawianej implementacji wykorzystywane są głównie trzy funkcje pochodzące z biblioteki STL są to:
+Do implementacji algorytmów skorzystano ze znajdującej się w standardzie C++ biblioteki STL (Standard Template Library). W omawianej implementacji wykorzystywane są głównie trzy funkcje pochodzące z biblioteki STL są to:
 \begin{itemize}
   \item{\textbf{std::generate(container\_iter start, container\_iter end, object\_func lambda)}} - funkcja generuje wartość dla każdego elementu pomiędzy iteratorem \textit{start} a iteratorem \textit{end} w jednym kontenerze za pomocą obiektu funkcyjnego \textit{lambda}.
   \item{\textbf{std::transform(container1\_iter start1, container1\_iter end1,
@@ -25,11 +25,11 @@ Do implementacji algorytmów skorzystano ze znajdującej się w standardzie C++ 
 
 \section{Implementacja algorytmów wstępnego przetwarzania  sygnału mowy}
 
-W tym miejscu została opisana implementacja bloku wstępnego przetwarzania opisanego w \textbf{sekcji \ref{archfeatureextraction}}.
+W niniejszym punkcie opisano implementację bloku wstępnego przetwarzania opisanego w rozdziale \ref{archfeatureextraction}.
 
 \subsubsection{Ramkowanie}
 
-Głównym zadaniem bloku wstępnego przetwarzania w implementowanym systemie jest ramkowanie sygnału mowy. Realizowane jest to za pomocą funkcji \textit{frame\_signal}. Funkcja ta przyjmuje jako argument kontener zawierający próbki sygnału \textit{probes} oraz krok przesunięcia kolejnych ramek M. W poniżej implementacji użyta została funkcja \textit{std::copy} umieszczająca w wynikowym wektorze kolejne ramki sygnału.
+Głównym zadaniem bloku wstępnego przetwarzania w implementowanym systemie jest ramkowanie sygnału mowy. Realizowane jest to za pomocą funkcji \textit{frame\_signal}. Funkcja ta przyjmuje jako argument kontener zawierający próbki sygnału \textit{probes} oraz krok przesunięcia kolejnych ramek M. W poniższej implementacji użyto funkcji \textit{std::copy} umieszczającą w wynikowym wektorze kolejne ramki sygnału.
 
 \begin{lstlisting}[style=lst:cpp, caption=Implementacja funkcji \textit{frame\_signal}\label{lst:frame}]
   template <int N>
@@ -49,7 +49,7 @@ Głównym zadaniem bloku wstępnego przetwarzania w implementowanym systemie jes
 
 \section{Implementacja ekstrakcji cech MFCC}
 
-W tym miejscu została opisana implementacja bloku ekstrakcji cech opisanego w \textbf{sekcji \ref{archfeatureextraction}}.
+W niniejszym punkcie opisano implementację bloku ekstrakcji cech opisanego w rozdziale \ref{archfeatureextraction}.
 
 Aby utrzymać wektory sparametryzowanego sygnały mowy w postaci współczynników MFCC nazleży wywołać funkcję \textit{mfcc\_extraction} przyjmującą za argumenty częstotliwość próbkowania \textit{samplerate} oraz wektor ramek o długości N z próbkami sygnału mowy \textit{speech\_frames}. Funkcja zwraca wektor tablic długości K cech MFCC:
 
@@ -62,11 +62,11 @@ Aby utrzymać wektory sparametryzowanego sygnały mowy w postaci współczynnik�
     (...)
 \end{lstlisting}
 
-    \subsubsection{Obliczanie widma mocy dla ramek oraz nałożenie filtrów mela}
+    \subsubsection{Obliczanie widma mocy dla ramek oraz nałożenie filtrów Mela}
 
-Tak jak opisano w sekcji(\textbf{\ref{mfcc}}) pierwszym etapem ekstrakcji cech w tym przypadku jest obliczenie widma gęstości mocy. Kolejno w pętli wykonuje się operacje nakładania widma (za pomocą obiektu funkcyjnego \textit{hamming\_generator}), obliczenia współczynników mocy DTF za pomocą algorytmu FFT (funkcja \textit{power\_power\_frame}). Kolejnym etapem jest nakładanie filtrów mela za pomocą funkcji \textit{mel\_frame} : 
+Pierwszym etapem  ekstrakcji cech jest obliczenie widma gęstości mocy {\ref{mfcc}}. Kolejno w pętli wykonuje się operacje nakładania widma (za pomocą obiektu funkcyjnego \textit{hamming\_generator}), obliczenia współczynników mocy DFT za pomocą algorytmu FFT (funkcja \textit{power\_power\_frame}). Kolejnym etapem jest nakładanie filtrów Mela za pomocą funkcji \textit{mel\_frame} : 
 
-\begin{lstlisting}[style=lst:cpp, caption=funkcja \textit{mfcc\_extraction} - obliczanie widma gęstości mocy\label{lst:mfccpower}]
+\begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{mfcc\_extraction} - obliczanie widma gęstości mocy\label{lst:mfccpower}]
     (...)
     std::vector<std::array<double, K>> mel_coefs_speech_frames;
     for(auto &frame: speech_frames)
@@ -83,7 +83,7 @@ Tak jak opisano w sekcji(\textbf{\ref{mfcc}}) pierwszym etapem ekstrakcji cech w
 
 W wektorze \textit{mel\_coefs\_speech\_frames} znajdują się na tym etapie funkcje gęstości widma. Kolejnym krokiem jest nałożenie logarytmu dziesiętnego na każdą ramkę. Realizowane jest to za pomocą obiektu funkcyjnego - lambdy: 
 
-\begin{lstlisting}[style=lst:cpp, caption=funkcja \textit{mfcc\_extraction} - obliczanie logarytmu widma gęstości mocy \label{lst:mfcclog}]
+\begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{mfcc\_extraction} - obliczanie logarytmu widma gęstości mocy \label{lst:mfcclog}]
     (...)
     for(auto &mel_frame: mel_coefs_speech_frames)
     {
@@ -97,11 +97,11 @@ W wektorze \textit{mel\_coefs\_speech\_frames} znajdują się na tym etapie funk
     (...)
 \end{lstlisting}
 
-\subsubsection{Oblicznie cepstrum}
+\subsubsection{Obliczanie cepstrum}
 
 Kolejnym krokiem jest obliczenie cepstrum za pomocy dyskretnej transformaty kosinusowej (DCT). Aby zmniejszyć złożoność obliczeniową najpierw tablicowana jest funkcja kosinus. Dużym usprawnieniem jest jej deklaracja jako \textit{const} tak aby tą operację wykonać już w czasie kompilacji. Stablicowana funkcja znajduje się w tablicy \textit{cos\_table}. DCT realizowana jest za pomocą obiektu funkcyjnego \textit{dct\_frame}.
     
-\begin{lstlisting}[style=lst:cpp, caption=funkcja \textit{mfcc\_extraction} - obliczanie cepstrum \label{lst:mfcccepstrum}]
+\begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{mfcc\_extraction} - obliczanie cepstrum \label{lst:mfcccepstrum}]
     (...)
     std::array<double, 4*K> cos_table;
     std::generate( cos_table.begin(),
@@ -121,7 +121,7 @@ W wyniku wykonanych operacji otrzymany zostaje wektor tablic ze współczynnikam
 
 \subsection{Funkcje i obiekty funkcyjne realizujące algorytmy}
 
-W podrozdziale zostały opisane kolejne zaimplementowane w systemie funkcje i obiekty funkcyjne realizujące algorytmy dla zadania obliczenia współczynników MFCC użytych wcześniej w funkcji \textit{mfcc\_extraction}. 
+W niniejszym podrozdziale zostały opisane kolejne zaimplementowane w systemie funkcje i obiekty funkcyjne realizujące algorytmy dla zadania obliczenia współczynników MFCC użytych wcześniej w funkcji \textit{mfcc\_extraction}. 
 \begin{itemize}
 \item{\textbf{Funkcja window\_frame} aplikująca okno czasowe na ramkę:
  \begin{lstlisting}[style=lst:cpp]
@@ -169,13 +169,13 @@ A następnie zostają zsumowane wartości rzeczywiste z urojonymi dla kolejnych 
 \end{lstlisting}
 W wyniku tych operacji otrzymywany jest wektor współczynników amplitudowego widma mocy.
 
-\item{\textbf{Funkcja mel\_frame} aplikująca filtry melowe:
+\item{\textbf{Funkcja mel\_frame} realizująca filtry Melowe:
  \begin{lstlisting}[style=lst:cpp]
   std::array<double, K> mel_frame( const std::array<double, N>& fr,
                                    int samplerate);
 \end{lstlisting}
 }
-- przyjmuje za argument częstotliwość próbkowania \textit{samplerate} oraz ramkę ze współczynnikami reprezentującymi widmową gęstość mocy o długości N. Funkcja zwraca wektor cech o długości K. Dla stworzenia wektora cech odpowiada funkcja \textit{std::generate} oraz obiekt funkcyjny \textit{mel\_frame\_generator}:
+- przyjmuje za argument częstotliwość próbkowania \textit{samplerate} oraz ramkę ze współczynnikami reprezentującymi widmową gęstość mocy o długości N. Funkcja zwraca wektor cech o długości K. Dla utworzenia wektora cech odpowiada funkcja \textit{std::generate} oraz obiekt funkcyjny \textit{mel\_frame\_generator}:
 
  \begin{lstlisting}[style=lst:cpp]
     (...)
@@ -192,7 +192,8 @@ Operator \textit{operator()} tego obiektu funkcyjnego zdefiniowany jest następu
     double operator()(){
  \end{lstlisting}
 
-Obiekt \textit{mel\_frame\_generator} oblicza i przechowuje wartości indeksów dla początku filtra (\textit{f\_begin}, środku filtra (\textit{f\_center}) oraz końcu filtra (\textit{f\_end}). Do obliczenia wartości szukanego współczynnika wystarczy użyć niezerowych wartości filtru tzn. tylko od indeksu f\_begin do f\_end. Ten zakres jest użyty w dla funkcji \textit{for\_each} w listingu poniżej. Jako funktor użyty jest kolejny obiekt funkcyjny \textit{triangle\_windowed\_sum} inicjowany informacją o ilości próbek dla zbocza rosnącego (f\_center - f\_begin) oraz ilość próbek dla zbocza opadającego (f\_end - f\_begin) używanego filtru trójkątnego. Dla każdego kolejnego współczynnika melowego indeksy położenia filtru trójkątnego są aktualizowane prywatną funkcją \textit{update\_filter\_samples}. Opisana część funkcji operatora to: 
+Obiekt \textit{mel\_frame\_generator} oblicza i przechowuje wartości indeksów dla początku filtru (\textit{f\_begin}, środku filtru (\textit{f\_center}) oraz końca filtru (\textit{f\_end}). Do obliczenia wartości szukanego współczynnika wystarczy użyć niezerowych wartości filtru tzn. tylko od indeksu f\_begin do f\_end. Ten zakres jest użyty w dla funkcji \textit{for\_each} w listingu poniżej. Jako funktor użyty jest kolejny obiekt funkcyjny \textit{triangle\_windowed\_sum} inicjowany informacją
+o liczbie próbek dla zbocza rosnącego (f\_center - f\_begin) oraz liczba próbek dla zbocza opadającego (f\_end - f\_begin) używanego filtru trójkątnego. Dla każdego kolejnego współczynnika melowego indeksy położenia filtru trójkątnego są aktualizowane prywatną funkcją \textit{update\_filter\_samples}. Opisana część funkcji operatora to: 
  \begin{lstlisting}[style=lst:cpp]
       auto mel_coef = std::for_each(fram.cbegin() + f_begin,
                       fram.cbegin() + f_end,
@@ -203,7 +204,7 @@ Obiekt \textit{mel\_frame\_generator} oblicza i przechowuje wartości indeksów 
     };
  \end{lstlisting}
 
- Mnożenie skalarne filtra przez ramkę realizowane jest przez wspomniany obiekt \textit{triangle\_windowed\_sum}. Kolejne próbki (\textit{val}) są przemnażane za pomocą jego przeciążonego operatora \textit{operator()}. Co krok aktualizowana jest wartość filtra - zmienna \textit{win}. Gdy algorytm dojdzie do indeksu środkowego filtru (warunek \textit{cen == i}) zmienia się przyrost wartości filtra na ujemny, co pozwala na zachowanie takiego samego kodu dla obu zboczy filtru. Listing omawianej funkcji znajduje się poniżej:
+ Mnożenie skalarne filtra przez ramkę realizowane jest przez wspomniany obiekt \textit{triangle\_windowed\_sum}. Kolejne próbki (\textit{val}) są przemnażane za pomocą jego przeciążonego operatora \textit{operator()}. Co iterację aktualizowana jest wartość filtra - zmienna \textit{win}. Gdy algorytm dojdzie do indeksu środkowego filtru (warunek \textit{cen == i}) zmienia się przyrost wartości filtra na ujemny, co pozwala na zachowanie takiego samego kodu dla obu zboczy filtru. Listing omawianej funkcji znajduje się poniżej:
  \begin{lstlisting}[style=lst:cpp]
     void operator()(const double& val){
       if(cen == i) del = -1.0/static_cast<float>((end-cen));
@@ -230,7 +231,7 @@ Obiekt \textit{mel\_frame\_generator} oblicza i przechowuje wartości indeksów 
   };
 \end{lstlisting}
 }
-- korzystając z bibliotecznej funkcji \textit{gsl\_sf\_cos} generowana jest jeden okres funkcji kosinus dla K próbek. Tak wygenerowana tablica jest wykorzystywana dalej w algorytmie obliczania DCT. Warto zauważyć, że ze względu na definicję \textbf{\ref{dct}} potrzebna jest 4 razy większa tablica.
+- korzystając z bibliotecznej funkcji \textit{gsl\_sf\_cos} generowany jest jeden okres funkcji kosinus dla K próbek. Tak wygenerowana tablica jest wykorzystywana dalej w algorytmie obliczania DCT. Warto zauważyć, że ze względu na definicję {\ref{dct}} potrzebna jest 4 razy większa tablica.
 
 
 \item{\textbf{Funkcja dct\_frame} obliczająca dyskretną transformatę kosinusową:
@@ -240,9 +241,9 @@ Obiekt \textit{mel\_frame\_generator} oblicza i przechowuje wartości indeksów 
             const std::array<double, K*4>& cos_table);
 \end{lstlisting}
 }
-- przyjmuje jako argument tablicę współczynników melowych\textit{mel\_frame} o długości K oraz stablicowaną funkcję kosinus o długości 4*K. Funkcja zwraca tablicę współczynników MFCC.
+- przyjmuje jako argument tablicę współczynników Melowych \textit{mel\_frame} o długości K oraz stablicowaną funkcję kosinus o długości 4*K. Funkcja zwraca tablicę współczynników MFCC.
 
-  Funkcja oblicza współczynniki DCT przy pomocy funkcji \textit{std::generate} oraz obiektu funkcyjnego \textit{mfcc\_gen} który generuje kolejne współczynniki DCT. Obiekt inicjalizowany jest referencjami do ramki cech i tablicy okresu funkcji kosinus:
+  Funkcja oblicza współczynniki DCT przy pomocy funkcji \textit{std::generate} oraz obiektu funkcyjnego \textit{mfcc\_gen}, który generuje kolejne współczynniki DCT. Obiekt inicjalizowany jest referencjami do ramki cech i tablicy okresu funkcji kosinus:
  \begin{lstlisting}[style=lst:cpp]
  (...)
   std::array<double, K> mfcc_frame;
@@ -252,7 +253,7 @@ Obiekt \textit{mel\_frame\_generator} oblicza i przechowuje wartości indeksów 
   (...)
 \end{lstlisting}
 
-Obiekt generuje współczynniki DCT za pomocą przeciążonego operatora \textit{operator()} zgodnie z definicją z rozdziału \textbf{\ref{dct}}:
+Obiekt generuje współczynniki DCT za pomocą przeciążonego operatora \textit{operator()} zgodnie z definicją z rozdziału {\ref{dct}}:
  \begin{lstlisting}[style=lst:cpp]
     double operator()(){
       double mfcc;
@@ -272,7 +273,7 @@ Obiekt generuje współczynniki DCT za pomocą przeciążonego operatora \textit
 
 \section{Implementacja rozpoznania wzorca VQ}
 
-W tym miejscu została opisana implementacja bloku rozpoznawania wzorca opisanego w \textbf{sekcji \ref{archpatternmatching}}.
+W niniejszym podrozdziale opisano implementację bloku rozpoznawania wzorca opisanego w rozdziale \ref{archpatternmatching}.
 
 \subsection{Miara dopasowania modelu do zbioru wektorów}
 
@@ -290,7 +291,7 @@ W celu otrzymania wartości miary dopasowania modelu złożnego z C centroid o w
 \end{lstlisting}
 Funkcja ta zwraca wartość typu double reprezentującą miarę dopasowania do badanego modelu. Jej argumentami jest książka kodów \textit{code} reprezentująca model mówcy za pomocą C centroid K wymiarowych. Drugim argumentem jest zbiór wektorów cech o tym samym wymiarze K. 
 
-  Implementacja tej funkcji składa się na dwie główne pętle for: pierwsza iteruje po wszystkich wektorach cech \textit{acoustic\_vectors} oraz sumuje wartość odchylenia od modelu dla każdego wektora do zwracanej zmiennej \textit{distortion}. Druga zaś pętla for - wewnętrzna - wyszukuje najbliższej centroidy w celu obliczenia miary dopasowania \textit{distortion}. Opisywana reszta implementacji znajduje się tutaj: 
+  Implementacja tej funkcji składa się na dwie główne pętle for: pierwsza iteruje po wszystkich wektorach cech \textit{acoustic\_vectors} oraz sumuje wartość odchylenia od modelu dla każdego wektora do zwracanej zmiennej \textit{distortion}. Druga zaś pętla for - wewnętrzna - wyszukuje najbliższą centroidę w celu obliczenia miary dopasowania \textit{distortion}. Opisywana reszta implementacji znajduje się poniżej: 
 
 \begin{lstlisting}[style=lst:cpp, caption=Ciało funkcji \textit{compute\_distortion}\label{lst:distortionbody}]
     (...)
@@ -331,7 +332,7 @@ W powyższym kodzie używa się funkcji \textit{dis\_eu} obliczającej odległo�
 
 \subsection{Modelowania przy pomocy algorytmu LBG}
 
-W celu otrzymania współczynników modelu mówcy - centroid wyprodukowanych przez algorytm LBG (\textbf{sekcja \ref{lgb}}) na podstawie zbioru treningowych wektorów cech należy wywołać funkcję \textit{lbg}:
+W celu otrzymania współczynników modelu mówcy - centroid wyprodukowanych przez algorytm LBG (rozdział \ref{lgb}) na podstawie zbioru treningowych wektorów cech należy wywołać funkcję \textit{lbg}:
 
 \begin{lstlisting}[style=lst:cpp, caption=Deklaracja funkcji \textit{lbg}\label{lst:lbg}]
   template<int C, int K>
@@ -341,13 +342,14 @@ W celu otrzymania współczynników modelu mówcy - centroid wyprodukowanych prz
 
 W wyniku wywołania funkcji zwracana jest 'książka kodów' o rozmiarze C. Wejściem jest zbiór wektorów cech o długościach K. Argumentem funkcji są wektory cech o nazwie referencji \textit{acoustic\_vectors}.
 
-Implementacja realizuje algorytm znajdujący się na schemacie blokowym(\textbf{\ref{lgbblock}}). Poniżej zostało przedstawione ciało funkcji z opisanymi w komentarzach nazwami kroków algorytmów. Następnie zostanie szczegółowo opisana implementacja każdego kroku z osobna. 
+Implementacja realizuje algorytm znajdujący się na schemacie blokowym {\ref{fig:lgbblock}}. Poniżej zostało przedstawione ciało funkcji z opisanymi w komentarzach nazwami kroków algorytmów. Następnie szczegółowo opisano implementację każdego kroku z osobna. 
 
-Omawiana funkcja składa się z części inicjalizacyjnej oraz dwóch głównych pętli: zewnętrznej pętli \textit{for} która za każdą iteracją podwaja ilość centroid aż do uzyskania wielkości C długości książki kodów. Wewnętrzna pętla \textit{while} ma za zadanie powtarzać kroki algorytmu LBG aktualizujące położenie centroid do momentu niewielkiej zmiany. Sygnalizowane jest to zmienną \textit{distortion\_diff\_small\_enough}. Stała \textit{eps} jest współczynnikiem przesunięcia położeń dwóch wygenerowanych centroid względem centroidy z której zostały stworzone. Jednocześnie jest też współczynnikiem określającym krok poniżej którego algorytm nie poprawia położeń centroid. Kontenery zadeklarowane w listingu(\textbf{\ref{lst:lbgbody1}}) przechowują inormację o:
+Omawiana funkcja składa się z części inicjalizacyjnej oraz dwóch głównych pętli: zewnętrznej pętli \textit{for}, która za każdą iteracją podwaja liczba centroid, aż do uzyskania wielkości C długości książki kodów. Wewnętrzna pętla \textit{while} ma za zadanie powtarzać kroki algorytmu LBG aktualizujące położenie centroid do momentu niewielkiej zmiany. Sygnalizowane jest to zmienną \textit{distortion\_diff\_small\_enough}. Stała \textit{eps} jest współczynnikiem przesunięcia położeń dwóch
+wygenerowanych centroid względem centroidy, z której zostały stworzone. Jednocześnie jest też współczynnikiem określającym krok poniżej którego algorytm nie poprawia położeń centroid. Kontenery zadeklarowane w listingu {\ref{lst:lbgbody1}} to:
 \begin{itemize}
-\item{\textbf{owner\_ind}} - jest kontenerem przechowującym numer najbliższej centroidy dla każdego wektora cech z \textit{acoustic\_vectors}.
-\item{\textbf{owner\_dist}} - jest kontenerem przechowującym odpowiadającą odległość do najbliższej centroidy dla każdego wektora cech.
-\item{\textbf{owner\_ind\_count}} - jest kontenerem przechowującym informację o ilości wektorów cech leżących najbliżej dla każdej centroidy.
+\item{\textbf{owner\_ind}} - jest kontenerem przechowującym numer najbliższej centroidy dla każdego wektora cech z \textit{acoustic\_vectors},
+\item{\textbf{owner\_dist}} - jest kontenerem przechowującym odpowiadającą odległość do najbliższej centroidy dla każdego wektora cech,
+\item{\textbf{owner\_ind\_count}} - jest kontenerem przechowującym informację o liczbie wektorów cech leżących najbliżej dla każdej centroidy,
 \item{\textbf{owner\_distortion}} - jest kontenerem przechowującym sumę miar dopasowania wektorów cech przynależących kolejno do każdej centroidy.
 \end{itemize}
 
@@ -400,9 +402,9 @@ Omawiana funkcja składa się z części inicjalizacyjnej oraz dwóch głównych
   }
 \end{lstlisting}
 
-\subsubsection{Inicjalizacja - pierwsza centroida.}
+\subsubsection{Inicjalizacja - pierwsza centroida}
 
-W tej części funkcji obliczany jest wektor średni - centroida dla wszystkich wektorów cech znajdujących się w \textit{acoustic\_vectors}. Wektor sumy poszczególnych wymiarów jest utworzony jako pierwsza centroida w książce kodów \textit{code} za pomocą funkcji \textit{std::transform}, a następnie w drugiej pętli for liczona jest średnia poprzez podzielenie sum przez ilość wektorów cech.
+W tej części funkcji obliczany jest wektor średni - centroida dla wszystkich wektorów cech znajdujących się w \textit{acoustic\_vectors}. Wektor sumy poszczególnych wymiarów jest utworzony jako pierwsza centroida w książce kodów \textit{code} za pomocą funkcji \textit{std::transform}, a następnie w drugiej pętli for liczona jest średnia poprzez podzielenie sum przez liczbę wektorów cech.
 
 \begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{lbg}\label{lst:lbgbody2} - obliczenie pierwszej centroidy]
     std::fill(code.at(0).begin(), code.at(0).end(), 0);
@@ -420,9 +422,9 @@ W tej części funkcji obliczany jest wektor średni - centroida dla wszystkich 
       x /= acoustic_vectors.size();
     }
 \end{lstlisting}
-\subsubsection{Podwojenie ilości centroid.}
+\subsubsection{Podwojenie liczby centroid}
 Poniższy fragment kodu kopiuje każdą centroidę modyfikując każdy wymiar o współczynnik \textit{1+esp} oraz dodaje ją do książki kodów \textit{code}. Pozostałe centroidy są modyfikowane o współczynnik \textit{1-esp} w drugiej pętli for.
-\begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{lbg}\label{lst:lbgbody3} - podwojenie ilości centroid]
+\begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{lbg}\label{lst:lbgbody3} - podwojenie liczby centroid]
     (...)
 
       for(auto j = 0; j < code_size; ++j)
@@ -442,8 +444,8 @@ Poniższy fragment kodu kopiuje każdą centroidę modyfikując każdy wymiar o 
 
     (...)
 \end{lstlisting}
-\subsubsection{Aktualizacja położeń centroid.}
-Poniższy kod realizuje funkcjonalność detekcji najbliżej centroidy z książki kodów \textit{code} oraz obliczenia wartości miary dopasowania dla każdego wektora cech. Główna pętla for iterująca po każdym z wektorów cech aktualizuje kolejne wartości kontenerów \textit{owner\_ind}, \textit{owner\_dist} i \textit{owner\_ind\_count}. Znalezienie najbliższej centroidy odbywa się poprzez analizę odległości euklidesowej do każdej centroidy przy pomocy funkcji \textit{dis\_eu}.
+\subsubsection{Aktualizacja położeń centroid}
+Poniższy kod realizuje funkcjonalność detekcji najbliżej centroidy z książki kodów \textit{code} oraz oblicza wartości miary dopasowania dla każdego wektora cech. Główna pętla for iterująca po każdym z wektorów cech aktualizuje kolejne wartości kontenerów \textit{owner\_ind}, \textit{owner\_dist} i \textit{owner\_ind\_count}. Znalezienie najbliższej centroidy odbywa się poprzez analizę odległości euklidesowej do każdej centroidy przy pomocy funkcji \textit{dis\_eu}.
 \begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{lbg}\label{lst:lbgbody4} - znalezienie najbliższej centroidy]
       (...)
 
@@ -472,7 +474,7 @@ Poniższy kod realizuje funkcjonalność detekcji najbliżej centroidy z książ
      (...)
 \end{lstlisting}
 
-Kolejnym krokiem jest aktualizacja centroid poprzez obliczenie średniego wektora dla każdej z nich przez uwzględnienie tylko tych wektorów cech które należą do segmentu tej centroidy. Realizowane jest to w linii 16 listingu \textbf{\ref{lst:lbgbody5}} za pomocą funkcji \textit{std::transform} oraz kolejnej pętli for w której wykonywane jest dzielenie.
+Kolejnym krokiem jest aktualizacja centroid poprzez obliczenie średniego wektora dla każdej z nich przez uwzględnienie tylko tych wektorów cech, które należą do segmentu tej centroidy. Realizowane jest to w linii 16 listingu {\ref{lst:lbgbody5}} za pomocą funkcji \textit{std::transform} oraz kolejnej pętli for, w której wykonywane jest dzielenie.
 \begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{lbg}\label{lst:lbgbody5} - obliczenie ogólnego dopasowania]
       (...)
 
@@ -509,8 +511,9 @@ Kolejnym krokiem jest aktualizacja centroid poprzez obliczenie średniego wektor
 
       (...)
 \end{lstlisting}
-\subsubsection{Suma miary dopasowania i decyzja o kontynuowaniu.}
-Ostatnią operacją wykonywaną w omawianej funkcji jest obliczenie sumy miar dopasowania które zostały już obliczonych we wcześniejszych etapach i znajdujących się w kontenerze \textit{owner\_dist}. Sumowanie jest realizowane w pierwszej pętli for w listingu \textbf{\ref{lst:lbgbody6}} co w rezultacie daje wektor \textit{distortion} posiadający sumę miar dopasowania dla każdej centroidy. Kolejna pętla for implementuje logikę decyzji o tym czy kontynuować procedurę aktualizacji centroid. Wykonywane jest to poprzez sprawdzenie czy przesunięcie którejkolwiek centroidy nie było większe niż współczynnik \textit{esp}. Jeżeli ten warunek jest prawdą wtedy procedura odszukiwania najbliższych centroid i aktualizacji tychże jest uruchamiana ponownie poprzez odpowiednie ustalenie stanu zmiennej \textit{distortion\_diff\_small\_enough}.
+\subsubsection{Suma miary dopasowania i decyzja o kontynuowaniu}
+Ostatnią operacją wykonywaną w omawianej funkcji jest obliczenie sumy miar dopasowania, które zostały już obliczone we wcześniejszych etapach i znajdujące się w kontenerze \textit{owner\_dist}. Sumowanie jest realizowane w pierwszej pętli for w listingu {\ref{lst:lbgbody6}}, co w rezultacie daje wektor \textit{distortion} posiadający sumę miar dopasowania dla każdej centroidy. Kolejna pętla for implementuje logikę decyzji o tym, czy kontynuować procedurę aktualizacji centroid. Wykonywane jest to
+poprzez sprawdzenie czy przesunięcie którejkolwiek centroidy nie było większe niż współczynnik \textit{esp}. Jeżeli ten warunek jest prawdą, wtedy procedura odszukiwania najbliższych centroid i aktualizacji tychże jest uruchamiana ponownie poprzez odpowiednie ustalenie stanu zmiennej \textit{distortion\_diff\_small\_enough}.
 \begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{lbg}\label{lst:lbgbody6} - decyzja o kontynuowaniu]
       (...)
 
@@ -537,9 +540,9 @@ Ostatnią operacją wykonywaną w omawianej funkcji jest obliczenie sumy miar do
       (...)
 \end{lstlisting}
 
-\section{Implementacja algorytmu decyzji przy pomocy ustalonego progu $\theta$}
+\subsection{Implementacja algorytmu decyzji przy pomocy ustalonego progu $\theta$}
 
-Została zaimplementowana najprostsza metoda dla deterministycznego modelowania, opisana w sekcji(\textbf{\ref{fixed}}).
+Została zaimplementowana najprostsza metoda dla deterministycznego modelowania, opisana w rozdziale({\ref{fixed}}).
 
 \begin{lstlisting}[style=lst:cpp, caption=Funkcja \textit{make\_decision}\label{lst:dec} - decyzja o kontynuowaniu]
   inline bool make_decision(double distortion, double theta)
@@ -549,4 +552,3 @@ Została zaimplementowana najprostsza metoda dla deterministycznego modelowania,
 
 \end{lstlisting}
 
-W tym miejscu została opisana implementacja bloku podejmowania decyzji opisanego w \textbf{sekcji \ref{archpatternmatching}}.
