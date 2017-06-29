@@ -217,9 +217,9 @@ W omawianej metodzie korzysta się jedynie z informacji o amplitudzie uzyskanego
 Przejście do dziedziny częstotliwości Mela (\textit{ang. frequency warping}) uzasadnione jest nieliniową percepcją układu słuchowego człowieka. Ponieważ procedura DFT oblicza widmo z liniową skalą częstotliwości, potrzebna jest nieliniowa transformacja do dziedziny częstotliwości Mela. Jest to proces imitujący cechę sygnału akustycznego - wysokości tonu.
 Rozpatrywana operacja polega na zastosowaniu banku filtrów trójkątnych na uzyskanych amplitudach widma:
 \begin{equation}
-  \tilde{H}_j = \sum_{k=1}^{K} H_k \cdot F_k, \quad k \in {1...N}, \quad  j \in {1...M}
+  \tilde{H}_j = \sum_{k=1}^{K} H_k \cdot {}^jF_k, \quad k \in {1...N}, \quad  j \in {1...M}
 \end{equation}
-gdzie $\tilde{H}_j$ oznacza j-ty współczynnik amplitudy widma w dziedzinie częstotliwości Mela, $F_k$ współczynniki filtru, zaś $M$ oznacza liczbę filtrów.
+gdzie $\tilde{H}_j$ oznacza $j$-ty współczynnik amplitudy widma w dziedzinie częstotliwości Mela, ${}^jF_k$ współczynniki $j$-tego filtru, zaś $M$ oznacza liczbę filtrów.
 W wyniku tej operacji otrzymuje się wektor współczynników częstotliwości w skali Mela o długości równej ilości użytych filtrów. Najczęściej stosowanym filtrem jest filtr o trójkątnej charakterystyce częstotliwościowej. Każdy kolejny filtr zaczyna się w środku pasma wcześniejszego. Ponieważ przetwarzany jest sygnał składający się z próbek o wartościach rzeczywistych, pokryte pasmo częstotliwości zawiera próbki od pierwszej próbki do próbki oznaczonej numerem N/2. Liczba filtrów oraz ich rozmieszczenie w dziedzinie częstotliwości ustalane są na jeden z kilku sposobów.
 Pierwszym sposobem jest skorzystanie z 24 obszarów krytycznych zdefiniowanych w skali Barka. Każdy filtr ma niezerowe wartości w zakresie częstotliwości od k-1 częstotliwości krytycznej, aż do k+1 częstotliwości krytycznej. Maksimum zaś przypada na k-tą częstotliwość krytyczną.
 Drugim i najpopularniejszym podejściem jest zastosowanie ustalonej ilości filtrów i rozmieszczenie ich równomiernie w dziedzinie częstotliwości (rysunek \ref{melfb}).
